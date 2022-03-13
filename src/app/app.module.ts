@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HomeComponent } from './home-dashboard/home/home.component';
+import { AdminComponent } from './admin-dashboard/admin/admin.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
     AppComponent,
     LoginComponent,
     SidebarComponent,
-    HomeComponent
+    AdminComponent
   ],
   imports: [
     BrowserModule,

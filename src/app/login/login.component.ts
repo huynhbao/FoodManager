@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
         return;
     }
 
-    this.router.navigateByUrl("home");
+    this.router.navigateByUrl("admin");
     //this.loading = true;
     
     /* this.accountService.login(this.f.username.value, this.f.password.value)
