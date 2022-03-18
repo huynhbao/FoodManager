@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs';
+import { User } from '../models/user.model';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +19,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private authenticationService: AuthenticationService,
   ) { }
 
   ngOnInit(): void {
@@ -38,18 +42,19 @@ export class LoginComponent implements OnInit {
     this.router.navigateByUrl("admin");
     //this.loading = true;
     
-    /* this.accountService.login(this.f.username.value, this.f.password.value)
+    this.authenticationService.login(this.f['username'].value, this.f['password'].value)
         .pipe(first())
         .subscribe({
-            next: () => {
+            next: (value: User) => {
                 // get return url from query parameters or default to home page
-                const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-                this.router.navigateByUrl("login");
+                //const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+                //this.router.navigateByUrl(value.role + "/dashboard");
+                this.router.navigate([value.role]);
             },
             error: error => {
-                this.alertService.error(error);
+                //this.alertService.error(error);
                 this.loading = false;
             }
-        }); */
+        });
   }
 }

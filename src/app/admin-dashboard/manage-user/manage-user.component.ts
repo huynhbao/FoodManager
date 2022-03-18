@@ -1,21 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-
-export interface User {
-  id: number;
-  email: string;
-  fullname: string;
-  address: string;
-  status: boolean;
-
-  /* constructor(id: number, email: string, fullname: string, address: string, status: boolean) {
-    this.id = id;
-    this.email = email;
-    this.fullname = fullname;
-    this.address = address;
-    this.status = status;
-  } */
-}
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-manage-user',
@@ -32,6 +16,7 @@ export class ManageUserComponent implements OnInit {
       fullname: "Nguyễn Văn A",
       address: "HCM",
       status: true,
+      role: "user"
     };
     let user2:User =  {
       id: 2,
@@ -39,6 +24,7 @@ export class ManageUserComponent implements OnInit {
       fullname: "Nguyễn Văn B",
       address: "HN",
       status: true,
+      role: "user"
     };
     this.listUser.push(user1);
     this.listUser.push(user2);

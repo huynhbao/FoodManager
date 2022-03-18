@@ -10,13 +10,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminComponent } from './admin-dashboard/admin/admin.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthGuard } from './helpers/auth.guard';
+import { AuthenticationService } from './services/authentication.service';
+import { HttpClientModule } from '@angular/common/http';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SidebarComponent,
-    AdminComponent
+    AdminComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -26,8 +31,12 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     RouterModule,
     NgbModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+    AuthenticationService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
