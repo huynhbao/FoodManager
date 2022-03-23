@@ -14,6 +14,7 @@ import { AuthGuard } from './helpers/auth.guard';
 import { AuthenticationService } from './services/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ModalCreateComponent } from './shared/components/modal-create/modal-create.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     LoginComponent,
     SidebarComponent,
     AdminComponent,
-    NavbarComponent
+    NavbarComponent,
+    ModalCreateComponent
   ],
   imports: [
     BrowserModule,
