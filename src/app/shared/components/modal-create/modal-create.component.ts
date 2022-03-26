@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Category } from 'src/app/models/category.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-modal-create',
@@ -9,13 +10,9 @@ import { Category } from 'src/app/models/category.model';
   styleUrls: ['./modal-create.component.scss']
 })
 export class ModalCreateComponent implements OnInit {
-
-  currentPage = 1;
-  itemsPerPage = 5;
-  pageSize: number = 10;
+  @Input() fromParent: any;
   categoryForm: FormGroup;
-  listStatus: string[] = ["Enable", "Disable"];
-  selectedStatus: string = this.listStatus[0];
+  selectedStatus?: string;
   selectedCategory?: Category;
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
     this.categoryForm = this.formBuilder.group(
@@ -24,17 +21,25 @@ export class ModalCreateComponent implements OnInit {
         categoryName: ["", Validators.required],
       }
     );
+    
   }
 
   ngOnInit(): void {
-  }
+    //console.log((this.fromParent[0].createDate));
+    this.selectedStatus = this.fromParent[0].status;
+    this.categoryForm = this.formBuilder.group({});
+    for (let i = 0; i < this.fromParent.length; i++) {
+      let value = this.fromParent[i];
+      if (i == 0) {
 
-  public onPageChange(pageNum: number): void {
-    this.pageSize = this.itemsPerPage * (pageNum - 1);
-  }
+      } else {
+        for (let _ in value) {
+          this.categoryForm.addControl(value.key, this.formBuilder.control(value.state, value.valid))
+        }
+      }
 
-  public changePagesize(num: number): void {
-    this.itemsPerPage = this.pageSize + num;
+    }
+
   }
 
   triggerModal(content: any) {
@@ -46,8 +51,8 @@ export class ModalCreateComponent implements OnInit {
     });
   }
 
-  
 
+  log(val: any) { console.log(val); }
 
 
   changeSelectStatus(selectedStatus: string) {

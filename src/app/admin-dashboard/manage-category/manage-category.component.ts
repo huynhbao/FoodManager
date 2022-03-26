@@ -46,7 +46,35 @@ export class ManageCategoryComponent implements OnInit {
 
   triggerModal(content: any) {
     this.categoryForm.reset();
-    this.modalService.open(ModalCreateComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static' }).result.then((result) => {
+    const modalRef = this.modalService.open(ModalCreateComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static' });
+    modalRef.componentInstance.fromParent = [
+      new Category(0, "", new Date(), false),
+      {
+        key: "id",
+        name: "ID",
+        type: "string",
+        validator: {
+          state: "['']",
+          valid: Validators.required
+        }
+      },
+      {
+        key: "name",
+        name: "Name",
+        type: "string",
+        validator: {
+          state: "['']",
+          valid: Validators.required
+        }
+      },
+      {
+        key: "status",
+        name: "Status",
+        type: "boolean",
+        value: ["Enable", "Disable"]
+      },
+    ];
+    modalRef.result.then((result) => {
       //this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

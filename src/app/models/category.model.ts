@@ -3,11 +3,12 @@ export class Category {
     private name: string;
     private createDate: Date;
     private status: boolean;
+
     constructor(id: number, name: string, createDate: Date, status: boolean) {
-      this.id = id;
-      this.name = name;
-      this.createDate = createDate;
-      this.status = status;
+        this.id = id;
+        this.name = name;
+        this.createDate = createDate;
+        this.status = status;
     }
 
     /**
