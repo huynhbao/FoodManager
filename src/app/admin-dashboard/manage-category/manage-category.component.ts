@@ -15,18 +15,18 @@ export class ManageCategoryComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 5;
   pageSize: number = 10;
-  categoryForm: FormGroup;
+  // categoryForm: FormGroup;
   listStatus: string[] = ["Enable", "Disable"];
   selectedStatus: string = this.listStatus[0];
   selectedCategory?: Category;
 
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal) {
-    this.categoryForm = this.formBuilder.group(
+    /* this.categoryForm = this.formBuilder.group(
       {
         categoryID: ["", Validators.required],
         categoryName: ["", Validators.required],
       }
-    );
+    ); */
   }
 
   ngOnInit(): void {
@@ -44,8 +44,8 @@ export class ManageCategoryComponent implements OnInit {
     this.itemsPerPage = this.pageSize + num;
   }
 
-  triggerModal(content: any) {
-    this.categoryForm.reset();
+  triggerModal() {
+    // this.categoryForm.reset();
     const modalRef = this.modalService.open(ModalCreateComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static' });
     modalRef.componentInstance.fromParent = [
       new Category(0, "", new Date(), false),
@@ -54,7 +54,7 @@ export class ManageCategoryComponent implements OnInit {
         name: "ID",
         type: "string",
         validator: {
-          state: "['']",
+          defaultValue: "",
           valid: Validators.required
         }
       },
@@ -63,7 +63,7 @@ export class ManageCategoryComponent implements OnInit {
         name: "Name",
         type: "string",
         validator: {
-          state: "['']",
+          defaultValue: "",
           valid: Validators.required
         }
       },
@@ -71,9 +71,14 @@ export class ManageCategoryComponent implements OnInit {
         key: "status",
         name: "Status",
         type: "boolean",
-        value: ["Enable", "Disable"]
+        value: ["Enable", "Disable"],
+        validator: {
+          defaultValue: "Enable",
+          valid: Validators.required
+        }
       },
     ];
+    modalRef.componentInstance.test = Category;
     modalRef.result.then((result) => {
       //this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -92,13 +97,13 @@ export class ManageCategoryComponent implements OnInit {
     this.selectedStatus = selectedStatus;
   }
 
-  updateCategory(content: any, category: Category) {
+  updateCategory(category: Category) {
     this.selectedCategory = category;
-    this.categoryForm.setValue({
+    /* this.categoryForm.setValue({
       categoryID: this.selectedCategory.$id,
       categoryName: this.selectedCategory.$name
-    });
-    const modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal' });
+    }); */
+    const modalRef = this.modalService.open(ModalCreateComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal' });
     modalRef.result.then((result) => {
       //this.closeResult = `Closed with: ${result}`;
     }, (reason) => {

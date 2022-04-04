@@ -1,4 +1,4 @@
-<ng-template #modalData let-modal>
+<!-- <ng-template #modalData let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Create Category</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -60,7 +60,7 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
     </div>
-</ng-template>
+</ng-template> -->
 <ng-template #modalConfirm let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-title">Category deletion</h4>
@@ -84,7 +84,7 @@
 <div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            <a (click)="triggerModal(modalData)" class="btn btn-info">Create Category</a>
+            <a (click)="triggerModal()" class="btn btn-info">Create Category</a>
         </div>
     </div>
 </div>
@@ -140,7 +140,7 @@
                                         </a>
                                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                (click)="updateCategory(modalData, category)">Update</a>
+                                                (click)="updateCategory(category)">Update</a>
                                             <a class="dropdown-item" href="javascript:void(0)"
                                                 (click)="openCofirmModal(modalConfirm, category)">Delete</a>
                                             <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
