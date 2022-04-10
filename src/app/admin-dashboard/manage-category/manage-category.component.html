@@ -36,7 +36,7 @@
                                     <div ngbDropdown class="d-inline-block w-100">
                                         <button type="button" class="btn btn-outline-primary btn-block"
                                             id="dropdownBasic1" ngbDropdownToggle>{{selectedCategory ?
-                                            (selectedCategory.$status ?'Enable' : 'Disable') : 'Enable'}}</button>
+                                            (selectedCategory.status ?'Enable' : 'Disable') : 'Enable'}}</button>
                                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
                                             <button type="button" class="dropdown-item"
                                                 *ngFor="let status of listStatus"
@@ -70,7 +70,7 @@
     </div>
     <div class="modal-body">
         <p><strong>Are you sure you want to delete ID: <span
-                    class="text-primary">"{{selectedCategory?.$id}}"</span>?</strong></p>
+                    class="text-primary">"{{selectedCategory?.id}}"</span>?</strong></p>
         <p>All information associated to this user profile will be permanently deleted.
             <span class="text-danger">This operation can not be undone.</span>
         </p>
@@ -117,20 +117,20 @@
                                             <img alt="Image placeholder" src="../assets/img/theme/bootstrap.jpg">
                                         </a> -->
                                         <div class="media-body">
-                                            <span class="mb-0 text-sm">{{category.$id}}</span>
+                                            <span class="mb-0 text-sm">{{category.id}}</span>
                                         </div>
                                     </div>
                                 </th>
                                 <td>
-                                    {{category.$name}}
+                                    {{category.name}}
                                 </td>
                                 <td>
-                                    {{category.$createDate}}
+                                    {{category.createDate}}
                                 </td>
                                 <td>
                                     <span class="badge badge-dot mr-4"><i
-                                            [ngClass]="category.$status ? 'bg-success' : 'bg-warning'"></i>
-                                        {{category.$status ? 'Enabled' : 'Disabled'}} </span>
+                                            [ngClass]="category.status ? 'bg-success' : 'bg-warning'"></i>
+                                        {{category.status ? 'Enabled' : 'Disabled'}} </span>
 
                                 </td>
                                 <td class="text-left">

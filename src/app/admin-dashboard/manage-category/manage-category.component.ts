@@ -31,7 +31,9 @@ export class ManageCategoryComponent implements OnInit {
 
   ngOnInit(): void {
     for (let i = 1; i <= 15; i++) {
-      let category1 = new Category(i, "Category " + i, new Date(), Math.random() < 0.5);
+      let category1 = {id: i, name: "Category " + i, createDate: new Date(), status: Math.random() < 0.5} as Category
+      
+      //Category(id: i, "Category " + i, new Date(), Math.random() < 0.5);
       this.listCategory.push(category1);
     }
   }
@@ -48,7 +50,8 @@ export class ManageCategoryComponent implements OnInit {
     // this.categoryForm.reset();
     const modalRef = this.modalService.open(ModalCreateComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static' });
     modalRef.componentInstance.fromParent = [
-      new Category(0, "", new Date(), false),
+      //new Category(0, "", new Date(), false),
+      {},
       {
         key: "id",
         name: "ID",
@@ -78,7 +81,6 @@ export class ManageCategoryComponent implements OnInit {
         }
       },
     ];
-    modalRef.componentInstance.test = Category;
     modalRef.result.then((result) => {
       //this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
