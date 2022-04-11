@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { map } from 'rxjs/internal/operators/map';
 import { Category } from 'src/app/models/category.model';
+import { AdminManageService } from 'src/app/services/admin-manage.service';
 import { ModalCreateComponent } from 'src/app/shared/components/modal-create/modal-create.component';
 
 @Component({
@@ -20,7 +22,7 @@ export class ManageCategoryComponent implements OnInit {
   selectedStatus: string = this.listStatus[0];
   selectedCategory?: Category;
 
-  constructor(private formBuilder: FormBuilder, private modalService: NgbModal) {
+  constructor(private formBuilder: FormBuilder, private modalService: NgbModal, private adminManageService: AdminManageService,) {
     /* this.categoryForm = this.formBuilder.group(
       {
         categoryID: ["", Validators.required],
@@ -30,12 +32,34 @@ export class ManageCategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    for (let i = 1; i <= 15; i++) {
+    /* for (let i = 1; i <= 15; i++) {
       let category1 = {id: i, name: "Category " + i, createDate: new Date(), status: Math.random() < 0.5} as Category
       
       //Category(id: i, "Category " + i, new Date(), Math.random() < 0.5);
       this.listCategory.push(category1);
-    }
+    } */
+    this.loadCategories();
+
+  }
+
+  loadCategories() {
+    /* this.adminManageService.getCategories().subscribe({
+      next: (categories: Category[]) => {
+        this.listCategory = categories;
+        for (let i in this.listCategory) {
+          this.listCategory[i].status = Math.random() < 0.5;
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    }); */
+    this.adminManageService.getCategories().pipe(map(
+      (categories) => {
+        console.log(123);
+        this.listCategory = categories
+      }
+    ));
   }
 
   public onPageChange(pageNum: number): void {
