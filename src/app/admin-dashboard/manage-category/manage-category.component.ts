@@ -5,6 +5,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { Category } from 'src/app/models/category.model';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
 import { ModalCreateComponent } from 'src/app/shared/components/modal-create/modal-create.component';
+import { ModalUpdateComponent } from 'src/app/shared/components/modal-update/modal-update.component';
 
 @Component({
   selector: 'app-manage-category',
@@ -21,8 +22,8 @@ export class ManageCategoryComponent implements OnInit {
   listStatus: string[] = ["Enable", "Disable"];
   selectedStatus: string = this.listStatus[0];
   selectedCategory?: Category;
-
-  constructor(private formBuilder: FormBuilder, private modalService: NgbModal, private adminManageService: AdminManageService,) {
+  searchText = "";
+  constructor(private formBuilder: FormBuilder, private modalService: NgbModal, private adminManageService: AdminManageService) {
     /* this.categoryForm = this.formBuilder.group(
       {
         categoryID: ["", Validators.required],
@@ -39,27 +40,22 @@ export class ManageCategoryComponent implements OnInit {
       this.listCategory.push(category1);
     } */
     this.loadCategories();
-
+    this.adminManageService.currentSearch.subscribe(searchText => this.searchText = searchText)
   }
 
   loadCategories() {
-    /* this.adminManageService.getCategories().subscribe({
+    this.adminManageService.getCategories().subscribe({
       next: (categories: Category[]) => {
         this.listCategory = categories;
-        for (let i in this.listCategory) {
-          this.listCategory[i].status = Math.random() < 0.5;
-        }
+        /* for (let i in this.listCategory) {
+          console.log(typeof this.listCategory[i].status);
+          //this.listCategory[i].status = Math.random() < 0.5;
+        } */
       },
       error: (error) => {
         console.log(error);
       }
-    }); */
-    this.adminManageService.getCategories().pipe(map(
-      (categories) => {
-        console.log(123);
-        this.listCategory = categories
-      }
-    ));
+    });
   }
 
   public onPageChange(pageNum: number): void {
@@ -70,9 +66,16 @@ export class ManageCategoryComponent implements OnInit {
     this.itemsPerPage = this.pageSize + num;
   }
 
-  triggerModal() {
+  triggerModal(method: String, dto: any) {
     // this.categoryForm.reset();
-    const modalRef = this.modalService.open(ModalCreateComponent, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static' });
+    let content: any = ModalCreateComponent;
+    if (method == 'create') {
+      content = ModalCreateComponent;
+    } else if (method == 'update') {
+      content = ModalUpdateComponent;
+    }
+
+    const modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static' });
     modalRef.componentInstance.fromParent = [
       //new Category(0, "", new Date(), false),
       {},
@@ -81,7 +84,8 @@ export class ManageCategoryComponent implements OnInit {
         name: "ID",
         type: "string",
         validator: {
-          defaultValue: "",
+          disabled: true,
+          defaultValue: dto.id ?? "",
           valid: Validators.required
         }
       },
@@ -90,7 +94,8 @@ export class ManageCategoryComponent implements OnInit {
         name: "Name",
         type: "string",
         validator: {
-          defaultValue: "",
+          disabled: false,
+          defaultValue: dto.name ?? "",
           valid: Validators.required
         }
       },
@@ -100,7 +105,8 @@ export class ManageCategoryComponent implements OnInit {
         type: "boolean",
         value: ["Enable", "Disable"],
         validator: {
-          defaultValue: "Enable",
+          disabled: false,
+          defaultValue: dto.status !== undefined ? (dto.status == 1 ? "Enable" : "Disable") : "Enable",
           valid: Validators.required
         }
       },

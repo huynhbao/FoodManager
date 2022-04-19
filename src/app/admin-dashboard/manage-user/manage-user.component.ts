@@ -11,7 +11,7 @@ export class ManageUserComponent implements OnInit {
   public listUser: User[] = [];
   constructor() {
     let user1:User =  {
-      id: 1,
+      username: "1",
       email: "a@gmail.com",
       fullname: "Nguyễn Văn A",
       address: "HCM",
@@ -19,7 +19,7 @@ export class ManageUserComponent implements OnInit {
       role: "user"
     };
     let user2:User =  {
-      id: 2,
+      username: "2",
       email: "b@gmail.com",
       fullname: "Nguyễn Văn B",
       address: "HN",

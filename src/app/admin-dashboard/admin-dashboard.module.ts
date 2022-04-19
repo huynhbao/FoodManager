@@ -7,13 +7,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FilterPipe } from './pipes/filter.pipe';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
   declarations: [
     ManageUserComponent,
     DashboardComponent,
-    ManageCategoryComponent
+    ManageCategoryComponent,
+    FilterPipe
   ],
   imports: [
     CommonModule,

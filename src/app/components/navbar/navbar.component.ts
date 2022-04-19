@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ROUTES_ADMIN } from '../sidebar/sidebar.component';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AdminManageService } from 'src/app/services/admin-manage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,7 +15,8 @@ export class NavbarComponent implements OnInit {
   public focus?: boolean;
   public listTitles!: any[];
   public location: Location;
-  constructor(location: Location, private element: ElementRef, private router: Router, private authenticationService: AuthenticationService) {
+  searchText = "";
+  constructor(location: Location, private element: ElementRef, private router: Router, private authenticationService: AuthenticationService, private adminManageService: AdminManageService) {
     this.location = location;
   }
 
@@ -40,6 +42,9 @@ export class NavbarComponent implements OnInit {
     return 'Dashboard';
   }
 
+  search(value: string) {
+    this.adminManageService.changeSearchValue(value);
+  }
 
   logout() {
     this.authenticationService.logout();

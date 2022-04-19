@@ -21,7 +21,7 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<any>(`https://622f12cd3ff58f023c14f48c.mockapi.io/api/login/`, { username, password })
+        return this.http.post<any>(`https://fooma.free.beeceptor.com/login`, { username, password })
             .pipe(map(user => {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));

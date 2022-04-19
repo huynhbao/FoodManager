@@ -1,15 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Category } from 'src/app/models/category.model';
-import { User } from 'src/app/models/user.model';
 
 @Component({
-  selector: 'app-modal-create',
-  templateUrl: './modal-create.component.html',
-  styleUrls: ['./modal-create.component.scss']
+  selector: 'app-modal-update',
+  templateUrl: './modal-update.component.html',
+  styleUrls: ['./modal-update.component.scss']
 })
-export class ModalCreateComponent implements OnInit {
+export class ModalUpdateComponent implements OnInit {
   @Input() fromParent: any;
   categoryForm: FormGroup;
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
@@ -17,26 +15,17 @@ export class ModalCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.categoryForm = this.formBuilder.group({});
-    /* this.categoryForm = this.formBuilder.group(
-      {
-        categoryID: ["", Validators.required],
-        categoryName: ["", Validators.required],
-      }
-    ); */
     for (let i = 0; i < this.fromParent.length; i++) {
       let value = this.fromParent[i];
       if (i == 0) {
 
       } else {
         for (let _ in value) {
-          this.categoryForm.addControl(value.key, new FormControl(value.validator.defaultValue, value.validator.valid))
+          this.categoryForm.addControl(value.key, new FormControl({value: value.validator.defaultValue, disabled: value.validator.disabled}, value.validator.valid))
         }
       }
     }
   }
-
-  //get f() { return this.categoryForm.controls['id'] as FormControl; }
 
   triggerModal(content: any) {
     this.categoryForm.reset();
@@ -54,13 +43,14 @@ export class ModalCreateComponent implements OnInit {
     /* for (var product of this.fromParent[0]) {
       console.log(product)
     } */
+    var a:any = {}
     for (const field in this.categoryForm.controls) {
       const control = this.categoryForm.get(field);
-      console.log(field, control?.value);
+      a[field] = control?.value;
     }
+    console.log(a);
   }
 
   log(val: any) { console.log(val); }
-
 
 }

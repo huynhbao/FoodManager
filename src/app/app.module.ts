@@ -15,6 +15,8 @@ import { AuthenticationService } from './services/authentication.service';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ModalCreateComponent } from './shared/components/modal-create/modal-create.component';
+import { ModalUpdateComponent } from './shared/components/modal-update/modal-update.component';
+import { ManagerComponent } from './manager-dashboard/manager/manager.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ModalCreateComponent } from './shared/components/modal-create/modal-cre
     SidebarComponent,
     AdminComponent,
     NavbarComponent,
-    ModalCreateComponent
+    ModalCreateComponent,
+    ModalUpdateComponent,
+    ManagerComponent
   ],
   imports: [
     BrowserModule,

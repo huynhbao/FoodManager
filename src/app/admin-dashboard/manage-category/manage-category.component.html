@@ -84,7 +84,7 @@
 <div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            <a (click)="triggerModal()" class="btn btn-info">Create Category</a>
+            <a (click)="triggerModal('create', '')" class="btn btn-info">Create Category</a>
         </div>
     </div>
 </div>
@@ -95,7 +95,7 @@
         <div class="col">
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <h3 class="mb-0">Card tables</h3>
+                    <h3 class="mb-0">Category Table</h3>
                 </div>
                 <div class="table-responsive">
                     <table class="table align-items-center table-flush table-hover">
@@ -109,8 +109,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr
-                                *ngFor="let category of listCategory | slice: (currentPage-1) * itemsPerPage : (currentPage-1) * itemsPerPage + itemsPerPage">
+                            <tr *ngFor="let category of listCategory | filter: searchText | slice: (currentPage-1) * itemsPerPage : (currentPage-1) * itemsPerPage + itemsPerPage">
                                 <th scope="row">
                                     <div class="media align-items-center">
                                         <!-- <a href="javascript:void(0)" class="avatar rounded-circle mr-3">
@@ -129,23 +128,25 @@
                                 </td>
                                 <td>
                                     <span class="badge badge-dot mr-4"><i
-                                            [ngClass]="category.status ? 'bg-success' : 'bg-warning'"></i>
-                                        {{category.status ? 'Enabled' : 'Disabled'}} {{category.status}}</span>
+                                            [ngClass]="category.status == 1 ? 'bg-success' : 'bg-warning'"></i>
+                                        {{category.status == 1 ? 'Enabled' : 'Disabled'}}</span>
 
                                 </td>
                                 <td class="text-left">
-                                    <div ngbDropdown placement="bottom-right">
+                                    <a class="text-primary mr-2" href="javascript:void(0)" (click)="triggerModal('update', category)"><i class="fas fa-edit"></i></a>
+                                    <a class="text-danger" href="javascript:void(0)" (click)="openCofirmModal(modalConfirm, category)"><i class="far fa-trash-alt"></i></a>
+                                    <!-- <div ngbDropdown placement="bottom-right">
                                         <a class="btn btn-sm btn-icon-only text-light" ngbDropdownToggle>
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
                                             <a class="dropdown-item" href="javascript:void(0)"
-                                                (click)="updateCategory(category)">Update</a>
+                                                (click)="triggerModal('update', category)">Update</a>
                                             <a class="dropdown-item" href="javascript:void(0)"
                                                 (click)="openCofirmModal(modalConfirm, category)">Delete</a>
                                             <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </td>
                             </tr>
                         </tbody>

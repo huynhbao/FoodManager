@@ -10,7 +10,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-search"></i></span>
                     </div>
-                    <input class="form-control" placeholder="Search" type="text" (focus)="focus = true"
+                    <input class="form-control" placeholder="Search" [(ngModel)]="searchText" (ngModelChange)="search($event)" [ngModelOptions]="{standalone: true}" type="text" (focus)="focus = true"
                         (blur)="focus = false">
                 </div>
             </div>
