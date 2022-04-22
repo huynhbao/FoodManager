@@ -8,20 +8,25 @@ import { AdminManageService } from 'src/app/services/admin-manage.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-
   public focus?: boolean;
   public listTitles!: any[];
   public location: Location;
-  searchText = "";
-  constructor(location: Location, private element: ElementRef, private router: Router, private authenticationService: AuthenticationService, private adminManageService: AdminManageService) {
+  searchText = '';
+  constructor(
+    location: Location,
+    private element: ElementRef,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private adminManageService: AdminManageService
+  ) {
     this.location = location;
   }
 
   ngOnInit() {
-    this.listTitles = ROUTES_ADMIN.filter(listTitle => listTitle);
+    this.listTitles = ROUTES_ADMIN.filter((listTitle) => listTitle);
   }
 
   getUser() {
@@ -50,5 +55,4 @@ export class NavbarComponent implements OnInit {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
-
 }

@@ -26,6 +26,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": [
+              "chart.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -35,6 +38,7 @@
               "src/assets/scss/argon.scss"
             ],
             "scripts": [
+              "node_modules/chart.js/dist/Chart.min.js"
             ]
           },
           "configurations": {

@@ -1,0 +1,64 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 card-wrapper">
+            <div *ngFor="let post of listPost" class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col-auto text-center">
+                                    <div class="custom-checkbox" style="font-size: 2rem;">
+                                        <input id="{{post.id}}" type="checkbox">
+                                        <label for="{{post.id}}"></label>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <!-- Avatar -->
+                                    <img alt="Image placeholder" src="../../assets/img/theme/team-4.jpg" class="avatar rounded-circle">
+                                </div>
+                                <div class="col-auto">
+                                    <h3 class="card-title font-weight-bold mb-0">{{post.user.fullname}}</h3>
+                                    <span class="h5 mb-0 font-weight-light">Posted 1 hour ago ({{post.postDate | date: 'HH:mm dd/MM/yyyy'}})</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-4 text-right">
+                            <button class="btn btn-light" data-toggle="notify" data-placement="top" data-align="center" data-type="info" data-icon="ni ni-bell-55">&bull;&bull;&bull;</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title mb-1">{{post.title}}</h4>
+                    <p class="card-text">{{post.content}}</p>
+                    <ngb-carousel *ngIf="images">
+                        <ng-template ngbSlide *ngFor="let image of post.img">
+                            <div class="picsum-img-wrapper d-flex justify-content-center">
+                              <img [src]="image" alt="Random slide">
+                            </div>
+                            <!-- <div class="carousel-caption">
+                              <h3>No mouse navigation</h3>
+                              <p>This carousel hides navigation arrows and indicators.</p>
+                            </div> -->
+                        </ng-template>
+                    </ngb-carousel>
+                    <div class="form-group row mt-5 mb-0">
+                        <div class="col-6">
+                            <button class="btn btn-info form-control" data-toggle="notify" data-placement="top" data-align="center" data-type="info" data-icon="ni ni-bell-55">Approve</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-light form-control" data-toggle="notify" data-placement="top" data-align="center" data-type="info" data-icon="ni ni-bell-55">Decline</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

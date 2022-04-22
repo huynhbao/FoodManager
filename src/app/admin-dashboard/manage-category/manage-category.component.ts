@@ -38,9 +38,11 @@ export class ManageCategoryComponent implements OnInit {
       
       //Category(id: i, "Category " + i, new Date(), Math.random() < 0.5);
       this.listCategory.push(category1);
-    } */
-    this.loadCategories();
+    }
+    
     this.adminManageService.currentSearch.subscribe(searchText => this.searchText = searchText)
+    */
+    this.loadCategories();
   }
 
   loadCategories() {

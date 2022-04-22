@@ -18,7 +18,7 @@ export const ROUTES_ADMIN: RouteInfo[] = [
 
 export const ROUTES_MANAGER: RouteInfo[] = [
   { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
-  { path: 'manage-user', title: 'Manage Post',  icon:'ni-bullet-list-67 text-success', class: '' },
+  { path: 'manage-post', title: 'Manage Post',  icon:'ni-bullet-list-67 text-success', class: '' },
   { path: 'manage-category', title: 'Manage recipe',  icon:'ni-bullet-list-67 text-info', class: '' },
   { path: 'manage-category', title: 'View report list',  icon:'ni-bullet-list-67 text-danger', class: '' }
 ];
