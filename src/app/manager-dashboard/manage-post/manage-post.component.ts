@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
+import { Utils } from 'src/app/shared/tools/utils';
 
 @Component({
   selector: 'app-manage-post',
@@ -38,7 +39,7 @@ export class ManagePostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    
   }
 
 }

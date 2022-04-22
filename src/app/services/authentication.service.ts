@@ -1,38 +1,57 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from "rxjs";
-import { User } from "../models/user.model";
+import { BehaviorSubject, Observable } from 'rxjs';
+import { User } from '../models/user.model';
 import { map } from 'rxjs/operators';
+import { Utils } from '../shared/tools/utils';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class AuthenticationService {
-    private currentUserSubject: BehaviorSubject<User>;
-    public currentUser: Observable<User>;
+  private currentUserSubject: BehaviorSubject<string>;
+  public currentUser: Observable<string>;
 
-    constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')!));
-        this.currentUser = this.currentUserSubject.asObservable();
-    }
+  constructor(private http: HttpClient) {
+    this.currentUserSubject = new BehaviorSubject<string>(
+        localStorage.getItem('currentUser')!
+    );
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
-    public get currentUserValue(): User {
-        return this.currentUserSubject.value;
-    }
+  public get currentUserValue() {
+    return JSON.parse(this.currentUserSubject.value);
+  }
 
-    login(username: string, password: string) {
-        return this.http.post<any>(`https://fooma.free.beeceptor.com/login`, { username, password })
-            .pipe(map(user => {
+  login(username: string, password: string) {
+    return this.http
+      .post<any>(`https://foomaapp.ddns.net/api/auth/login-system`, {
+        email: username,
+        password: password,
+      })
+      .pipe(
+        map((res: any) => {
+          if (res) {
+            const tokenInfo = JSON.stringify(Utils.getDecodedAccessToken(res.token));
+            localStorage.setItem('currentUser', tokenInfo);
+            this.currentUserSubject.next(tokenInfo);
+            return JSON.parse(tokenInfo);
+          } else {
+            throw new Error();
+          }
+        })
+      );
+    /* .pipe(map(user => {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 this.currentUserSubject.next(user);
                 return user;
-            }));
-    }
+            })); */
+  }
 
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null!);
-    }
+  logout() {
+    // remove user from local storage to log user out
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null!);
+  }
 }
