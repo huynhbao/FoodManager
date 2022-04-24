@@ -1,62 +1,187 @@
-<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+<div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            
+            <div class="row justify-content-center">
+                <div class="col-lg-12 card-wrapper">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="mb-0">Waiting posts - {{listPost.length}}</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group input-group-alternative input-group-merge"
+                                style="border-radius: 0.3rem; border: 1px solid #e5e5e5; background-color: #f7f6f9;">
+                                <div class="input-group-prepend">
+                                    <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Search" type="text" />
+                            </div>
+
+
+                            <div class="form-row mt-3 align-items-center mb-0">
+                                <div class="col-auto">
+                                    <div class="custom-checkbox" style="font-size: 2rem;">
+                                        <input id="check-all" type="checkbox" [(ngModel)]="masterSelected"
+                                            (change)="checkUncheckAll()">
+                                        <label for="check-all"></label>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-info">Approve</button>
+                                </div>
+                                <div class="col-auto">
+                                    <button class="btn btn-light">Decline</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <div class="container-fluid mt--6">
     <div class="row justify-content-center">
-        <div class="col-lg-8 card-wrapper">
-            <div *ngFor="let post of listPost" class="card">
-                <div class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col-8">
-                            <div class="row">
-                                <div class="col-auto text-center">
-                                    <div class="custom-checkbox" style="font-size: 2rem;">
-                                        <input id="{{post.id}}" type="checkbox">
-                                        <label for="{{post.id}}"></label>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <!-- Avatar -->
-                                    <img alt="Image placeholder" src="../../assets/img/theme/team-4.jpg" class="avatar rounded-circle">
-                                </div>
-                                <div class="col-auto">
-                                    <h3 class="card-title font-weight-bold mb-0">{{post.user.fullname}}</h3>
-                                    <span class="h5 mb-0 font-weight-light">Posted 1 hour ago ({{post.postDate | date: 'HH:mm dd/MM/yyyy'}})</span>
-                                </div>
-                                
-                            </div>
+        <div class="col-lg-12 card-wrapper">
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header border-0">
+                    <div class="row">
+                        <div class="col-6">
+                            <h3 class="mb-0">Inline actions</h3>
                         </div>
-                        <div class="col-4 text-right">
-                            <button class="btn btn-light" data-toggle="notify" data-placement="top" data-align="center" data-type="info" data-icon="ni ni-bell-55">&bull;&bull;&bull;</button>
+                        <div class="col-6 text-right">
+                            <a href="#" class="btn btn-sm btn-neutral btn-round btn-icon" data-toggle="tooltip"
+                                data-original-title="Edit product">
+                                <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span>
+                                <span class="btn-inner--text">Export</span>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <h4 class="card-title mb-1">{{post.title}}</h4>
-                    <p class="card-text">{{post.content}}</p>
-                    <ngb-carousel *ngIf="images">
-                        <ng-template ngbSlide *ngFor="let image of post.img">
-                            <div class="picsum-img-wrapper d-flex justify-content-center">
-                              <img [src]="image" alt="Random slide">
-                            </div>
-                            <!-- <div class="carousel-caption">
-                              <h3>No mouse navigation</h3>
-                              <p>This carousel hides navigation arrows and indicators.</p>
-                            </div> -->
-                        </ng-template>
-                    </ngb-carousel>
-                    <div class="form-group row mt-5 mb-0">
-                        <div class="col-6">
-                            <button class="btn btn-info form-control" data-toggle="notify" data-placement="top" data-align="center" data-type="info" data-icon="ni ni-bell-55">Approve</button>
-                        </div>
-                        <div class="col-6">
-                            <button class="btn btn-light form-control" data-toggle="notify" data-placement="top" data-align="center" data-type="info" data-icon="ni ni-bell-55">Decline</button>
-                        </div>
-                    </div>
+                <!-- Light table -->
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Author</th>
+                                <th>Created at</th>
+                                <th>Product</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-user">
+                                    <img src="../../assets/img/theme/team-1.jpg" class="avatar rounded-circle mr-3">
+                                    <b>John Michael</b>
+                                </td>
+                                <td>
+                                    <span class="text-muted">10/09/2018</span>
+                                </td>
+                                <td>
+                                    <a href="#!" class="font-weight-bold">Argon Dashboard PRO</a>
+                                </td>
+                                <td class="table-actions">
+                                    <a href="#!" class="table-action" data-toggle="tooltip"
+                                        data-original-title="Edit product">
+                                        <i class="fas fa-user-edit"></i>
+                                    </a>
+                                    <a href="#!" class="table-action table-action-delete" data-toggle="tooltip"
+                                        data-original-title="Delete product">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-user">
+                                    <img src="../../assets/img/theme/team-2.jpg" class="avatar rounded-circle mr-3">
+                                    <b>Alex Smith</b>
+                                </td>
+                                <td>
+                                    <span class="text-muted">08/09/2018</span>
+                                </td>
+                                <td>
+                                    <a href="#!" class="font-weight-bold">Argon Design System</a>
+                                </td>
+                                <td class="table-actions">
+                                    <a href="#!" class="table-action" data-toggle="tooltip"
+                                        data-original-title="Edit product">
+                                        <i class="fas fa-user-edit"></i>
+                                    </a>
+                                    <a href="#!" class="table-action table-action-delete" data-toggle="tooltip"
+                                        data-original-title="Delete product">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-user">
+                                    <img src="../../assets/img/theme/team-3.jpg" class="avatar rounded-circle mr-3">
+                                    <b>Samantha Ivy</b>
+                                </td>
+                                <td>
+                                    <span class="text-muted">30/08/2018</span>
+                                </td>
+                                <td>
+                                    <a href="#!" class="font-weight-bold">Black Dashboard</a>
+                                </td>
+                                <td class="table-actions">
+                                    <a href="#!" class="table-action" data-toggle="tooltip"
+                                        data-original-title="Edit product">
+                                        <i class="fas fa-user-edit"></i>
+                                    </a>
+                                    <a href="#!" class="table-action table-action-delete" data-toggle="tooltip"
+                                        data-original-title="Delete product">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-user">
+                                    <img src="../../assets/img/theme/team-1.jpg" class="avatar rounded-circle mr-3">
+                                    <b>John Michael</b>
+                                </td>
+                                <td>
+                                    <span class="text-muted">10/09/2018</span>
+                                </td>
+                                <td>
+                                    <a href="#!" class="font-weight-bold">Argon Dashboard PRO</a>
+                                </td>
+                                <td class="table-actions">
+                                    <a href="#!" class="table-action" data-toggle="tooltip"
+                                        data-original-title="Edit product">
+                                        <i class="fas fa-user-edit"></i>
+                                    </a>
+                                    <a href="#!" class="table-action table-action-delete" data-toggle="tooltip"
+                                        data-original-title="Delete product">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-user">
+                                    <img src="../../assets/img/theme/team-2.jpg" class="avatar rounded-circle mr-3">
+                                    <b>John Michael</b>
+                                </td>
+                                <td>
+                                    <span class="text-muted">10/09/2018</span>
+                                </td>
+                                <td>
+                                    <a href="#!" class="font-weight-bold">Argon Dashboard PRO</a>
+                                </td>
+                                <td class="table-actions">
+                                    <a href="#!" class="table-action" data-toggle="tooltip"
+                                        data-original-title="Edit product">
+                                        <i class="fas fa-user-edit"></i>
+                                    </a>
+                                    <a href="#!" class="table-action table-action-delete" data-toggle="tooltip"
+                                        data-original-title="Delete product">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

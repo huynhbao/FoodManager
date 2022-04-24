@@ -3,20 +3,17 @@ import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
-import { Utils } from 'src/app/shared/tools/utils';
 
 @Component({
-  selector: 'app-manage-post',
-  templateUrl: './manage-post.component.html',
-  styleUrls: ['./manage-post.component.scss'],
-  providers: [NgbCarouselConfig]
+  selector: 'app-pending-post',
+  templateUrl: './pending-post.component.html',
+  styleUrls: ['./pending-post.component.scss']
 })
-export class ManagePostComponent implements OnInit {
+export class PendingPostComponent implements OnInit {
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   listPost: Post[] = [];
   masterSelected: boolean;
-  //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
-  //https://www.npmjs.com/package/ngx-toastr
+  // https://stackblitz.com/edit/angular-11-crud-example-2jndjj?file=src%2Fapp%2Fusers%2Flist.component.ts
   constructor(config: NgbCarouselConfig, private managerService: ManagerService) {
     config.interval = 0;
     let user: User = {
@@ -73,7 +70,6 @@ export class ManagePostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
 }

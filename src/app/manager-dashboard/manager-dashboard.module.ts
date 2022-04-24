@@ -5,15 +5,19 @@ import { ManagerDashboardRoutingModule } from './manager-dashboard-routing.modul
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManagePostComponent } from './manage-post/manage-post.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { PendingPostComponent } from './pending-post/pending-post.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    ManagePostComponent
+    ManagePostComponent,
+    PendingPostComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     NgbModule,
     ManagerDashboardRoutingModule
   ]
