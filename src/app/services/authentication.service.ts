@@ -4,6 +4,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { map } from 'rxjs/operators';
 import { Utils } from '../shared/tools/utils';
+import { JwtHelperService } from '@auth0/angular-jwt';
+
+const helper = new JwtHelperService();
 
 @Injectable({
   providedIn: 'root',
@@ -32,10 +35,14 @@ export class AuthenticationService {
       .pipe(
         map((res: any) => {
           if (res) {
-            const tokenInfo = JSON.stringify(Utils.getDecodedAccessToken(res.token));
-            localStorage.setItem('currentUser', tokenInfo);
-            this.currentUserSubject.next(tokenInfo);
-            return JSON.parse(tokenInfo);
+            //const tokenInfo = JSON.stringify(Utils.getDecodedAccessToken(res.token));
+            let currentUser = {
+              token: res.token,
+              currentUser: helper.decodeToken(res.token)
+            }
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            this.currentUserSubject.next(JSON.stringify(currentUser));
+            return currentUser;
           } else {
             throw new Error();
           }

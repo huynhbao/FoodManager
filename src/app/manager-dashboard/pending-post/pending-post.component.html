@@ -58,7 +58,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <h3 class="card-title font-weight-bold mb-0">{{post.user.fullname}}</h3>
-                                    <span class="h5 mb-0 font-weight-light">Posted 1 hour ago ({{post.postDate | date: 'HH:mm dd/MM/yyyy'}})</span>
+                                    <span class="h5 mb-0 font-weight-light">Posted 1 hour ago ({{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
                                 </div>
                                 
                             </div>
@@ -72,9 +72,9 @@
                     <h4 class="card-title mb-1">{{post.title}}</h4>
                     <p class="card-text">{{post.content}}</p>
                     <ngb-carousel *ngIf="images">
-                        <ng-template ngbSlide *ngFor="let image of post.img">
+                        <ng-template ngbSlide *ngFor="let image of post.postImages">
                             <div class="picsum-img-wrapper d-flex justify-content-center">
-                              <img [src]="image" alt="Random slide">
+                              <img [src]="image.imageUrl" alt="Random slide">
                             </div>
                             <!-- <div class="carousel-caption">
                               <h3>No mouse navigation</h3>

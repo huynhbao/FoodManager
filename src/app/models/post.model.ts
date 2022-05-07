@@ -1,3 +1,4 @@
+import { Image } from "./image.model";
 import { User } from "./user.model";
 
 export interface Post {
@@ -5,8 +6,10 @@ export interface Post {
     user: User;
     title: string;
     content: string;
-    img: string[];
-    postDate: Date;
+    publishedDate: Date;
     status: number;
+    totalComment: number;
+    totalReact: number;
+    postImages: Image[];
     isSelected?: boolean;
 }

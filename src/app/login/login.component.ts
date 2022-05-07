@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
   ) {
     if (this.authenticationService.currentUserValue) {
-      let role:String = this.authenticationService.currentUserValue.role;
+      let role:String = this.authenticationService.currentUserValue.currentUser.role;
       this.router.navigate([role.toLowerCase()]);
     }
   }
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
           //const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
           //this.router.navigateByUrl(value.role + "/dashboard");
           //this.router.navigate([value.role]);
-          this.router.navigate([value.role.toLowerCase()]);
+          this.router.navigate([value.currentUser.role.toLowerCase()]);
         },
         error: error => {
           //this.alertService.error(error);

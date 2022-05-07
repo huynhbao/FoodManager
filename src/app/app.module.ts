@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { JwtModule } from "@auth0/angular-jwt";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -17,6 +17,11 @@ import { ModalCreateComponent } from './shared/components/modal-create/modal-cre
 import { ModalUpdateComponent } from './shared/components/modal-update/modal-update.component';
 import { ManagerComponent } from './manager-dashboard/manager/manager.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+
+export function tokenGetter() {
+  let token = JSON.parse(localStorage.getItem("currentUser") || "").token;
+  return token;
+}
 
 @NgModule({
   declarations: [
@@ -37,7 +42,14 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
     CommonModule,
     RouterModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["foomaapp.ddns.net"],
+        disallowedRoutes: ["foomaapp.ddns.net/api/auth/login-system"],
+      },
+    }),
   ],
   providers: [
     AuthGuard,

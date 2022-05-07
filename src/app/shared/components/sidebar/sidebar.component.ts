@@ -18,7 +18,7 @@ export const ROUTES_ADMIN: RouteInfo[] = [
 
 export const ROUTES_MANAGER: RouteInfo[] = [
   { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
-  { path: 'manage-post', title: 'Manage Post',  icon:'ni-bullet-list-67 text-success', class: '' },
+  { path: 'manage', title: 'Manage Posts - Receipes',  icon:'ni-bullet-list-67 text-success', class: '' },
   { path: 'pending-post', title: 'Pending Post',  icon:'ni-bullet-list-67 text-warning', class: '' },
   { path: 'manage-category', title: 'Manage recipe',  icon:'ni-bullet-list-67 text-info', class: '' },
   { path: 'manage-category', title: 'View report list',  icon:'ni-bullet-list-67 text-danger', class: '' }
@@ -38,7 +38,7 @@ export class SidebarComponent implements OnInit {
   constructor(private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    let role = this.authenticationService.currentUserValue.role;
+    let role = this.authenticationService.currentUserValue.currentUser.role;
     if (role == AppConst.ADMIN_STR) {
       this.menuItems = ROUTES_ADMIN.filter(menuItem => menuItem);
     } else if (role == AppConst.MANAGER_STR) {

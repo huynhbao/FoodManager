@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Image } from 'src/app/models/image.model'
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
@@ -17,6 +18,7 @@ export class PendingPostComponent implements OnInit {
   constructor(config: NgbCarouselConfig, private managerService: ManagerService) {
     config.interval = 0;
     let user: User = {
+      id: "a1",
       username: "1",
       email: "a@gmail.com",
       fullname: "Nguyễn Văn A",
@@ -25,14 +27,37 @@ export class PendingPostComponent implements OnInit {
       role: "user"
     };
 
+    let postImages: Image[] = [
+      {
+        id: "1",
+        imageUrl: "https://picsum.photos/id/944/900/500",
+        isThumbnail: false,
+        status: 1,
+      },
+      {
+        id: "2",
+        imageUrl: "https://picsum.photos/id/1011/900/500",
+        isThumbnail: false,
+        status: 1,
+      },
+      {
+        id: "3",
+        imageUrl: "https://picsum.photos/id/984/900/500",
+        isThumbnail: false,
+        status: 1,
+      }
+    ]
+
     for (let i = 1; i <= 5; i++) {
       let post: Post = {
         id: `${i}`,
         user: user,
         title: "This is a title no " + i,
         content: "With supporting text below as a natural lead-in to additional content.",
-        img: this.images,
-        postDate: new Date(),
+        postImages: postImages,
+        publishedDate: new Date(),
+        totalComment: 0,
+        totalReact: 0,
         status: 1,
         isSelected: false,
       };

@@ -1,9 +1,11 @@
-import jwt_decode from 'jwt-decode';
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 export class Utils {
+    
     static getDecodedAccessToken(token: string): any {
+        const helper = new JwtHelperService();
         try {
-            return jwt_decode(token);
+            return helper.decodeToken(token);
         } catch (Error) {
             return null;
         }

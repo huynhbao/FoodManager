@@ -45,7 +45,7 @@ export class ManageCategoryComponent implements OnInit {
     this.loadCategories();
   }
 
-  loadCategories() {
+  private loadCategories() {
     this.adminManageService.getCategories().subscribe({
       next: (categories: Category[]) => {
         this.listCategory = categories;

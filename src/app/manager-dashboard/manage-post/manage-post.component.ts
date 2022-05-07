@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Image } from 'src/app/models/image.model';
+import { Paging } from 'src/app/models/paging.model';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
-import { Utils } from 'src/app/shared/tools/utils';
 
 @Component({
   selector: 'app-manage-post',
@@ -14,11 +15,78 @@ import { Utils } from 'src/app/shared/tools/utils';
 export class ManagePostComponent implements OnInit {
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   listPost: Post[] = [];
-  masterSelected: boolean;
+  paging?: Paging;
+  currentPage: number = 1;
+  itemsPerPage = 5;
+  pageSize: number = 10;
+  collectionSize: number = 0;
+  masterSelected: boolean = false;
+  numSelected: number = 0;
+  //masterSelected: boolean;
   //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
   //https://www.npmjs.com/package/ngx-toastr
-  constructor(config: NgbCarouselConfig, private managerService: ManagerService) {
-    config.interval = 0;
+  constructor(private managerService: ManagerService) {
+  }
+
+  private loadPosts() {
+    let defaultPostImages: Image[] = [
+      {
+        id: "1",
+        imageUrl: "https://picsum.photos/id/944/900/500",
+        isThumbnail: false,
+        status: 1,
+      },
+      {
+        id: "2",
+        imageUrl: "https://picsum.photos/id/1011/900/500",
+        isThumbnail: false,
+        status: 1,
+      },
+      {
+        id: "3",
+        imageUrl: "https://picsum.photos/id/984/900/500",
+        isThumbnail: false,
+        status: 1,
+      }
+    ]
+    
+    this.managerService.getPosts(this.currentPage).subscribe({
+      next: (res:any) => {
+        this.collectionSize = res.totalItem;
+        let listPost: Post[] = res.items;
+        this.listPost = listPost;
+        this.listPost.forEach(post => {
+          if (post.postImages.length == 0) {
+            post.postImages = defaultPostImages;
+          }
+        });
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+
+    /* let postImages: Image[] = [
+      {
+        id: "1",
+        imageUrl: "https://picsum.photos/id/944/900/500",
+        isThumbnail: false,
+        status: 1,
+      },
+      {
+        id: "2",
+        imageUrl: "https://picsum.photos/id/1011/900/500",
+        isThumbnail: false,
+        status: 1,
+      },
+      {
+        id: "3",
+        imageUrl: "https://picsum.photos/id/984/900/500",
+        isThumbnail: false,
+        status: 1,
+      }
+    ]
+
     let user: User = {
       username: "1",
       email: "a@gmail.com",
@@ -34,46 +102,48 @@ export class ManagePostComponent implements OnInit {
         user: user,
         title: "This is a title no " + i,
         content: "With supporting text below as a natural lead-in to additional content.",
-        img: this.images,
-        postDate: new Date(),
+        postImages: postImages,
+        publishedDate: new Date(),
+        totalComment: 0,
+        totalReact: 0,
         status: 1,
         isSelected: false,
       };
       this.listPost.push(post);
-    }
+    } */
+  }
 
-    this.masterSelected = false;
+  public onPageChange(pageNum: number): void {
+    //this.pageSize = this.itemsPerPage * (pageNum - 1);
+    this.loadPosts();
+  }
+
+  public changePagesize(num: number): void {
+    this.itemsPerPage = this.pageSize + num;
   }
 
   // The master checkbox will check/ uncheck all items
-  checkUncheckAll() {
+  public checkUncheckAll() {
     for (var i = 0; i < this.listPost.length; i++) {
       this.listPost[i].isSelected = this.masterSelected;
     }
+    this.numSelected = this.masterSelected ? this.listPost.length : 0;
   }
 
   // Check All Checkbox Checked
-  isAllSelected() {
+  public isAllSelected() {
+    let count = 0;
     this.masterSelected = this.listPost.every(function (item: any) {
+      if (item.isSelected == true) {
+        count++;
+      }
       return item.isSelected == true;
     })
-  }
-
-  approvePost(id: string) {
-    const post = this.listPost.find(x => x.id === id);
-    if (!post) return;
-    this.listPost = this.listPost.filter(x => x.id !== id);
-    /* this.managerService.delete(id)
-        .pipe(first())
-        .subscribe(() => this.listPost = this.listPost.filter(x => x.id !== id)); */
-  }
-
-  declinePost(id: string) {
-
+    this.numSelected = count;
   }
 
   ngOnInit(): void {
-
+    this.loadPosts();
   }
 
 }
