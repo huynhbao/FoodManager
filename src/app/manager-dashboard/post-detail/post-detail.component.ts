@@ -4,6 +4,7 @@ import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { Image } from 'src/app/models/image.model';
 import { ManagerService } from 'src/app/services/manager.service';
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-post-detail',
@@ -13,7 +14,8 @@ import { ManagerService } from 'src/app/services/manager.service';
 export class PostDetailComponent implements OnInit {
   post!:Post;
 
-  constructor(private managerService: ManagerService, private route: ActivatedRoute, private router: Router) {
+  constructor(private managerService: ManagerService, private route: ActivatedRoute, private router: Router, private config: NgbCarouselConfig) {
+    config.interval = 0;
     /* let user: User = {
       username: "1",
       email: "a@gmail.com",
@@ -75,6 +77,7 @@ export class PostDetailComponent implements OnInit {
         } 
         this.post = post;
         this.post.user = user;
+        console.log(this.post);
       },
       error: (error) => {
         this.router.navigate(['manager/manage/post']);
