@@ -1,0 +1,127 @@
+<div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-lg-12 card-wrapper justify-content-center">
+            <div class="card shadow">
+                <!-- Card header -->
+                <div class="card-header border-0" style="border-radius: 0;">
+                    <div class="row">
+                        <div class="col-6">
+                            <h3 class="mb-0">Total Post - {{collectionSize}}</h3>
+                        </div>
+                        <div class="col-6 text-right">
+                            <a href="#" class="btn btn-sm btn-neutral btn-round btn-icon" data-toggle="tooltip"
+                                data-original-title="Edit product">
+                                <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span>
+                                <span class="btn-inner--text">Export</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="input-group input-group-alternative input-group-merge"
+                                style="border-radius: 0.3rem; border: 1px solid #e5e5e5; background-color: #f7f6f9;">
+                                <div class="input-group-prepend">
+                                    <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Search" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Light table -->
+                <div class="table-responsive">
+                    <div *ngIf="numSelected >= 2" class="multi-selected">
+                        <h6>{{numSelected}} selected</h6>
+                        <div>
+                            <a href="#!">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <table class="table align-items-center table-flush table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center">
+                                    <div class="custom-checkbox" style="font-size: 1.3rem;">
+                                        <input id="check-all" type="checkbox" [(ngModel)]="masterSelected"
+                                            (change)="checkUncheckAll()">
+                                        <label class="mb-0" style="margin-top: 3px;" for="check-all"></label>
+                                    </div>
+                                </th>
+                                <th>Title</th>
+                                <th>Published Date</th>
+                                <th>Total Comment</th>
+                                <th>Total React</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let ingredient of ingredients" [ngClass]="{'selected': ingredient.isSelected === true}">
+                                <td class="text-center">
+                                    <div class="custom-checkbox" style="font-size: 1.3rem;">
+                                        <input id="{{ingredient.id}}" type="checkbox" [(ngModel)]="ingredient.isSelected"
+                                            (change)="isAllSelected()">
+                                        <label class="mb-0" for="{{ingredient.id}}"></label>
+                                    </div>
+                                </td>
+                                <td class="table-user">
+                                    <div class="row align-items-center">
+                                        <div class="col-2 text-center">
+                                            <img src="{{ingredient.imageUrl}}" style="height: 60px;"
+                                                class="rounded img-thumbnail img-fluid mr-3">
+                                        </div>
+                                        <div class="col-auto">
+                                            <!-- <a [routerLink]="['/manager/post', ingredient.id]" class="font-weight-bold text-dark">{{ingredient.ingredientName}}</a> -->
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-muted">{{ingredient.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
+                                </td>
+                                <td class="text-center">
+                                    <!-- <b>{{ingredient.totalComment}}</b> -->
+                                </td>
+                                <td class="text-center">
+                                    <!-- <b>{{ingredient.totalReact}}</b> -->
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge badge-dot"><i
+                                            [ngClass]="ingredient.status == 1 ? 'bg-success' : 'bg-warning'"></i>
+                                        {{ingredient.status == 1 ? 'Enabled' : 'Disabled'}}</span>
+                                </td>
+                                <td class="table-actions text-center">
+                                    <a href="#!" class="table-action table-action-delete" data-toggle="tooltip"
+                                        data-original-title="Delete Post">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer py-4">
+                    <nav aria-label="...">
+                        <ngb-pagination class="pagination justify-content-end mb-0" [collectionSize]="collectionSize" #numPages
+                            [pageSize]="itemsPerPage" [(page)]="currentPage" (pageChange)="onPageChange(currentPage)">
+                            <ng-template ngbPaginationPrevious>
+                                <i class="fas fa-angle-left"></i>
+                                <span class="sr-only">Previous</span>
+                            </ng-template>
+                            <ng-template ngbPaginationNext>
+                                <i class="fas fa-angle-right"></i>
+                                <span class="sr-only">Next</span>
+                            </ng-template>
+                        </ngb-pagination>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

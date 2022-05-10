@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { PendingPostComponent } from './pending-post/pending-post.component';
 import { ManagementComponent } from './management/management.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
+import { ManageIngredientComponent } from '../shared/pages/manage-ingredient/manage-ingredient.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
     ManagePostComponent,
     PendingPostComponent,
     ManagementComponent,
-    PostDetailComponent
+    PostDetailComponent,
+    ManageIngredientComponent,
   ],
   imports: [
     CommonModule,

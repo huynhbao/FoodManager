@@ -20,8 +20,8 @@ export const ROUTES_MANAGER: RouteInfo[] = [
   { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
   { path: 'manage', title: 'Manage Posts - Receipes',  icon:'ni-bullet-list-67 text-success', class: '' },
   { path: 'pending-post', title: 'Pending Post',  icon:'ni-bullet-list-67 text-warning', class: '' },
-  { path: 'manage-category', title: 'Manage recipe',  icon:'ni-bullet-list-67 text-info', class: '' },
-  { path: 'manage-category', title: 'View report list',  icon:'ni-bullet-list-67 text-danger', class: '' }
+  { path: 'ingredient', title: 'Manage Ingredient',  icon:'ni-bullet-list-67 text-info', class: '' },
+  { path: 'category', title: 'View report list',  icon:'ni-bullet-list-67 text-danger', class: '' }
 ];
 
 @Component({

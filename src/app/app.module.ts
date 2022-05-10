@@ -17,10 +17,14 @@ import { ModalCreateComponent } from './shared/components/modal-create/modal-cre
 import { ModalUpdateComponent } from './shared/components/modal-update/modal-update.component';
 import { ManagerComponent } from './manager-dashboard/manager/manager.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { ManageIngredientComponent } from './shared/pages/manage-ingredient/manage-ingredient.component';
 
 export function tokenGetter() {
-  let token = JSON.parse(localStorage.getItem("currentUser") || "").token;
-  return token;
+  let savedToken = localStorage.getItem("currentUser");
+  if (savedToken) {
+    return JSON.parse(savedToken).token;
+  }
+  return null;
 }
 
 @NgModule({

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ManageIngredientComponent } from '../shared/pages/manage-ingredient/manage-ingredient.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManagePostComponent } from './manage-post/manage-post.component';
 import { ManagementComponent } from './management/management.component';
@@ -25,7 +26,9 @@ const routes: Routes = [
     ]
   },
   { path: 'pending-post', component: PendingPostComponent },
+  { path: 'ingredient', component: ManageIngredientComponent },
   { path: 'post/:id', component: PostDetailComponent },
+  
   
 ];
 
