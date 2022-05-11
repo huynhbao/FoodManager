@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-modal-update',
@@ -9,8 +10,9 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalUpdateComponent implements OnInit {
   @Input() fromParent: any;
+  @Input() submitFunc!: Function;
   categoryForm: FormGroup;
-  constructor(private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
+  constructor(private sharedService: SharedService, private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
     this.categoryForm = this.formBuilder.group({});
   }
 
@@ -37,20 +39,13 @@ export class ModalUpdateComponent implements OnInit {
   }
 
   onSubmit() {
-    /* if (this.categoryForm.invalid) {
-      return;
-    } */
-    /* for (var product of this.fromParent[0]) {
-      console.log(product)
-    } */
-    var a:any = {}
+    let form:any = {};
+    form["id"] = this.fromParent[0].id;
     for (const field in this.categoryForm.controls) {
       const control = this.categoryForm.get(field);
-      a[field] = control?.value;
+      form[field] = control?.value
     }
-    console.log(a);
+    this.submitFunc(form);
   }
-
-  log(val: any) { console.log(val); }
 
 }

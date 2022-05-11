@@ -5,6 +5,7 @@ import { User } from '../models/user.model';
 import { map } from 'rxjs/operators';
 import { Utils } from '../shared/tools/utils';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment';
 
 const helper = new JwtHelperService();
 
@@ -14,6 +15,7 @@ const helper = new JwtHelperService();
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<string>;
   public currentUser: Observable<string>;
+  baseUrl = environment.apiUrl
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<string>(
@@ -28,7 +30,7 @@ export class AuthenticationService {
 
   login(username: string, password: string) {
     return this.http
-      .post<any>(`https://foomaapp.ddns.net/api/auth/login-system`, {
+      .post<any>(`${this.baseUrl}/auth/login-system`, {
         email: username,
         password: password,
       })

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
 
 @Injectable({
@@ -10,18 +11,18 @@ import { Post } from '../models/post.model';
 //const baseUrl = `${environment.apiUrl}/users`;
 
 export class ManagerService {
-
+  baseUrl = environment.apiUrl
   constructor(private http: HttpClient) { }
 
   getPosts(page: number): Observable<any> {
     return this.http.get<any>(
-      `https://foomaapp.ddns.net/api/post?page=${page}&size=5`
+      `${this.baseUrl}/post?page=${page}&size=5`
     );
   }
 
   getPostById(id: string): Observable<Post> {
     return this.http.get<Post>(
-      `https://foomaapp.ddns.net/api/post/${id}`
+      `${this.baseUrl}/post/${id}`
     );
   }
 

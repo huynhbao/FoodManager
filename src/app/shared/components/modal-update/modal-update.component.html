@@ -2,11 +2,11 @@
     <label class="form-control-label" for="input-status">{{link.name}}</label><br />
     <div ngbDropdown class="d-inline-block w-100">
         <input type="button" class="btn btn-outline-primary btn-block" id="dropdownBasic1"
-            ngbDropdownToggle [value]="form.get(link.key).value || link.value[0]"/>
+            ngbDropdownToggle [value]="form.get(link.key).value.value || link.value[0].value"/>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
             <button type="button" class="dropdown-item" *ngFor="let status of link.value"
             (click)="form.get(link.key).setValue(status)">
-                {{status}}
+                {{status.value}}
             </button>
         </div>
     </div>

@@ -6,5 +6,6 @@ export interface Ingredient {
     imageUrl: string;
     status: number;
     categoryName: string;
+    unit: string;
     isSelected?: boolean;
 }

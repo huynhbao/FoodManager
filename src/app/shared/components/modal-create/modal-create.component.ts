@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Category } from 'src/app/models/category.model';
 import { User } from 'src/app/models/user.model';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-modal-create',
@@ -11,8 +12,9 @@ import { User } from 'src/app/models/user.model';
 })
 export class ModalCreateComponent implements OnInit {
   @Input() fromParent: any;
+  @Input() submitFunc!: Function;
   categoryForm: FormGroup;
-  constructor(private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
+  constructor(private sharedService: SharedService, private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
     this.categoryForm = this.formBuilder.group({});
   }
 
@@ -54,13 +56,11 @@ export class ModalCreateComponent implements OnInit {
     /* for (var product of this.fromParent[0]) {
       console.log(product)
     } */
+    let form:any = {};
     for (const field in this.categoryForm.controls) {
       const control = this.categoryForm.get(field);
-      console.log(field, control?.value);
+      form[field] = control?.value
     }
+    this.submitFunc(form);
   }
-
-  log(val: any) { console.log(val); }
-
-
 }

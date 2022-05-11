@@ -35,18 +35,6 @@ export class ManagePostComponent implements OnInit {
         imageUrl: "https://picsum.photos/id/944/900/500",
         isThumbnail: false,
         status: 1,
-      },
-      {
-        id: "2",
-        imageUrl: "https://picsum.photos/id/1011/900/500",
-        isThumbnail: false,
-        status: 1,
-      },
-      {
-        id: "3",
-        imageUrl: "https://picsum.photos/id/984/900/500",
-        isThumbnail: false,
-        status: 1,
       }
     ]
     
@@ -65,52 +53,6 @@ export class ManagePostComponent implements OnInit {
         console.log(error);
       }
     });
-
-    /* let postImages: Image[] = [
-      {
-        id: "1",
-        imageUrl: "https://picsum.photos/id/944/900/500",
-        isThumbnail: false,
-        status: 1,
-      },
-      {
-        id: "2",
-        imageUrl: "https://picsum.photos/id/1011/900/500",
-        isThumbnail: false,
-        status: 1,
-      },
-      {
-        id: "3",
-        imageUrl: "https://picsum.photos/id/984/900/500",
-        isThumbnail: false,
-        status: 1,
-      }
-    ]
-
-    let user: User = {
-      username: "1",
-      email: "a@gmail.com",
-      fullname: "Nguyễn Văn A",
-      address: "HCM",
-      status: true,
-      role: "user"
-    };
-
-    for (let i = 1; i <= 5; i++) {
-      let post: Post = {
-        id: `${i}`,
-        user: user,
-        title: "This is a title no " + i,
-        content: "With supporting text below as a natural lead-in to additional content.",
-        postImages: postImages,
-        publishedDate: new Date(),
-        totalComment: 0,
-        totalReact: 0,
-        status: 1,
-        isSelected: false,
-      };
-      this.listPost.push(post);
-    } */
   }
 
   public onPageChange(pageNum: number): void {
