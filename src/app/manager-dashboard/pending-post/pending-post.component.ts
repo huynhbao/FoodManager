@@ -23,6 +23,8 @@ export class PendingPostComponent implements OnInit {
   masterSelected: boolean;
   currentPage = 1;
   totalPost: number = 0;
+  isLoadingPost: boolean = false;
+  isLoading: boolean = false;
   // https://stackblitz.com/edit/angular-11-crud-example-2jndjj?file=src%2Fapp%2Fusers%2Flist.component.ts
   constructor(
     config: NgbCarouselConfig,
@@ -94,16 +96,68 @@ export class PendingPostComponent implements OnInit {
     });
   }
 
-  approvePost(id: string) {
+  setPostByStatus(id: string, status: number) {
+    this.isLoading = true;
     const post = this.listPost.find((x) => x.id === id);
     if (!post) return;
-    this.listPost = this.listPost.filter((x) => x.id !== id);
-    /* this.managerService.delete(id)
-        .pipe(first())
-        .subscribe(() => this.listPost = this.listPost.filter(x => x.id !== id)); */
+    
+    this.managerService.setPostByStatus(id, status).subscribe({
+      next: (res:any) => {
+        console.log(res);
+        if (res.code == 200) {
+          this.listPost = this.listPost.filter((x) => x.id !== id);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
-  declinePost(id: string) {}
+  approvePost(id: string) {
+    this.isLoading = true;
+    const post = this.listPost.find((x) => x.id === id);
+    if (!post) return;
+    
+    this.managerService.setPostByStatus(id, 1).subscribe({
+      next: (res:any) => {
+        console.log(res);
+        if (res.code == 200) {
+          this.listPost = this.listPost.filter((x) => x.id !== id);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  declinePost(id: string) {
+    this.isLoading = true;
+    const post = this.listPost.find((x) => x.id === id);
+    if (!post) return;
+    
+    this.managerService.setPostByStatus(id, 3).subscribe({
+      next: (res:any) => {
+        console.log(res);
+        if (res.code == 200) {
+          this.listPost = this.listPost.filter((x) => x.id !== id);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
 
   loadPosts() {
     let defaultPostImages: Image[] = [
@@ -116,12 +170,12 @@ export class PendingPostComponent implements OnInit {
     ];
 
     if (this.listPost.length === this.totalPost && this.totalPost != 0) {
-      this.isLoading = false;
+      this.isLoadingPost = false;
       return
     }
 
     this.managerService
-      .getPostsByStatus(PostStatus.PENDING, this.currentPage)
+      .getPendingPosts(this.currentPage)
       .subscribe({
         next: (res: any) => {
           let listPost: Post[] = res.items;
@@ -143,7 +197,7 @@ export class PendingPostComponent implements OnInit {
           } else {
             this.listPost =  [...this.listPost, ...listPost];
           }
-          this.isLoading = false;
+          this.isLoadingPost = false;
         },
         error: (error) => {
           console.log(error);
@@ -152,12 +206,12 @@ export class PendingPostComponent implements OnInit {
   }
 
   @ViewChild('postsConent') postsConent!: ElementRef;
-  isLoading = false;
+  
 
   @HostListener('window:scroll', [])
   getScrollHeight(): void {
-    if (window.innerHeight + window.scrollY >= this.postsConent.nativeElement.offsetHeight && !this.isLoading) {
-      this.isLoading = true;
+    if (window.innerHeight + window.scrollY >= this.postsConent.nativeElement.offsetHeight && !this.isLoadingPost) {
+      this.isLoadingPost = true;
       this.currentPage++;
       this.loadPosts();
     }

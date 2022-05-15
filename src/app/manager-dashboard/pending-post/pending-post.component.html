@@ -64,7 +64,13 @@
                             </div>
                         </div>
                         <div class="col-4 text-right">
-                            <button class="btn btn-light" data-toggle="notify" data-placement="top" data-align="center" data-type="info" data-icon="ni ni-bell-55">&bull;&bull;&bull;</button>
+                            <div ngbDropdown placement="bottom-right">
+                                <button ngbDropdownToggle class="btn btn-light">&bull;&bull;&bull;</button>
+                                <div ngbDropdownMenu class=" dropdown-menu-right dropdown-menu-arrow">
+                                  <a class="dropdown-item" href="javascript:void(0)">Delete</a>
+                                  <a class="dropdown-item" href="javascript:void(0)">Another action</a>
+                                </div>
+                              </div>
                         </div>
                     </div>
                 </div>
@@ -84,10 +90,10 @@
                     </ngb-carousel>
                     <div class="form-group row mt-5 mb-0">
                         <div class="col-6">
-                            <button class="btn btn-info form-control" (click)="approvePost(post.id)">Approve</button>
+                            <button [disabled]="isLoading" class="btn btn-info form-control" (click)="setPostByStatus(post.id, 1)">Approve</button>
                         </div>
                         <div class="col-6">
-                            <button class="btn btn-light form-control" (click)="declinePost(post.id)">Decline</button>
+                            <button [disabled]="isLoading" class="btn btn-light form-control" (click)="setPostByStatus(post.id, 3)">Decline</button>
                         </div>
                     </div>
                 </div>
@@ -99,7 +105,7 @@
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col-12">
-            <app-spinner [enabled]="isLoading"></app-spinner>
+            <app-spinner [enabled]="isLoadingPost"></app-spinner>
         </div>
     </div>
 </div>

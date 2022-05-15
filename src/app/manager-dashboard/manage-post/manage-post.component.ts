@@ -22,6 +22,7 @@ export class ManagePostComponent implements OnInit {
   collectionSize: number = 0;
   masterSelected: boolean = false;
   numSelected: number = 0;
+  isLoading: boolean = false;
   //masterSelected: boolean;
   //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
   //https://www.npmjs.com/package/ngx-toastr
@@ -47,6 +48,12 @@ export class ManagePostComponent implements OnInit {
           if (post.postImages.length == 0) {
             post.postImages = defaultPostImages;
           }
+          let user: User = {
+            id: post['userId'],
+            fullname: post['name'],
+            avatarUrl: post['userImageUrl'],
+          };
+          post.user = user;
         });
         
       },
@@ -99,6 +106,28 @@ export class ManagePostComponent implements OnInit {
     });
     
     return value.split('#').slice(1);
+  }
+
+  setPostByStatus(id: string, status: number) {
+    this.isLoading = true;
+    const post = this.listPost.find((x) => x.id === id);
+    
+    if (!post) return;
+    
+    this.managerService.setPostByStatus(id, status).subscribe({
+      next: (res:any) => {
+        console.log(res);
+        if (res.code == 200) {
+          this.listPost = this.listPost.filter((x) => x.id !== id);
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
   ngOnInit(): void {

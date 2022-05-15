@@ -120,3 +120,20 @@ tr.selected {
   }
 }
 
+table {
+  &.table-fit {
+    table-layout: fixed;
+
+    tbody td,
+    tfoot td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+tr > td:hover {
+  overflow: visible;
+  white-space: unset;
+}

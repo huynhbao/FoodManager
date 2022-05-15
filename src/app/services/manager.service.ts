@@ -26,9 +26,27 @@ export class ManagerService {
     );
   }
 
-  getPostsByStatus(status: number, page: number): Observable<Post> {
+  getPendingPosts(page: number): Observable<Post> {
     return this.http.get<any>(
-      `${this.baseUrl}/post/by-status?status=${status}&page=${page}&size=2`
+      `${this.baseUrl}/post/as-manager?page=${page}&size=2`
+    );
+  }
+
+  setPostByStatus(id: string, status: number) {
+    return this.http.put<any>(
+      `${this.baseUrl}/post/update-status`, {id: id, status: status}
+    );
+  }
+
+  acceptPost(id: string) {
+    return this.http.put<any>(
+      `${this.baseUrl}/post/accept/${id}`, {}
+    );
+  }
+
+  denyPost(id: string) {
+    return this.http.put<any>(
+      `${this.baseUrl}/post/deny/${id}`, {}
     );
   }
 

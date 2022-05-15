@@ -36,19 +36,20 @@
                     </a>
                 </div>
             </div>
-            <table class="table align-items-center table-flush table-hover">
+            <table class="table table-fit align-items-center table-flush table-hover">
                 <thead class="thead-light">
                     <tr>
-                        <th class="text-center">
+                        <th class="text-center" style="width: 5%;">
                             <div class="custom-checkbox" style="font-size: 1.3rem;">
                                 <input id="check-all" type="checkbox" [(ngModel)]="masterSelected"
                                     (change)="checkUncheckAll()">
                                 <label class="mb-0" style="margin-top: 3px;" for="check-all"></label>
                             </div>
                         </th>
-                        <th>Title</th>
-                        <th>Published Date</th>
-                        <th>Hashtag</th>
+                        <th style="width: 25%;">Title</th>
+                        <th style="width: 12%;">User</th>
+                        <th style="width: 10%;">Published Date</th>
+                        <th style="width: 12%;">Hashtag</th>
                         <th>Total Comment</th>
                         <th>Total React</th>
                         <th>Status</th>
@@ -64,8 +65,11 @@
                                 <label class="mb-0" for="{{post.id}}"></label>
                             </div>
                         </td>
-                        <td class="table-user col-auto">
-                            <div class="row align-items-center">
+                        <td class="">
+                            <img src="{{post.postImages[0].imageUrl}}" style="height: 60px;"
+                                        class="rounded img-thumbnail img-fluid mr-3">
+                                        <a [routerLink]="['/manager/post', post.id]" class="font-weight-bold text-dark">{{post.title}}</a>
+                            <!-- <div class="row align-items-center">
                                 <div class="col-2 text-center">
                                     <img src="{{post.postImages[0].imageUrl}}" style="height: 60px;"
                                         class="rounded img-thumbnail img-fluid mr-3">
@@ -73,7 +77,10 @@
                                 <div class="col-auto">
                                     <a [routerLink]="['/manager/post', post.id]" class="font-weight-bold text-dark">{{post.title}}</a>
                                 </div>
-                            </div>
+                            </div> -->
+                        </td>
+                        <td>
+                            <b>{{post.user.fullname}}</b>
                         </td>
                         <td>
                             <span class="text-muted">{{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}}</span>
@@ -95,10 +102,10 @@
                             </div>
                         </td>
                         <td class="table-actions text-center">
-                            <a href="#!" class="table-action table-action-delete text-danger" data-toggle="tooltip"
+                            <button [disabled]="isLoading" (click)="setPostByStatus(post.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip"
                                 data-original-title="Delete Post">
                                 <i class="fas fa-trash"></i>
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
