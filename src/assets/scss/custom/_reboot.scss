@@ -11,3 +11,11 @@ main {
 main {
     overflow: hidden;
 }
+
+a {
+    color: $fooma;
+}
+
+a:hover {
+    color: #ffab80;
+}

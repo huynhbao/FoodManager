@@ -12,21 +12,25 @@ export class SharedService {
   baseUrl = environment.apiUrl
   constructor(private http: HttpClient) { }
 
-  getIngredientDb(search: string, page: number): Observable<any> {
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.baseUrl}/category`);
+  }
+
+  getIngredientDb(search: string, page: number = 1): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrl}/ingredientdb?search=${search}&page=${page}&size=5`
     );
   }
 
-  getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.baseUrl}/category`);
-  }
-
   createIngredientDB(ingredient: Ingredient): Observable<Ingredient> {
-    return this.http.post<Ingredient>(`${this.baseUrl}/ingredientdb/create`, ingredient);
+    return this.http.post<Ingredient>(`${this.baseUrl}/ingredientdb`, ingredient);
   }
 
   updateIngredientDB(ingredient: Ingredient): Observable<Ingredient> {
-    return this.http.put<Ingredient>(`${this.baseUrl}/ingredientdb/update`, ingredient);
+    return this.http.put<Ingredient>(`${this.baseUrl}/ingredientdb/${ingredient.id}`, ingredient);
+  }
+
+  deleteIngredientDB(id: string): Observable<Ingredient> {
+    return this.http.delete<any>(`${this.baseUrl}/ingredientdb/${id}`);
   }
 }

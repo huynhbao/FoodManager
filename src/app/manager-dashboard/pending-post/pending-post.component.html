@@ -5,7 +5,7 @@
                 <div class="col-lg-12 card-wrapper">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="mb-0">Waiting posts - {{listPost.length}}</h2>
+                            <h2 class="mb-0">Waiting posts - {{listPost.length}}/{{totalPost}}</h2>
                         </div>
                         <div class="card-body">
                             <div class="input-group input-group-alternative input-group-merge"
@@ -39,7 +39,7 @@
     </div>
 </div>
 <div class="container-fluid mt--6">
-    <div class="row justify-content-center">
+    <div #postsConent class="row justify-content-center">
         <div class="col-lg-8 card-wrapper">
             <div *ngFor="let post of listPost" class="card">
                 <div class="card-header">
@@ -54,11 +54,11 @@
                                 </div>
                                 <div class="col-auto">
                                     <!-- Avatar -->
-                                    <img alt="Image placeholder" src="../../assets/img/theme/team-4.jpg" class="avatar rounded-circle">
+                                    <img alt="Image placeholder" [src]="post.user.avatarUrl" class="avatar rounded-circle">
                                 </div>
                                 <div class="col-auto">
                                     <h3 class="card-title font-weight-bold mb-0">{{post.user.fullname}}</h3>
-                                    <span class="h5 mb-0 font-weight-light">Posted 1 hour ago ({{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
+                                    <span class="h5 mb-0 font-weight-light">Posted {{post.publishedDate | time}} ({{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
                                 </div>
                                 
                             </div>
@@ -74,7 +74,7 @@
                     <ngb-carousel *ngIf="images">
                         <ng-template ngbSlide *ngFor="let image of post.postImages">
                             <div class="picsum-img-wrapper d-flex justify-content-center">
-                              <img [src]="image.imageUrl" alt="Random slide">
+                              <img [src]="image.imageUrl" alt="Random slide" style="height: 600px;">
                             </div>
                             <!-- <div class="carousel-caption">
                               <h3>No mouse navigation</h3>
@@ -92,6 +92,14 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-12">
+            <app-spinner [enabled]="isLoading"></app-spinner>
         </div>
     </div>
 </div>

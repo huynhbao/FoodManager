@@ -77,7 +77,6 @@ export class PostDetailComponent implements OnInit {
         } 
         this.post = post;
         this.post.user = user;
-        console.log(this.post);
       },
       error: (error) => {
         this.router.navigate(['manager/manage/post']);

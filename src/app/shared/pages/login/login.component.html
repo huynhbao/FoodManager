@@ -3,9 +3,8 @@
         <div class="header-body text-center mb-7">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-6">
-                    <h1 class="text-white">Welcome!</h1>
-                    <p class="text-lead text-light">Use these awesome forms to login or create new account in your
-                        project for free.</p>
+                    <h1 class="text-white">Welcome to FOOMA!</h1>
+                    <p class="text-lead text-light">Login to perform the management.</p>
                 </div>
             </div>
         </div>
@@ -22,22 +21,14 @@
     <div class="row justify-content-center">
         <div class="col-lg-5 col-md-7">
             <div class="card bg-secondary shadow border-0">
-                <!-- <div class="card-header bg-transparent pb-5">
-                    <div class="text-muted text-center mt-2 mb-3"><small>Sign in with</small></div>
-                    <div class="btn-wrapper text-center">
-                        <a href="javascript:void(0)" class="btn btn-neutral btn-icon">
-                            <span class="btn-inner--icon"><img src="../assets/img/icons/common/github.svg"></span>
-                            <span class="btn-inner--text">Github</span>
-                        </a>
-                        <a href="javascript:void(0)" class="btn btn-neutral btn-icon">
-                            <span class="btn-inner--icon"><img src="../assets/img/icons/common/google.svg"></span>
-                            <span class="btn-inner--text">Google</span>
+                <div class="card-body px-lg-5 py-lg-4">
+                    <div class="text-center">
+                        <a class="navbar-brand pt-0" routerLinkActive="active" [routerLink]="['/login']">
+                            <img src="./assets/img/brand/logo.png" class="navbar-brand-img mb-2" alt="logo" style="width: 150px;">
                         </a>
                     </div>
-                </div> -->
-                <div class="card-body px-lg-5 py-lg-5">
                     <div class="text-center text-muted mb-4">
-                        <small>Or sign in with credentials</small>
+                        <small>Enter your details below.</small>
                     </div>
                     <form role="form" [formGroup]="form" (ngSubmit)="onSubmit()">
                         <div class="form-group mb-3">
@@ -45,10 +36,10 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                 </div>
-                                <input class="form-control" formControlName="username" placeholder="Username" type="text">
-                                <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['username'].errors['required']">Username is required</div>
-                                </div>
+                                <input class="form-control" formControlName="email" placeholder="Email" type="text">
+                            </div>
+                            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                                <div *ngIf="f['email'].errors['required']">Email is required</div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -57,9 +48,12 @@
                                     <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                 </div>
                                 <input class="form-control" formControlName="password" placeholder="Password" type="password">
-                                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['password'].errors['required']">Username is required</div>
-                                </div>
+                            </div>
+                            <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                                <div *ngIf="f['password'].errors['required']">Password is required</div>
+                            </div>
+                            <div *ngIf="form.hasError('unauthorized')" class="invalid-feedback">
+                                Email or Password incorrect
                             </div>
                         </div>
                         <div class="custom-control custom-control-alternative custom-checkbox">
@@ -69,17 +63,16 @@
                             </label>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary my-4">Sign in</button>
+                            <button type="submit" [disabled]="loading" class="btn btn-fooma my-4">Sign in</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-6">
-                    <a href="javascript:void(0)" class="text-light"><small>Forgot password?</small></a>
                 </div>
                 <div class="col-6 text-right">
-                    <a href="javascript:void(0)" class="text-light"><small>Create new account</small></a>
+                    <a href="forgot-password" class="text-light"><small>Forgot password?</small></a>
                 </div>
             </div>
         </div>

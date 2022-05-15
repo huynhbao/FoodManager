@@ -48,6 +48,7 @@
                         </th>
                         <th>Title</th>
                         <th>Published Date</th>
+                        <th>Hashtag</th>
                         <th>Total Comment</th>
                         <th>Total React</th>
                         <th>Status</th>
@@ -63,7 +64,7 @@
                                 <label class="mb-0" for="{{post.id}}"></label>
                             </div>
                         </td>
-                        <td class="table-user">
+                        <td class="table-user col-auto">
                             <div class="row align-items-center">
                                 <div class="col-2 text-center">
                                     <img src="{{post.postImages[0].imageUrl}}" style="height: 60px;"
@@ -77,6 +78,9 @@
                         <td>
                             <span class="text-muted">{{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                         </td>
+                        <td style="width:1px; white-space:nowrap;">
+                            <div *ngFor="let hashtag of splitDescription(post.hashtag)" class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;"><a>#{{hashtag}}</a></div>
+                        </td>
                         <td class="text-center">
                             <b>{{post.totalComment}}</b>
                         </td>
@@ -84,12 +88,14 @@
                             <b>{{post.totalReact}}</b>
                         </td>
                         <td class="text-center">
-                            <span class="badge badge-dot"><i
+                            <div [ngClass]="post.status == 1 ? 'bg-active' : 'bg-pending'" class="rounded px-2">
+                                <span class="badge badge-dot"><i
                                     [ngClass]="post.status == 1 ? 'bg-success' : 'bg-warning'"></i>
-                                {{post.status == 1 ? 'Enabled' : 'Disabled'}}</span>
+                                {{post.status == 1 ? 'Active' : 'Disabled'}}</span>
+                            </div>
                         </td>
                         <td class="table-actions text-center">
-                            <a href="#!" class="table-action table-action-delete" data-toggle="tooltip"
+                            <a href="#!" class="table-action table-action-delete text-danger" data-toggle="tooltip"
                                 data-original-title="Delete Post">
                                 <i class="fas fa-trash"></i>
                             </a>

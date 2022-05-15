@@ -15,6 +15,7 @@ export interface Post {
     title: string;
     content: string;
     publishedDate: Date;
+    hashtag: string;
     status: number;
     totalComment: number;
     totalReact: number;

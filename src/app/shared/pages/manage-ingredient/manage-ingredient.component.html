@@ -10,7 +10,7 @@
         <div class="col-lg-12 card-wrapper justify-content-center">
             <div class="card shadow">
                 <!-- Card header -->
-                <div class="card-header border-0" style="border-radius: 0;">
+                <div class="card-header border-0">
                     <div class="row">
                         <div class="col-6">
                             <h3 class="mb-0">Total Ingredient - {{collectionSize}}</h3>
@@ -30,7 +30,7 @@
                                 <div class="input-group-prepend">
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" placeholder="Search" type="text" />
+                                <input class="form-control" placeholder="Search" type="text" [ngModel]="searchValue" (ngModelChange)='onSearchChange($event)'/>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                     <div *ngIf="numSelected >= 2" class="multi-selected">
                         <h6>{{numSelected}} selected</h6>
                         <div>
-                            <a href="#!">
+                            <a class="text-danger" href="#!">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
@@ -48,7 +48,7 @@
                     <table class="table align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th class="text-center">
+                                <th>
                                     <div class="custom-checkbox" style="font-size: 1.3rem;">
                                         <input id="check-all" type="checkbox" [(ngModel)]="masterSelected"
                                             (change)="checkUncheckAll()">
@@ -56,15 +56,16 @@
                                     </div>
                                 </th>
                                 <th>Title</th>
-                                <th>Published Date</th>
+                                <th>Create Date</th>
                                 <th>Category Name</th>
+                                <th>Unit</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let ingredient of ingredients" [ngClass]="{'selected': ingredient.isSelected === true}">
-                                <td class="text-center">
+                                <td style="width:1px; white-space:nowrap;">
                                     <div class="custom-checkbox" style="font-size: 1.3rem;">
                                         <input id="{{ingredient.id}}" type="checkbox" [(ngModel)]="ingredient.isSelected"
                                             (change)="isAllSelected()">
@@ -73,29 +74,33 @@
                                 </td>
                                 <td class="table-user">
                                     <div class="row align-items-center">
-                                        <div class="col-2 text-center">
-                                            <img src="{{ingredient.imageUrl}}" class="rounded img-thumbnail img-fluid mr-3">
+                                        <div class="col-3">
+                                            <img src="{{ingredient.imageUrl}}" class="rounded-circle img-thumbnail img-fluid mr-3" style="height: 60px;width: 60px;object-fit: cover;object-position: center;">
                                         </div>
                                         <div class="col-auto">
-                                            {{ingredient.ingredientName}}
-                                            <!-- <a [routerLink]="['/manager/post', ingredient.id]" class="font-weight-bold text-dark">{{ingredient.ingredientName}}</a> -->
+                                            <h5>{{ingredient.ingredientName | titlecase}}</h5>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <span class="text-muted">{{ingredient.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <span>{{ingredient.categoryName}}</span>
                                 </td>
-                                <td class="text-center">
-                                    <span class="badge badge-dot"><i
+                                <td>
+                                    <span>{{ingredient.unit}}</span>
+                                </td>
+                                <td style="width:1px; white-space:nowrap;">
+                                    <div [ngClass]="ingredient.status == 1 ? 'bg-active' : 'bg-disable'" class="rounded px-2">
+                                        <span class="badge badge-dot"><i
                                             [ngClass]="ingredient.status == 1 ? 'bg-success' : 'bg-warning'"></i>
                                         {{ingredient.status == 1 ? 'Enabled' : 'Disabled'}}</span>
+                                    </div>
                                 </td>
-                                <td class="table-actions text-center">
-                                    <a class="text-primary mr-2" href="javascript:void(0)" (click)="triggerModal('update', ingredient)"><i class="fas fa-edit"></i></a>
-                                    <a href="#!" class="table-action table-action-delete" data-toggle="tooltip"
+                                <td class="table-actions">
+                                    <a class="text-default mr-2" href="javascript:void(0)" (click)="triggerModal('update', ingredient)"><i class="fas fa-edit"></i></a>
+                                    <a (click)="triggerModal('confirm', ingredient)" class="table-action table-action-delete text-danger" data-toggle="tooltip"
                                         data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
                                     </a>

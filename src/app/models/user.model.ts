@@ -6,4 +6,5 @@ export interface User {
     address?: string;
     status?: boolean;
     role?: string;
+    avatarUrl?: string;
 }

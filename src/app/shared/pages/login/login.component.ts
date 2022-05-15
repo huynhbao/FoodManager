@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs';
-import { User } from '../models/user.model';
-import { AuthenticationService } from '../services/authentication.service';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +27,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      username: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
@@ -44,10 +42,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    //this.router.navigateByUrl("admin");
-    //this.loading = true;
+    this.loading = true;
 
-    this.authenticationService.login(this.f['username'].value, this.f['password'].value)
+    this.authenticationService.login(this.f['email'].value, this.f['password'].value)
       .subscribe({
         next: (value) => {
           // get return url from query parameters or default to home page
@@ -60,6 +57,9 @@ export class LoginComponent implements OnInit {
           //this.alertService.error(error);
           this.loading = false;
           console.log(error);
+          if (error.error.status === 401) {
+            this.form.setErrors({unauthorized: true});
+          }
         }
       });
   }

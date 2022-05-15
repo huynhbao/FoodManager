@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { map, pipe } from 'rxjs';
@@ -6,6 +6,7 @@ import { Category } from 'src/app/models/category.model';
 import { Ingredient } from 'src/app/models/ingredient.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ModalConfirmComponent } from '../../components/modal-confirm/modal-confirm.component';
 import { ModalCreateComponent } from '../../components/modal-create/modal-create.component';
 import { ModalUpdateComponent } from '../../components/modal-update/modal-update.component';
 
@@ -66,6 +67,12 @@ export class ManageIngredientComponent implements OnInit {
       content = ModalCreateComponent;
     } else if (method == 'update') {
       content = ModalUpdateComponent;
+    } else if (method == 'confirm') {
+      content = ModalConfirmComponent;
+      this.modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
+      this.modalRef.componentInstance.fromParent = {id: ingredient?.id, title: ingredient?.ingredientName};
+      this.modalRef.componentInstance.submitFunc = this.submitDelete.bind(this);
+      return;
     }
     let listValue: { id: string; value: string }[] = [];
 
@@ -133,7 +140,7 @@ export class ManageIngredientComponent implements OnInit {
             },
           },
         ];
-        this.modalRef.componentInstance.submitFunc = method == "create" ? this.submitCreate : this.submitUpdate;
+        this.modalRef.componentInstance.submitFunc = method == "create" ? this.submitCreate.bind(this) : this.submitUpdate.bind(this);
       }
     });
     
@@ -165,7 +172,7 @@ export class ManageIngredientComponent implements OnInit {
     }); */
   }
 
-  private submitUpdate(form: any) {
+  private submitUpdate(form: any, _self) {
     const ingredient: Ingredient = {
       id: form.id,
       categoryId: form.category.id,
@@ -177,6 +184,21 @@ export class ManageIngredientComponent implements OnInit {
       unit: form.unit,
     };
     this.sharedService.updateIngredientDB(ingredient).subscribe({
+      next: (res:any) => {
+        console.log(res);
+        if (res.code == 200) {
+          this.modalService.dismissAll();
+          this.loadIngredients();
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  private submitDelete(id: string) {
+    this.sharedService.deleteIngredientDB(id).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
@@ -203,6 +225,12 @@ export class ManageIngredientComponent implements OnInit {
           console.log(error);
         },
       });
+  }
+
+  onSearchChange(searchValue) {
+    this.searchValue = searchValue;
+    this.currentPage = 1;
+    this.loadIngredients();
   }
 
   ngOnInit(): void {

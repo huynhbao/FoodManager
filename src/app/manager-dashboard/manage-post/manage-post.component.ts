@@ -48,6 +48,7 @@ export class ManagePostComponent implements OnInit {
             post.postImages = defaultPostImages;
           }
         });
+        
       },
       error: (error) => {
         console.log(error);
@@ -84,8 +85,25 @@ export class ManagePostComponent implements OnInit {
     this.numSelected = count;
   }
 
+  hashTagColor = [];
+  myColor = ['#e7f8f0', '#e128f0', '#e7f321', '#edecff', '#ffecfe'];    
+  splitDescription(value: string) {
+    value = value.replace(/\s/g, '');
+    let hashtag = value.split('#').slice(1);
+    
+    hashtag.forEach(element => {
+      if (!this.hashTagColor[element]) {
+        const random = Math.floor(Math.random() * this.myColor.length);
+        this.hashTagColor[element] = this.myColor[random];
+      }
+    });
+    
+    return value.split('#').slice(1);
+  }
+
   ngOnInit(): void {
     this.loadPosts();
+    console.log(this.hashTagColor);
   }
 
 }

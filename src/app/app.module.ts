@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { JwtModule } from "@auth0/angular-jwt";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdminComponent } from './admin-dashboard/admin/admin.component';
 import { RouterModule } from '@angular/router';
@@ -17,7 +16,13 @@ import { ModalCreateComponent } from './shared/components/modal-create/modal-cre
 import { ModalUpdateComponent } from './shared/components/modal-update/modal-update.component';
 import { ManagerComponent } from './manager-dashboard/manager/manager.component';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
-import { ManageIngredientComponent } from './shared/pages/manage-ingredient/manage-ingredient.component';
+import { LoginComponent } from './shared/pages/login/login.component';
+import { ForgotPasswordComponent } from './shared/pages/forgot-password/forgot-password.component';
+import { CodeConfirmComponent } from './shared/pages/code-confirm/code-confirm.component';
+import { CodeInputModule } from 'angular-code-input';
+import { ChangePasswordComponent } from './shared/pages/change-password/change-password.component';
+import { ModalConfirmComponent } from './shared/components/modal-confirm/modal-confirm.component';
+import { SharedModule } from './shared/modules/shared/shared.module';
 
 export function tokenGetter() {
   let savedToken = localStorage.getItem("currentUser");
@@ -30,23 +35,28 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     SidebarComponent,
     AdminComponent,
     NavbarComponent,
     ModalCreateComponent,
     ModalUpdateComponent,
-    ManagerComponent
+    ManagerComponent,
+    LoginComponent,
+    ForgotPasswordComponent,
+    CodeConfirmComponent,
+    ChangePasswordComponent,
+    ModalConfirmComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule,
     RouterModule,
     NgbModule,
     HttpClientModule,
+    CodeInputModule,
+    SharedModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

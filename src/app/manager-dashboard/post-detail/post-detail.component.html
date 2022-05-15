@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <h3 class="card-title font-weight-bold mb-0">{{post?.user?.fullname}}</h3>
-                                    <span class="h5 mb-0 font-weight-light">Posted 1 hour ago ({{post?.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
+                                    <span class="h5 mb-0 font-weight-light">Posted {{ post?.publishedDate | time }} ({{post?.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
                                 </div>
                                 
                             </div>

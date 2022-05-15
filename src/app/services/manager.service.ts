@@ -26,6 +26,12 @@ export class ManagerService {
     );
   }
 
+  getPostsByStatus(status: number, page: number): Observable<Post> {
+    return this.http.get<any>(
+      `${this.baseUrl}/post/by-status?status=${status}&page=${page}&size=2`
+    );
+  }
+
   delete(id: string) {
     return this.http.delete(`https://fooma.free.beeceptor.com/delete/${id}`);
   }

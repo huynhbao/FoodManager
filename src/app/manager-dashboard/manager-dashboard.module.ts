@@ -9,7 +9,10 @@ import { FormsModule } from '@angular/forms';
 import { PendingPostComponent } from './pending-post/pending-post.component';
 import { ManagementComponent } from './management/management.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
+import { TimePipe } from '../shared/pipes/time.pipe';
 import { ManageIngredientComponent } from '../shared/pages/manage-ingredient/manage-ingredient.component';
+import { SpinnerComponent } from '../shared/components/spinner/spinner.component';
+import { SharedModule } from '../shared/modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -19,12 +22,14 @@ import { ManageIngredientComponent } from '../shared/pages/manage-ingredient/man
     ManagementComponent,
     PostDetailComponent,
     ManageIngredientComponent,
+    TimePipe,
   ],
   imports: [
     CommonModule,
     FormsModule,
     NgbModule,
-    ManagerDashboardRoutingModule
+    ManagerDashboardRoutingModule,
+    SharedModule,
   ]
 })
 export class ManagerDashboardModule { }
