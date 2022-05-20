@@ -7,6 +7,7 @@ export interface Comment {
     createDate: Date;
     name: string;
     userId: string;
+    userImageUrl: string;
 }
 
 export interface Post {

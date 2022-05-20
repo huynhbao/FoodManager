@@ -1,31 +1,20 @@
 <div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            <!-- <div class="row justify-content-center">
-                <div class="col-lg-12 card-wrapper">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="mb-0">Posts</h2>
-                        </div>
-                        <div class="card-body">
-                            <div class="input-group input-group-alternative input-group-merge"
-                                style="border-radius: 0.3rem; border: 1px solid #e5e5e5; background-color: #f7f6f9;">
-                                <div class="input-group-prepend">
-                                    <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
-                                </div>
-                                <input class="form-control" placeholder="Search" type="text" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
 </div>
 <div class="container-fluid mt--6">
     <div class="row justify-content-center">
         <div class="col-lg-8 card-wrapper">
-            <div class="card">
+            <div *ngIf="!post" class="card">
+                <div class="card-body text-center">
+                    <img src="./assets/img/brand/logo.png" class="navbar-brand-img mb-4" alt="logo" style="width: 230px;">
+                    <h3>This post does not exist</h3>
+                    <a class="" [routerLink]="['../../post']">Go back</a>
+                </div>
+            </div>
+            <div *ngIf="!isLoading && post" class="card">
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col-8">
@@ -33,7 +22,7 @@
                                 <div class="col-auto text-center">
                                 </div>
                                 <div class="col-auto">
-                                    <img alt="Image placeholder" src="../../assets/img/theme/team-4.jpg" class="avatar rounded-circle">
+                                    <img alt="avatar" [src]="post?.user?.avatarUrl" class="avatar rounded-circle">
                                 </div>
                                 <div class="col-auto">
                                     <h3 class="card-title font-weight-bold mb-0">{{post?.user?.fullname}}</h3>
@@ -57,13 +46,17 @@
                             </div>
                         </ng-template>
                     </ngb-carousel>
+                    <br>
+                    <a href="javascript:void(0)" [routerLink]="['../../post/hashtag/', hashtag]" *ngFor="let hashtag of splitDescription(post.hashtag)" class="text-muted rounded mr-2 px-2 bg-pending my-1" style="width: fit-content;">
+                        #{{hashtag}}
+                    </a>
                 </div>
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-6">
-                            <div class="d-inline-flex align-items-center">
+                            <div class="d-inline-flex align-items-center text-fooma">
                                 <i class="ni ni-favourite-28"></i>
-                                <span class="ml-2">{{post?.totalReact}}</span>
+                                <span class="ml-2 text-dark">{{post?.totalReact}}</span>
                             </div>
                         </div>
                         <div class="col-6 text-right">
@@ -75,7 +68,7 @@
                     <hr class="mt-3">
                     <div class="row mb-4" *ngFor="let comment of post?.postComments">
                         <div class="col-auto">
-                            <img class="avatar rounded-circle" src="https://img.icons8.com/office/36/000000/person-female.png" alt="User Image">
+                            <img class="avatar rounded-circle" [src]="comment.userImageUrl" alt="avatar commentor">
                         </div>
                         <div class="col-11">
                             <div class="px-3 py-2 w-100 rounded" style="background-color: #f6f6f6">

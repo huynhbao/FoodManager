@@ -9,7 +9,7 @@ export class TimePipe implements PipeTransform {
     if (value) {
         const seconds = Math.floor((+new Date() - +new Date(value)) / 1000);
         if (seconds < 29) // less than 30 seconds ago will show as 'Just now'
-            return 'vừa mới đăng';
+            return 'just now';
         const intervals = {
           'year': 31536000,
           'month': 2592000,

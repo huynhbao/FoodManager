@@ -96,6 +96,8 @@ $fooma:         #ff7731 !default;
 $active:        #e7f8f0 !default;
 $disable:       #eceff4 !default;
 $pending:       #ffd8d8 !default;
+$category:      #d8e8ff !default;
+$origin:        #cbfffd !default;
 
 $theme-colors: () !default;
 $theme-colors: map-merge((
@@ -114,6 +116,8 @@ $theme-colors: map-merge((
   "active":       $active,
   "disable":      $disable,
   "pending":      $pending,
+  "category":     $category,
+  "origin":       $origin,
 ), $theme-colors);
 
 $brand-colors: () !default;

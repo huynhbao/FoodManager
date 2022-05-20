@@ -1,7 +1,7 @@
 <ng-template #templateStatusBox let-link="link" let-form="form">
     <label class="form-control-label" for="input-status">{{link.name}}</label><br />
     <div ngbDropdown class="d-inline-block w-100">
-        <input type="button" class="btn btn-outline-primary btn-block" id="dropdownBasic1"
+        <input type="button" class="btn btn-outline-fooma btn-block" id="dropdownBasic1"
             ngbDropdownToggle [value]="form.get(link.key).value.value || link.value[0].value"/>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
             <button type="button" class="dropdown-item" *ngFor="let status of link.value"
@@ -40,7 +40,7 @@
                     <hr class="my-4" />
                     <div class="row">
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-success btn-block">Update</button>
+                            <button type="submit" class="btn btn-fooma btn-block">Update</button>
                         </div>
                     </div>
                 </div>

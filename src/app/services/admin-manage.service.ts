@@ -19,9 +19,9 @@ export class AdminManageService {
     this.searchSrc.next(value);
   }
 
-  getCategories(): Observable<Category[]> {
+  getCategories(page: number): Observable<Category[]> {
     return this.http.get<Category[]>(
-      `https://fooma.free.beeceptor.com/categories`
+      `${this.baseUrl}/category?page=${page}&size=5`
     );
   }
 }

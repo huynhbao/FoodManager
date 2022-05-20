@@ -23,6 +23,7 @@ import { CodeInputModule } from 'angular-code-input';
 import { ChangePasswordComponent } from './shared/pages/change-password/change-password.component';
 import { ModalConfirmComponent } from './shared/components/modal-confirm/modal-confirm.component';
 import { SharedModule } from './shared/modules/shared/shared.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export function tokenGetter() {
   let savedToken = localStorage.getItem("currentUser");
@@ -60,8 +61,8 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["foomaapp.ddns.net"],
-        disallowedRoutes: ["foomaapp.ddns.net/api/auth/login-system"],
+        allowedDomains: ["api.fooma.tech"],
+        disallowedRoutes: ["api.fooma.tech/api/auth/login-system"],
       },
     }),
   ],

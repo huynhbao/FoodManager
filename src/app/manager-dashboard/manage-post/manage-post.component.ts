@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Image } from 'src/app/models/image.model';
 import { Paging } from 'src/app/models/paging.model';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-manage-post',
@@ -15,6 +17,7 @@ import { ManagerService } from 'src/app/services/manager.service';
 export class ManagePostComponent implements OnInit {
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   listPost: Post[] = [];
+  listHashtag: string[] = ["All"];
   paging?: Paging;
   currentPage: number = 1;
   itemsPerPage = 5;
@@ -22,14 +25,18 @@ export class ManagePostComponent implements OnInit {
   collectionSize: number = 0;
   masterSelected: boolean = false;
   numSelected: number = 0;
+  hastagSelected: number = 0;
   isLoading: boolean = false;
+  isLoadingHashtag: boolean = false;
   //masterSelected: boolean;
   //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
   //https://www.npmjs.com/package/ngx-toastr
-  constructor(private managerService: ManagerService) {
+  constructor(private managerService: ManagerService, private route: ActivatedRoute, private sharedService: SharedService) {
+    this.sharedService.setTabbar(true);
   }
 
   private loadPosts() {
+    this.isLoading = true;
     let defaultPostImages: Image[] = [
       {
         id: "1",
@@ -59,6 +66,9 @@ export class ManagePostComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }
@@ -105,7 +115,7 @@ export class ManagePostComponent implements OnInit {
       }
     });
     
-    return value.split('#').slice(1);
+    return hashtag;
   }
 
   setPostByStatus(id: string, status: number) {
@@ -130,9 +140,74 @@ export class ManagePostComponent implements OnInit {
     });
   }
 
+  loadHashtag(hashtagParam?: string) {
+    if (this.listHashtag.length !== 1) {
+      return
+    }
+    this.isLoadingHashtag = true;
+    this.managerService.getHashtag().subscribe({
+      next: (res) => {
+        this.listHashtag = ["All"];
+        this.listHashtag =  [...this.listHashtag, ...res.items];
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        for (let i = 0; i < this.listHashtag.length; i++) {
+          const hashtag = this.listHashtag[i];
+          if (hashtag == hashtagParam) {
+            this.hastagSelected = i;
+            this.filterHashtag(i);
+            break
+          }
+        }
+        this.isLoadingHashtag = false;
+      }
+    });
+  }
+
+  filterHashtag(index: number) {
+    this.isLoading = true;
+    this.hastagSelected = index;
+    let hastagValue: string = this.listHashtag[index].replace("#", "");
+    if (index == 0) {
+      hastagValue = "";
+    }
+    
+    this.managerService.getPostsByHashtag(hastagValue, this.currentPage = 0).subscribe({
+      next: (res:any) => {
+        this.listPost = [];
+        this.collectionSize = res.totalItem;
+        let listPost: Post[] = res.items;
+        this.listPost = listPost;
+        this.listPost.forEach(post => {
+          let user: User = {
+            id: post['userId'],
+            fullname: post['name'],
+            avatarUrl: post['userImageUrl'],
+          };
+          post.user = user;
+        });
+        
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
   ngOnInit(): void {
-    this.loadPosts();
-    console.log(this.hashTagColor);
+    let hashtagParam = this.route.snapshot.params['hashtag'];
+    if (hashtagParam) {
+      this.loadHashtag("#" + hashtagParam);
+    } else {
+      this.loadPosts();
+    }
+    
   }
 
 }

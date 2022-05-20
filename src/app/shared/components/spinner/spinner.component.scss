@@ -1,19 +1,44 @@
-.spinner {
-    animation: rotate 2s linear infinite;
-    z-index: 2;
+.loading {
+    width: 100%;
+    height: 100%;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -25px 0 0 -25px;
-    width: 50px;
-    height: 50px;
+    left: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    & .path {
-        stroke: rgb(255, 170, 95);
-        stroke-linecap: round;
-        animation: dash 1.5s ease-in-out infinite;
+    & .loadingspinner {
+        pointer-events: none;
+        width: 2.5em;
+        height: 2.5em;
+        border: 0.3em solid transparent;
+        border-color: #eee;
+        border-top-color: #ffaa5f;
+        border-radius: 50%;
+        -webkit-animation: loadingspin 1s linear infinite;
+        animation: loadingspin 1s linear infinite;
+
     }
+}
 
+.bg {
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 0.4em;
+    box-shadow: 2px 2px 7px 2px rgba(97, 97, 97, 0.2)
+}
+
+@-webkit-keyframes loadingspin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loadingspin {
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes rotate {

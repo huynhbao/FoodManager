@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post.model';
+import { Recipe } from '../models/recipe.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,12 @@ export class ManagerService {
     );
   }
 
+  getPostsByHashtag(hashtag: string, page: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}/post/by-hashtag?hashtag=${hashtag}&page=${page}&size=5`
+    );
+  }
+
   getPendingPosts(page: number): Observable<Post> {
     return this.http.get<any>(
       `${this.baseUrl}/post/as-manager?page=${page}&size=2`
@@ -38,19 +45,21 @@ export class ManagerService {
     );
   }
 
-  acceptPost(id: string) {
-    return this.http.put<any>(
-      `${this.baseUrl}/post/accept/${id}`, {}
+  getRecipes(page: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}/recipe?page=${page}&size=5`
     );
   }
 
-  denyPost(id: string) {
-    return this.http.put<any>(
-      `${this.baseUrl}/post/deny/${id}`, {}
+  getRecipeById(id: string): Observable<Recipe> {
+    return this.http.get<Recipe>(
+      `${this.baseUrl}/recipe/${id}`
     );
   }
 
-  delete(id: string) {
-    return this.http.delete(`https://fooma.free.beeceptor.com/delete/${id}`);
+  getHashtag() {
+    return this.http.get<any>(
+      `${this.baseUrl}/post/hashtag`
+    );
   }
 }

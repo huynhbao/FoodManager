@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Category } from '../models/category.model';
 import { Ingredient } from '../models/ingredient.model';
@@ -10,7 +10,13 @@ import { Ingredient } from '../models/ingredient.model';
 })
 export class SharedService {
   baseUrl = environment.apiUrl
-  constructor(private http: HttpClient) { }
+  private postRecipeTabbarSrc = new BehaviorSubject<boolean>(true);
+  postRecipeTabbar = this.postRecipeTabbarSrc.asObservable();
+  constructor(private http: HttpClient) {}
+
+  setTabbar(value: boolean) {
+    this.postRecipeTabbarSrc.next(value);
+  }
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/category`);

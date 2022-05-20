@@ -10,10 +10,10 @@
             <div class="card mb-0" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../post']">Posts</a>
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../post']">Posts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe']">Recipes</a>
+                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../recipe']">Recipes</a>
                     </li>
                 </ul>
             </div>
@@ -24,7 +24,7 @@
                 <div class="card-header border-0" style="border-radius: 0;">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Post - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Total Recipe - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <a href="#" class="btn btn-sm btn-neutral btn-round btn-icon" data-toggle="tooltip"
@@ -85,52 +85,53 @@
                                 <th style="width: 12%;">User</th>
                                 <th style="width: 10%;">Published Date</th>
                                 <th style="width: 12%;">Hashtag</th>
-                                <th>Total Comment</th>
-                                <th>Total React</th>
+                                <th>Preparation Time</th>
+                                <th>Cooking Time</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let post of listPost" [ngClass]="{'selected': post.isSelected === true}">
+                            <tr *ngFor="let recipe of recipes" [ngClass]="{'selected': recipe.isSelected === true}">
                                 <td class="text-center">
                                     <div class="custom-checkbox" style="font-size: 1.3rem;">
-                                        <input id="{{post.id}}" type="checkbox" [(ngModel)]="post.isSelected"
+                                        <input id="{{recipe.id}}" type="checkbox" [(ngModel)]="recipe.isSelected"
                                             (change)="isAllSelected()">
-                                        <label class="mb-0" for="{{post.id}}"></label>
+                                        <label class="mb-0" for="{{recipe.id}}"></label>
                                     </div>
                                 </td>
                                 <td class="">
-                                    <img src="{{post.postImages[0].imageUrl}}" style="height: 60px;"
+                                    <img src="{{recipe.thumbnail}}" style="height: 60px;"
                                         class="rounded img-thumbnail img-fluid mr-3">
-                                    <a [routerLink]="['../post', post.id]" class="font-weight-bold text-dark">{{post.title}}</a>
+                                    <a [routerLink]="['../recipe', recipe.id]"
+                                        class="font-weight-bold text-dark">{{recipe.recipeName}}</a>
                                 </td>
                                 <td>
-                                    <b>{{post.user.fullname}}</b>
+                                    <b>{{recipe.user.fullname}}</b>
                                 </td>
                                 <td>
-                                    <span class="text-muted">{{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}}</span>
+                                    <span class="text-muted">{{recipe.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td style="width:1px; white-space:nowrap;">
-                                    <div *ngFor="let hashtag of splitDescription(post.hashtag)"
+                                    <div *ngFor="let hashtag of splitDescription(recipe.hashtag)"
                                         class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
                                         <a>#{{hashtag}}</a></div>
                                 </td>
                                 <td class="text-center">
-                                    <b>{{post.totalComment}}</b>
+                                    <b>{{recipe.preparationTime}}</b>
                                 </td>
                                 <td class="text-center">
-                                    <b>{{post.totalReact}}</b>
+                                    <b>{{recipe.cookingTime}}</b>
                                 </td>
                                 <td class="text-center">
-                                    <div [ngClass]="post.status == 1 ? 'bg-active' : 'bg-pending'" class="rounded px-2">
+                                    <div [ngClass]="recipe.status == 1 ? 'bg-active' : 'bg-pending'" class="rounded px-2">
                                         <span class="badge badge-dot"><i
-                                                [ngClass]="post.status == 1 ? 'bg-success' : 'bg-warning'"></i>
-                                            {{post.status == 1 ? 'Active' : 'Disabled'}}</span>
+                                                [ngClass]="recipe.status == 1 ? 'bg-success' : 'bg-warning'"></i>
+                                            {{recipe.status == 1 ? 'Active' : 'Disabled'}}</span>
                                     </div>
                                 </td>
                                 <td class="table-actions text-center">
-                                    <button [disabled]="isLoading" (click)="setPostByStatus(post.id, 0)"
+                                    <button [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 0)"
                                         class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip"
                                         data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>

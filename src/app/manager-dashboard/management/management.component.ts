@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-management',
@@ -7,12 +8,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./management.component.scss']
 })
 export class ManagementComponent implements OnInit {
+  tabbar: boolean = true;
 
-  constructor(public router: Router) {
-    
+  constructor(public router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
+    this.sharedService.postRecipeTabbar.subscribe((value) => {
+      this.tabbar = value;
+    })
   }
 
+
   ngOnInit(): void {
+    let id = this.route.snapshot.params['/post/'];
+    console.log(this.route.snapshot);
   }
 
 }

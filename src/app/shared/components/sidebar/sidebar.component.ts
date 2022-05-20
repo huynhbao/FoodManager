@@ -9,6 +9,8 @@ declare interface RouteInfo {
   title: string;
   icon: string;
   class: string;
+  child?: RouteInfo[];
+  isCollapsed?: boolean;
 }
 export const ROUTES_ADMIN: RouteInfo[] = [
   { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
@@ -18,9 +20,13 @@ export const ROUTES_ADMIN: RouteInfo[] = [
 
 export const ROUTES_MANAGER: RouteInfo[] = [
   { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
-  { path: 'manage', title: 'Manage Posts - Receipes',  icon:'ni-bullet-list-67 text-success', class: '' },
-  { path: 'pending-post', title: 'Pending Post',  icon:'ni-bullet-list-67 text-warning', class: '' },
-  { path: 'ingredient', title: 'Manage Ingredient',  icon:'ni-bullet-list-67 text-info', class: '' },
+  { path: '', title: 'Posts - Receipes',  icon:'ni-bullet-list-67 text-success', class: '', child: [
+    { path: 'manage', title: 'Manage',  icon:'', class: '' },
+    { path: 'pending-post', title: 'Pending Post',  icon:'', class: '' },
+  ]},
+  { path: '', title: 'Ingredients',  icon:'ni-bullet-list-67 text-info', class: '', child: [
+    { path: 'ingredient', title: 'Manage',  icon:'', class: '' },
+  ]},
   { path: 'category', title: 'View report list',  icon:'ni-bullet-list-67 text-danger', class: '' }
 ];
 
@@ -35,7 +41,16 @@ export class SidebarComponent implements OnInit {
   public isCollapsed = true;
   public roleStr!: string;
 
-  constructor(private router: Router, private authenticationService: AuthenticationService) { }
+  constructor(private router: Router, private authenticationService: AuthenticationService) {
+  }
+
+  activeNav(index) {
+    this.menuItems.forEach(menuItem => {
+      menuItem.isCollapsed = true;
+    });
+    this.menuItems[index].isCollapsed = !this.menuItems[index].isCollapsed;
+    console.log(this.menuItems[index].isCollapsed);
+  }
 
   ngOnInit(): void {
     let role = this.authenticationService.currentUserValue.currentUser.role;
@@ -44,10 +59,24 @@ export class SidebarComponent implements OnInit {
     } else if (role == AppConst.MANAGER_STR) {
       this.menuItems = ROUTES_MANAGER.filter(menuItem => menuItem);
     }
-    
-    // this.router.events.subscribe((event) => {
-    //   this.isCollapsed = true;
-    // });
+    const path = this.router.url.split("/")[2];
+    this.menuItems.forEach(menuItem => {
+      menuItem.isCollapsed = true;
+      if (menuItem.path == path) {
+        menuItem.isCollapsed = false;
+      } else if (menuItem.child) {
+        menuItem.child.forEach(child => {
+          if (child.path == path) {
+            menuItem.isCollapsed = false;
+          }
+        });
+      }
+    });
+    //this.router.url.split("/")[2];
+    //this.isCollapsed = false;
+    /* this.router.events.subscribe((event) => {
+       this.isCollapsed = true;
+    }); */
   }
 
 }

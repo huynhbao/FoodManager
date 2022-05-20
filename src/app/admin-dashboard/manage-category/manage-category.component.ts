@@ -17,38 +17,24 @@ export class ManageCategoryComponent implements OnInit {
   public listCategory: Category[] = [];
   currentPage = 1;
   itemsPerPage = 5;
-  pageSize: number = 10;
+  collectionSize = 0;
   // categoryForm: FormGroup;
   listStatus: string[] = ["Enable", "Disable"];
   selectedStatus: string = this.listStatus[0];
   selectedCategory?: Category;
   searchText = "";
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal, private adminManageService: AdminManageService) {
-    /* this.categoryForm = this.formBuilder.group(
-      {
-        categoryID: ["", Validators.required],
-        categoryName: ["", Validators.required],
-      }
-    ); */
   }
 
   ngOnInit(): void {
-    /* for (let i = 1; i <= 15; i++) {
-      let category1 = {id: i, name: "Category " + i, createDate: new Date(), status: Math.random() < 0.5} as Category
-      
-      //Category(id: i, "Category " + i, new Date(), Math.random() < 0.5);
-      this.listCategory.push(category1);
-    }
-    
-    this.adminManageService.currentSearch.subscribe(searchText => this.searchText = searchText)
-    */
     this.loadCategories();
   }
 
   private loadCategories() {
-    this.adminManageService.getCategories().subscribe({
+    this.adminManageService.getCategories(this.currentPage).subscribe({
       next: (categories: Category[]) => {
         this.listCategory = categories;
+        this.collectionSize = this.listCategory.length;
         /* for (let i in this.listCategory) {
           console.log(typeof this.listCategory[i].status);
           //this.listCategory[i].status = Math.random() < 0.5;
@@ -61,11 +47,11 @@ export class ManageCategoryComponent implements OnInit {
   }
 
   public onPageChange(pageNum: number): void {
-    this.pageSize = this.itemsPerPage * (pageNum - 1);
+    this.loadCategories();
   }
 
   public changePagesize(num: number): void {
-    this.itemsPerPage = this.pageSize + num;
+    
   }
 
   triggerModal(method: String, dto: any) {

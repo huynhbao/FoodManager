@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl:'https://foomaapp.ddns.net/api'
+  apiUrl:'https://api.fooma.tech/api'
 };
 
 /*
