@@ -1,17 +1,30 @@
 import { User } from "./user.model";
 
+export interface RecipeImage {
+  imageUrl: string;
+  orderNumber: string;
+  status: number;
+}
+
 export interface RecipeCategory {
   recipeCategoryId: string;
   recipeCategoryName: string;
 }
 
 export interface RecipeIngredient {
-    ingredientDbid: string;
-    ingredientName: string;
-    quantity: number;
-    isMain: boolean;
-    status: number;
-  }
+  ingredientDbid: string;
+  ingredientName: string;
+  quantity: number;
+  isMain: boolean;
+  status: number;
+}
+
+export interface RecipeMethod {
+  content: string;
+  recipeMethodImages: RecipeImage[];
+  step: number;
+  status: boolean;
+}
 
 export interface Recipe {
   id: string;
@@ -33,4 +46,5 @@ export interface Recipe {
   isSelected?: boolean;
   manyToManyRecipeCategories: RecipeCategory[];
   recipeIngredients: RecipeIngredient[];
+  recipeMethods: RecipeMethod[];
 }

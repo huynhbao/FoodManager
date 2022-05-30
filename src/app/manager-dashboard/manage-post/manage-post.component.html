@@ -1,6 +1,7 @@
 <div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
+            <a [routerLink]="['./create']" class="btn btn-info mb-4">Create Post</a>
         </div>
     </div>
 </div>
@@ -27,10 +28,30 @@
                             <h3 class="mb-0">Total Post - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="#" class="btn btn-sm btn-neutral btn-round btn-icon" data-toggle="tooltip"
+                            <!-- <a href="#" class="btn btn-sm btn-neutral btn-round btn-icon" data-toggle="tooltip"
                                 data-original-title="Edit product">
                                 <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span>
                                 <span class="btn-inner--text">Export</span>
+                            </a> -->
+                            <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
+                                <span class="badge badge-dot"><i class="bg-success"></i></span>
+                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
+                                <span class="btn-inner--text">Active</span>
+                            </a>
+                            <a (click)="filterByStatus(2)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 2}" href="javascript:void(0)">
+                                <span class="badge badge-dot"><i class="bg-pending"></i></span>
+                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
+                                <span class="btn-inner--text">Pending</span>
+                            </a>
+                            <a (click)="filterByStatus(3)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 3}" href="javascript:void(0)">
+                                <span class="badge badge-dot"><i class="bg-red"></i></span>
+                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
+                                <span class="btn-inner--text">Denied</span>
+                            </a>
+                            <a (click)="filterByStatus(0)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 0}" href="javascript:void(0)">
+                                <span class="badge badge-dot"><i class="bg-gray"></i></span>
+                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
+                                <span class="btn-inner--text">Disable</span>
                             </a>
                         </div>
                     </div>
@@ -43,7 +64,7 @@
                                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
                                     <div *ngIf="!isLoadingHashtag">
                                         <button type="button" class="dropdown-item"
-                                            *ngFor="let hashtag of listHashtag; let i = index" (click)="filterHashtag(i)">
+                                            *ngFor="let hashtag of listHashtag; let i = index" (click)="filterHashtag(i, false)">
                                             {{hashtag}}
                                         </button>
                                     </div>
@@ -87,7 +108,6 @@
                                 <th style="width: 12%;">Hashtag</th>
                                 <th>Total Comment</th>
                                 <th>Total React</th>
-                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -103,7 +123,7 @@
                                 <td class="">
                                     <img src="{{post.postImages[0].imageUrl}}" style="height: 60px;"
                                         class="rounded img-thumbnail img-fluid mr-3">
-                                    <a [routerLink]="['../post', post.id]" class="font-weight-bold text-dark">{{post.title}}</a>
+                                    <a target="_blank" [routerLink]="['../post/detail', post.id]" class="font-weight-bold text-dark">{{post.title}}</a>
                                 </td>
                                 <td>
                                     <b>{{post.user.fullname}}</b>
@@ -116,24 +136,24 @@
                                         class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
                                         <a>#{{hashtag}}</a></div>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <b>{{post.totalComment}}</b>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <b>{{post.totalReact}}</b>
                                 </td>
-                                <td class="text-center">
-                                    <div [ngClass]="post.status == 1 ? 'bg-active' : 'bg-pending'" class="rounded px-2">
-                                        <span class="badge badge-dot"><i
-                                                [ngClass]="post.status == 1 ? 'bg-success' : 'bg-warning'"></i>
-                                            {{post.status == 1 ? 'Active' : 'Disabled'}}</span>
-                                    </div>
-                                </td>
-                                <td class="table-actions text-center">
-                                    <button [disabled]="isLoading" (click)="setPostByStatus(post.id, 0)"
-                                        class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip"
-                                        data-original-title="Delete Post">
+                                <td class="table-actions">
+                                    <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setPostByStatus(post.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
+                                        <i class="fas fa-check-double"></i>
+                                    </button>
+                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="setPostByStatus(post.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setPostByStatus(post.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setPostByStatus(post.id, 3)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                        <i class="fas fa-ban"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -147,7 +167,7 @@
                 </div>
                 <div class="card-footer py-4">
                     <nav aria-label="...">
-                        <ngb-pagination class="pagination justify-content-end mb-0" [collectionSize]="collectionSize" #numPages
+                        <ngb-pagination class="pagination justify-content-end mb-0" [collectionSize]="collectionSize" [maxSize]="5"
                             [pageSize]="itemsPerPage" [(page)]="currentPage" (pageChange)="onPageChange(currentPage)">
                             <ng-template ngbPaginationPrevious>
                                 <i class="fas fa-angle-left"></i>

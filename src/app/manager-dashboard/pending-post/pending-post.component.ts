@@ -25,6 +25,7 @@ export class PendingPostComponent implements OnInit {
   totalPost: number = 0;
   isLoadingPost: boolean = false;
   isLoading: boolean = false;
+  outOfPost: boolean = false;
   // https://stackblitz.com/edit/angular-11-crud-example-2jndjj?file=src%2Fapp%2Fusers%2Flist.component.ts
   constructor(
     config: NgbCarouselConfig,
@@ -171,6 +172,7 @@ export class PendingPostComponent implements OnInit {
 
     if (this.listPost.length === this.totalPost && this.totalPost != 0) {
       this.isLoadingPost = false;
+      this.outOfPost = true;
       return
     }
 

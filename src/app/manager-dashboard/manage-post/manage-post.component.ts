@@ -28,6 +28,7 @@ export class ManagePostComponent implements OnInit {
   hastagSelected: number = 0;
   isLoading: boolean = false;
   isLoadingHashtag: boolean = false;
+  statusSelected: number = 1;
   //masterSelected: boolean;
   //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
   //https://www.npmjs.com/package/ngx-toastr
@@ -45,8 +46,15 @@ export class ManagePostComponent implements OnInit {
         status: 1,
       }
     ]
+    let hashtag = this.listHashtag[this.hastagSelected];
+    if (hashtag == "All") {
+      hashtag = "";
+    }
+
+    hashtag = hashtag.replace("#", "");
+
     
-    this.managerService.getPosts(this.currentPage).subscribe({
+    this.managerService.getPosts(this.statusSelected, hashtag, this.currentPage).subscribe({
       next: (res:any) => {
         this.collectionSize = res.totalItem;
         let listPost: Post[] = res.items;
@@ -74,12 +82,11 @@ export class ManagePostComponent implements OnInit {
   }
 
   public onPageChange(pageNum: number): void {
-    //this.pageSize = this.itemsPerPage * (pageNum - 1);
-    this.loadPosts();
-  }
-
-  public changePagesize(num: number): void {
-    this.itemsPerPage = this.pageSize + num;
+    if (this.hastagSelected !== 0) {
+      this.filterHashtag(this.hastagSelected, true);
+    } else {
+      this.loadPosts();
+    }
   }
 
   // The master checkbox will check/ uncheck all items
@@ -158,7 +165,7 @@ export class ManagePostComponent implements OnInit {
           const hashtag = this.listHashtag[i];
           if (hashtag == hashtagParam) {
             this.hastagSelected = i;
-            this.filterHashtag(i);
+            this.filterHashtag(i, false);
             break
           }
         }
@@ -167,7 +174,13 @@ export class ManagePostComponent implements OnInit {
     });
   }
 
-  filterHashtag(index: number) {
+  filterByStatus(status: number) {
+    this.statusSelected = status;
+    this.hastagSelected = 0;
+    this.loadPosts();
+  }
+
+  filterHashtag(index: number, pageChange: boolean) {
     this.isLoading = true;
     this.hastagSelected = index;
     let hastagValue: string = this.listHashtag[index].replace("#", "");
@@ -175,7 +188,13 @@ export class ManagePostComponent implements OnInit {
       hastagValue = "";
     }
     
-    this.managerService.getPostsByHashtag(hastagValue, this.currentPage = 0).subscribe({
+    if (!pageChange) {
+      this.currentPage = 0;
+    }
+
+    this.loadPosts();
+    
+    /* this.managerService.getPostsByHashtag(hastagValue, this.currentPage).subscribe({
       next: (res:any) => {
         this.listPost = [];
         this.collectionSize = res.totalItem;
@@ -197,7 +216,7 @@ export class ManagePostComponent implements OnInit {
       complete: () => {
         this.isLoading = false;
       }
-    });
+    }); */
   }
 
   ngOnInit(): void {

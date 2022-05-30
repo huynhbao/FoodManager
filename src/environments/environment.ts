@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl:'https://api.fooma.tech/api'
+  apiUrl:'https://api.fooma.tech:8443/api'
 };
 
 /*

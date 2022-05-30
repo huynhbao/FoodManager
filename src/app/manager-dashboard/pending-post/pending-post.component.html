@@ -5,7 +5,7 @@
                 <div class="col-lg-12 card-wrapper">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="mb-0">Waiting posts - {{listPost.length}}/{{totalPost}}</h2>
+                            <h2 class="mb-0">Pending posts - {{listPost.length}}/{{totalPost}}</h2>
                         </div>
                         <div class="card-body">
                             <div class="input-group input-group-alternative input-group-merge"
@@ -80,12 +80,8 @@
                     <ngb-carousel *ngIf="images">
                         <ng-template ngbSlide *ngFor="let image of post.postImages">
                             <div class="picsum-img-wrapper d-flex justify-content-center">
-                              <img [src]="image.imageUrl" alt="Random slide" style="height: 600px;">
+                              <img [src]="image.imageUrl" alt="Post Image" style="height: 600px;">
                             </div>
-                            <!-- <div class="carousel-caption">
-                              <h3>No mouse navigation</h3>
-                              <p>This carousel hides navigation arrows and indicators.</p>
-                            </div> -->
                         </ng-template>
                     </ngb-carousel>
                     <div class="form-group row mt-5 mb-0">
@@ -96,6 +92,14 @@
                             <button [disabled]="isLoading" class="btn btn-light form-control" (click)="setPostByStatus(post.id, 3)">Decline</button>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="card text-center" *ngIf="outOfPost">
+                <div class="card-body">
+                    <h1>
+                        <fa-icon class="text-green" [icon]="['fas', 'check-circle']"></fa-icon>
+                    </h1>
+                    <h2 class="card-title mb-1">You have read all posts</h2>
                 </div>
             </div>
         </div>

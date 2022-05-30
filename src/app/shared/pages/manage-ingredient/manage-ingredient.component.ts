@@ -157,19 +157,20 @@ export class ManageIngredientComponent implements OnInit {
       categoryName: form.category.value,
       unit: form.unit,
     };
-    this.modalService.dismissAll();
-    this.loadIngredients();
-    /* this.sharedService.createIngredientDB(ingredient).subscribe({
+    
+    this.sharedService.createIngredientDB(ingredient).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
-          this.modalRef.close();
+          this.modalService.dismissAll();
+          this.loadIngredients();
+          //this.modalRef.close();
         }
       },
       error: (error) => {
         console.log(error);
       },
-    }); */
+    });
   }
 
   private submitUpdate(form: any, _self) {

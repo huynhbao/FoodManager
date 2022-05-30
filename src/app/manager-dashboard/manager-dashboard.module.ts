@@ -18,7 +18,8 @@ import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontaweso
 import {
   faClock as farClock,
 } from '@fortawesome/free-regular-svg-icons';
-import { faClock, faUsers, faFire } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faUsers, faFire, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { CreatePostComponent } from './create-post/create-post.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { faClock, faUsers, faFire } from '@fortawesome/free-solid-svg-icons';
     TimePipe,
     ManageRecipeComponent,
     RecipeDetailComponent,
+    CreatePostComponent,
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ export class ManagerDashboardModule {
       faClock,
       farClock,
       faUsers,
-      faFire
+      faFire,
+      faCheckCircle
     );
   }
 }

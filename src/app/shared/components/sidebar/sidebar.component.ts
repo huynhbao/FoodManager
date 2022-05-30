@@ -22,7 +22,6 @@ export const ROUTES_MANAGER: RouteInfo[] = [
   { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
   { path: '', title: 'Posts - Receipes',  icon:'ni-bullet-list-67 text-success', class: '', child: [
     { path: 'manage', title: 'Manage',  icon:'', class: '' },
-    { path: 'pending-post', title: 'Pending Post',  icon:'', class: '' },
   ]},
   { path: '', title: 'Ingredients',  icon:'ni-bullet-list-67 text-info', class: '', child: [
     { path: 'ingredient', title: 'Manage',  icon:'', class: '' },

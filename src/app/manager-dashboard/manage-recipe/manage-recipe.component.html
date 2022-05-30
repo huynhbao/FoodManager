@@ -148,7 +148,7 @@
                 </div>
                 <div class="card-footer py-4">
                     <nav aria-label="...">
-                        <ngb-pagination class="pagination justify-content-end mb-0" [collectionSize]="collectionSize" #numPages
+                        <ngb-pagination class="pagination justify-content-end mb-0" [collectionSize]="collectionSize" [maxSize]="5"
                             [pageSize]="itemsPerPage" [(page)]="currentPage" (pageChange)="onPageChange(currentPage)">
                             <ng-template ngbPaginationPrevious>
                                 <i class="fas fa-angle-left"></i>

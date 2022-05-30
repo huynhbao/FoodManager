@@ -5,6 +5,7 @@ import { Recipe } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 
+
 @Component({
   selector: 'app-recipe-detail',
   templateUrl: './recipe-detail.component.html',
@@ -32,7 +33,8 @@ export class RecipeDetailComponent implements OnInit {
         let user: User = {
           id: recipe["userId"],
           fullname: recipe["name"],
-          avatarUrl: recipe["userImageUrl"] || "https://i.imgur.com/EreYJ0D.png"
+          avatarUrl: recipe["userImageUrl"] || "https://i.imgur.com/EreYJ0D.png",
+          role: recipe["role"]
         } 
         this.recipe = recipe;
         this.recipe.user = user;

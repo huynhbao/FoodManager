@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ManageIngredientComponent } from '../shared/pages/manage-ingredient/manage-ingredient.component';
+import { CreatePostComponent } from './create-post/create-post.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManagePostComponent } from './manage-post/manage-post.component';
 import { ManageRecipeComponent } from './manage-recipe/manage-recipe.component';
@@ -23,7 +24,10 @@ const routes: Routes = [
         path: 'post', component: ManagePostComponent,
       },
       {
-        path: 'post/:id', component: PostDetailComponent
+        path: 'post/create', component: CreatePostComponent
+      },
+      {
+        path: 'post/detail/:id', component: PostDetailComponent
       },
       {
         path: 'post/hashtag/:hashtag', component: ManagePostComponent,

@@ -15,15 +15,15 @@ export class ManagerService {
   baseUrl = environment.apiUrl
   constructor(private http: HttpClient) { }
 
-  getPosts(page: number): Observable<any> {
+  getPosts(status: number, hashtag: string, page: number): Observable<any> {
     return this.http.get<any>(
-      `${this.baseUrl}/post?page=${page}&size=5`
+      `${this.baseUrl}/post/by-status/as-manager?status=${status}&hashtag=${hashtag}&page=${page}&size=5`
     );
   }
 
   getPostById(id: string): Observable<Post> {
     return this.http.get<Post>(
-      `${this.baseUrl}/post/${id}`
+      `${this.baseUrl}/post/as-manager/${id}`
     );
   }
 

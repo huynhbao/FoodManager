@@ -61,8 +61,8 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ["api.fooma.tech"],
-        disallowedRoutes: ["api.fooma.tech/api/auth/login-system"],
+        allowedDomains: ["api.fooma.tech:8443"],
+        disallowedRoutes: ["api.fooma.tech:8443/api/auth/login-system"],
       },
     }),
   ],
