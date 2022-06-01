@@ -9,6 +9,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { ModalConfirmComponent } from '../../components/modal-confirm/modal-confirm.component';
 import { ModalCreateComponent } from '../../components/modal-create/modal-create.component';
 import { ModalUpdateComponent } from '../../components/modal-update/modal-update.component';
+import { Utils } from '../../tools/utils';
 
 @Component({
   selector: 'app-manage-ingredient',
@@ -96,7 +97,8 @@ export class ManageIngredientComponent implements OnInit {
         
         this.modalRef.componentInstance.fromParent = [
           {
-            id: ingredient?.id
+            id: ingredient?.id,
+            imgUrl: ingredient?.imageUrl || "" 
           },
           {
             key: 'ingredientName',
@@ -105,16 +107,6 @@ export class ManageIngredientComponent implements OnInit {
             validator: {
               disabled: false,
               defaultValue: ingredient?.ingredientName || '',
-              valid: Validators.required,
-            },
-          },
-          {
-            key: 'imageUrl',
-            name: 'Image URL',
-            type: 'string',
-            validator: {
-              disabled: false,
-              defaultValue: ingredient?.imageUrl ||'',
               valid: Validators.required,
             },
           },
@@ -139,6 +131,16 @@ export class ManageIngredientComponent implements OnInit {
               valid: Validators.required,
             },
           },
+          {
+            key: 'imageUrl',
+            name: 'Upload Image',
+            type: 'file',
+            validator: {
+              disabled: false,
+              defaultValue: ingredient?.imageUrl ||'',
+              valid: "",
+            },
+          },
         ];
         this.modalRef.componentInstance.submitFunc = method == "create" ? this.submitCreate.bind(this) : this.submitUpdate.bind(this);
       }
@@ -146,7 +148,7 @@ export class ManageIngredientComponent implements OnInit {
     
   }
 
-  private submitCreate(form: any) {
+  private submitCreate(form: any, img:string[]) {
     const ingredient: Ingredient = {
       id: '',
       categoryId: form.category.id,
@@ -157,45 +159,92 @@ export class ManageIngredientComponent implements OnInit {
       categoryName: form.category.value,
       unit: form.unit,
     };
-    
-    this.sharedService.createIngredientDB(ingredient).subscribe({
+    this.sharedService.uploadImage(img[0]).subscribe({
       next: (res:any) => {
-        console.log(res);
-        if (res.code == 200) {
-          this.modalService.dismissAll();
-          this.loadIngredients();
-          //this.modalRef.close();
+        const imgUrl:string = res.secure_url;
+        if (imgUrl) {
+          ingredient.imageUrl = imgUrl;
+          this.sharedService.createIngredientDB(ingredient).subscribe({
+            next: (res:any) => {
+              console.log(res);
+              if (res.code == 200) {
+                this.modalService.dismissAll();
+                this.loadIngredients();
+                //this.modalRef.close();
+              }
+            },
+            error: (error) => {
+              console.log(error);
+            },
+          });
         }
       },
       error: (error) => {
         console.log(error);
       },
-    });
+    })
   }
 
-  private submitUpdate(form: any, _self) {
+  private async submitUpdate(form: any, imgUrl: string) {
+    let isNewImg: boolean = false;
+    if (form.imageUrl != imgUrl) {
+      await Utils.getBase64ImageFromUrl(imgUrl).then(base64 => {
+        if (base64 != form.imageUrl) {
+          isNewImg = true;
+        }
+      })
+    }
+
     const ingredient: Ingredient = {
       id: form.id,
       categoryId: form.category.id,
       ingredientName: form.ingredientName,
       createDate: new Date(),
-      imageUrl: form.imageUrl,
+      imageUrl: imgUrl, //form.imageUrl,
       status: 1,
       categoryName: form.category.value,
       unit: form.unit,
     };
-    this.sharedService.updateIngredientDB(ingredient).subscribe({
-      next: (res:any) => {
-        console.log(res);
-        if (res.code == 200) {
-          this.modalService.dismissAll();
-          this.loadIngredients();
-        }
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
+
+    if (isNewImg) {
+      await this.sharedService.uploadImage(form.imageUrl).subscribe({
+        next: (res:any) => {
+          const imgUrl:string = res.secure_url;
+          if (imgUrl) {
+            ingredient.imageUrl = imgUrl;
+            this.sharedService.updateIngredientDB(ingredient).subscribe({
+              next: (res:any) => {
+                console.log(res);
+                if (res.code == 200 || res.code == 204) {
+                  this.modalService.dismissAll();
+                  this.loadIngredients();
+                }
+              },
+              error: (error) => {
+                console.log(error);
+              },
+            });
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      })
+    } else {
+      this.sharedService.updateIngredientDB(ingredient).subscribe({
+        next: (res:any) => {
+          console.log(res);
+          if (res.code == 200 || res.code == 204) {
+            this.modalService.dismissAll();
+            this.loadIngredients();
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    }
+    
   }
 
   private submitDelete(id: string) {

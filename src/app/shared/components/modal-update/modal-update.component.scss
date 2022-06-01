@@ -3,5 +3,14 @@
         background-color: #f7fafc;
         padding: 0;
     }
-    
+}
+
+.preview {
+    float: left;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin: 3px;
+    border-radius: 50%;
+    border: 2px solid #d2d2d2;
 }

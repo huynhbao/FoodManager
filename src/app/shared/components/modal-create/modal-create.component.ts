@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Category } from 'src/app/models/category.model';
-import { User } from 'src/app/models/user.model';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
@@ -13,54 +11,63 @@ import { SharedService } from 'src/app/services/shared.service';
 export class ModalCreateComponent implements OnInit {
   @Input() fromParent: any;
   @Input() submitFunc!: Function;
-  categoryForm: FormGroup;
+  form: FormGroup;
+  submitted: boolean = false;
+  previews: string[] = [];
+  selectedFiles?: FileList;
+
   constructor(private sharedService: SharedService, private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
-    this.categoryForm = this.formBuilder.group({});
+    this.form = this.formBuilder.group({});
   }
 
   ngOnInit(): void {
-    //this.categoryForm = this.formBuilder.group({});
-    /* this.categoryForm = this.formBuilder.group(
-      {
-        categoryID: ["", Validators.required],
-        categoryName: ["", Validators.required],
-      }
-    ); */
     for (let i = 0; i < this.fromParent.length; i++) {
       let value = this.fromParent[i];
       if (i == 0) {
 
       } else {
         for (let _ in value) {
-          this.categoryForm.addControl(value.key, new FormControl(value.validator.defaultValue, value.validator.valid))
+          this.form.addControl(value.key, new FormControl(value.validator.defaultValue, value.validator.valid))
         }
       }
     }
   }
 
-  //get f() { return this.categoryForm.controls['id'] as FormControl; }
+  get f() { return this.form.controls; }
 
-  triggerModal(content: any) {
-    this.categoryForm.reset();
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static' }).result.then((result) => {
-      //this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  selectFiles(event: any): void {
+    this.selectedFiles = event.target.files;
+    
+    if (this.selectedFiles && this.selectedFiles[0]) {
+      this.previews = [];
+      const numberOfFiles = this.selectedFiles.length;
+      for (let i = 0; i < numberOfFiles; i++) {
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+          this.previews.push(e.target.result);
+        };
+
+        reader.readAsDataURL(this.selectedFiles[i]);
+      }
+    }
   }
 
   onSubmit() {
-    /* if (this.categoryForm.invalid) {
+    this.submitted = true;
+    if (this.form.invalid) {
       return;
-    } */
-    /* for (var product of this.fromParent[0]) {
-      console.log(product)
-    } */
+    }
+
+    if (this.previews.length === 0) {
+      return;
+    }
+    
     let form:any = {};
-    for (const field in this.categoryForm.controls) {
-      const control = this.categoryForm.get(field);
+    for (const field in this.form.controls) {
+      const control = this.form.get(field);
       form[field] = control?.value
     }
-    this.submitFunc(form);
+    this.submitFunc(form, this.previews);
   }
 }

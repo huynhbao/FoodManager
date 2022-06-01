@@ -1,11 +1,11 @@
 <ng-template #templateStatusBox let-link="link" let-form="form">
     <label class="form-control-label" for="input-status">{{link.name}}</label><br />
     <div ngbDropdown class="d-inline-block w-100">
-        <input type="button" class="btn btn-outline-fooma btn-block" id="dropdownBasic1"
-            ngbDropdownToggle [value]="form.get(link.key).value.value || link.value[0].value"/>
+        <input type="button" class="btn btn-outline-fooma btn-block" id="dropdownBasic1" ngbDropdownToggle
+            [value]="form.get(link.key).value.value || link.value[0].value" />
         <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
             <button type="button" class="dropdown-item" *ngFor="let status of link.value"
-            (click)="form.get(link.key).setValue(status)">
+                (click)="form.get(link.key).setValue(status)">
                 {{status.value}}
             </button>
         </div>
@@ -26,43 +26,47 @@
 <div class="modal-body">
     <div class="col-xl order-xl-1">
         <div class="card-body">
-            <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <h6 class="heading-small text-muted mb-4">Information</h6>
                 <div class="pl-lg">
                     <div class="row" *ngFor="let item of fromParent; index as i">
                         <div *ngIf="i > 0" class="col-md-12">
-                            <div class="form-group"
-                                [ngTemplateOutlet]="item.type == 'boolean' ? templateStatusBox : templateInput"
-                                [ngTemplateOutletContext]="{link:item, form:categoryForm}">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-address">Name</label>
-                                    <input id="input-address" class="form-control form-control-alternative"
-                                        placeholder="Input Name" formControlName="categoryName" type="text">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="input-address">Status</label><br />
-                                    <div ngbDropdown class="d-inline-block w-100">
-                                        <button type="button" class="btn btn-outline-primary btn-block"
-                                            id="dropdownBasic1" ngbDropdownToggle>{{selectedCategory ?
-                                            (selectedCategory.$status ?'Enable' : 'Disable') : 'Enable'}}</button>
-                                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
-                                            <button type="button" class="dropdown-item"
-                                                *ngFor="let status of listStatus"
-                                                (click)="changeSelectStatus(status)">{{status}}</button>
-                                        </div>
+                            <div *ngIf="item.type === 'boolean'" class="form-group">
+                                <label class="form-control-label" for="input-status">{{item.name}}</label><br />
+                                <div ngbDropdown class="d-inline-block w-100">
+                                    <input type="button" class="btn btn-outline-fooma btn-block" id="dropdownBasic1"
+                                        ngbDropdownToggle
+                                        [value]="form.get(item.key)?.value.value || item.value[0].value" />
+                                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+                                        <button type="button" class="dropdown-item" *ngFor="let status of item.value"
+                                            (click)="form.get(item.key)?.setValue(status)">
+                                            {{status.value}}
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
+                            <div *ngIf="item.type === 'string'" class="form-group">
+                                <label class="form-control-label" for="input-address">{{item.name}}</label>
+                                <input id="input-address" class="form-control form-control-alternative" placeholder="Input {{item.name}}" [formControlName]="item.key" type="text">
+                                <div *ngIf="submitted && f[item.key].errors" class="invalid-feedback">
+                                    <div *ngIf="f[item.key].errors!['required']">{{item.name}} is required</div>
+                                </div>
+                            </div>
+                            <div *ngIf="item.type === 'file'" class="form-group">
+                                <label class="form-control-label" for="input-address">{{item.name}}</label><br>
+                                <button type="button" class="btn btn-info" (click)="fileInput.click()">
+                                    <span><i class="fas fa-upload"></i>  Upload</span>
+                                    <input #fileInput type="file" accept="image/*" (change)="selectFiles($event)" style="display:none;"/>
+                                </button>
+                                <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
+                                    {{item.name}} is required
+                                </div>
+                                <div class="gallery-item d-flex justify-content-center mt-4" *ngFor="let preview of previews; let i = index">
+                                    <img [src]="preview" alt="gallery thumbnail" class="gallery-img preview"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <hr class="my-4" />
                     <div class="row">
                         <div class="col-md-12">
@@ -75,5 +79,5 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="activeModal.close('Save click')">Close</button>
+    <button type="button" class="btn btn-danger" (click)="activeModal.close()">Close</button>
 </div>

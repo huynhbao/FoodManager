@@ -1,0 +1,46 @@
+@import "~node_modules/ngx-chips/core/styles/core/_core.scss";
+
+$fooma-primary: #ff7950;
+$fooma-primary-dark: darken($fooma-primary, 10%);
+
+// this is the container's theme
+$fooma-theme: (
+    container-border-bottom: 1px solid $fooma-primary
+);
+
+// this is the tag's theme
+$fooma-tag-theme: (
+    background: $fooma-primary,
+    background-focused: $fooma-primary-dark,
+    background-active: $fooma-primary-dark,
+    background-hover: $fooma-primary-dark,
+    color: #fff,
+    color-hover: #fff,
+    border-radius: 8px
+);
+
+// this is the delete icon's theme
+$fooma-icon-theme: (
+    fill: #fff,
+    fill-focus: #eee,
+    transition: all 0.35s
+);
+
+// apply theme to the container
+tag-input .ng2-tag-input.fooma-theme {
+    @include tag-input-theme($fooma-theme);
+}
+
+tag-input .ng2-tag-input.fooma-theme.ng2-tag-input--focused {
+    @include tag-input-theme($fooma-theme);
+}
+
+// apply theme to the tags
+tag-input .ng2-tag-input.fooma-theme tag {
+    @include tag-theme($fooma-tag-theme);
+}
+
+// apply theme to the delete icon
+tag-input .ng2-tag-input.fooma-theme tag delete-icon {
+    @include icon-theme($fooma-icon-theme);
+}

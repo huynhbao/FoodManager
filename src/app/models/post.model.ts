@@ -24,3 +24,10 @@ export interface Post {
     postComments?: Comment[];
     isSelected?: boolean;
 }
+
+export interface CreatePost {
+    title: string;
+    content: string;
+    hashtag: string;
+    postImages: Image[];
+}

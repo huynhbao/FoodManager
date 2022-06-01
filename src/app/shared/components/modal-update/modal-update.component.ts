@@ -11,9 +11,12 @@ import { SharedService } from 'src/app/services/shared.service';
 export class ModalUpdateComponent implements OnInit {
   @Input() fromParent: any;
   @Input() submitFunc!: Function;
-  categoryForm: FormGroup;
+  form: FormGroup;
+  submitted: boolean = false;
+  previews: string[] = [];
+  selectedFiles?: FileList;
   constructor(private sharedService: SharedService, private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
-    this.categoryForm = this.formBuilder.group({});
+    this.form = this.formBuilder.group({});
   }
 
   ngOnInit(): void {
@@ -23,29 +26,46 @@ export class ModalUpdateComponent implements OnInit {
 
       } else {
         for (let _ in value) {
-          this.categoryForm.addControl(value.key, new FormControl({value: value.validator.defaultValue, disabled: value.validator.disabled}, value.validator.valid))
+          this.form.addControl(value.key, new FormControl({value: value.validator.defaultValue, disabled: value.validator.disabled}, value.validator.valid))
         }
       }
     }
   }
 
-  triggerModal(content: any) {
-    this.categoryForm.reset();
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static' }).result.then((result) => {
-      //this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+  get f() { return this.form.controls; }
+
+  selectFiles(event: any, controlName: string): void {
+    this.selectedFiles = event.target.files;
+    
+    if (this.selectedFiles && this.selectedFiles[0]) {
+      this.previews = [];
+      const numberOfFiles = this.selectedFiles.length;
+      for (let i = 0; i < numberOfFiles; i++) {
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+          this.form.get(controlName)?.setValue(e.target.result);
+          //this.previews.push(e.target.result);
+        };
+
+        reader.readAsDataURL(this.selectedFiles[i]);
+      }
+    }
   }
 
   onSubmit() {
+    this.submitted = true;
+    if (this.form.invalid) {
+      return;
+    }
+
     let form:any = {};
     form["id"] = this.fromParent[0].id;
-    for (const field in this.categoryForm.controls) {
-      const control = this.categoryForm.get(field);
+    for (const field in this.form.controls) {
+      const control = this.form.get(field);
       form[field] = control?.value
     }
-    this.submitFunc(form);
+    this.submitFunc(form, this.fromParent[0].imgUrl);
   }
 
 }

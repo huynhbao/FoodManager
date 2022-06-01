@@ -23,7 +23,7 @@ import { CodeInputModule } from 'angular-code-input';
 import { ChangePasswordComponent } from './shared/pages/change-password/change-password.component';
 import { ModalConfirmComponent } from './shared/components/modal-confirm/modal-confirm.component';
 import { SharedModule } from './shared/modules/shared/shared.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export function tokenGetter() {
   let savedToken = localStorage.getItem("currentUser");
@@ -50,6 +50,7 @@ export function tokenGetter() {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,

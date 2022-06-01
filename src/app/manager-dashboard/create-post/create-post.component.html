@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 card-wrapper">
                 <div class="header-body">
-                    <a class="btn btn-info mb-4">Go Back</a>
+                    <a [routerLink]="['../']" class="btn btn-info mb-4">Go Back</a>
                 </div>
             </div>
         </div>
@@ -12,9 +12,10 @@
 <div class="container-fluid mt--6">
     <div class="row justify-content-center">
         <div class="col-lg-8 card-wrapper">
-            <div class="card">
-                <div class="card-header">
-                    <!-- <div class="row align-items-center">
+            <form [formGroup]="createForm" (ngSubmit)="createPost()">
+                <div class="card">
+                    <div class="card-header">
+                        <!-- <div class="row align-items-center">
                         <div class="col-8">
                             <div class="row">
                                 <div class="col-auto text-center">
@@ -33,28 +34,42 @@
                             <button class="btn btn-light" data-toggle="notify" data-placement="top" data-align="center" data-type="info" data-icon="ni ni-bell-55">&bull;&bull;&bull;</button>
                         </div>
                     </div> -->
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label class="form-control-label" for="input-title">Title</label>
-                        <input id="input-title" class="form-control form-control-alternative" placeholder="Input title" type="text">
                     </div>
-                    <div class="form-group">
-                        <label class="form-control-label" for="input-content">Content</label>
-                        <textarea class="form-control form-control-alternative" id="input-content" placeholder="Input content"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-control-label" for="input-hashtag">Hashtag</label>
-                        <input [ngModel]="hashtagValue" (ngModelChange)='inputHashtag($event)' id="input-hashtag" class="form-control form-control-alternative" placeholder="Input hashtag" type="text">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-control-label" for="input-hashtag">Upload Images</label><br>
-                        <input type="file" accept="image/*" multiple (change)="selectFiles($event)" />
-                    </div>
-                    <div class="form-group">
-                        <img *ngFor='let preview of previews' [src]="preview" class="preview">
-                    </div>
-                    <!-- <h4 class="card-title mb-1">{{post?.title}}</h4>
+                    <div class="card-body">
+
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-title">Title</label>
+                            <input id="input-title" class="form-control form-control-alternative"
+                                placeholder="Input title" formControlName="title" type="text">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-content">Content</label>
+                            <textarea class="form-control form-control-alternative" id="input-content"
+                                formControlName="content" placeholder="Input content"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-hashtag">Hashtag</label>
+                            <tag-input [(ngModel)]='hashtags' [theme]="'fooma-theme'" [ngModelOptions]="{standalone: true}">
+                            </tag-input>
+                            <!-- <input [ngModel]="hashtagValue" (ngModelChange)='inputHashtag($event)' id="input-hashtag" class="form-control form-control-alternative" placeholder="Input hashtag" type="text"> -->
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-hashtag">Upload Images</label><br>
+                            <button class="btn btn-info" (click)="fileInput.click()">
+                                <span><i class="fas fa-upload"></i>  Upload</span>
+                                <input #fileInput type="file" accept="image/*" multiple (change)="selectFiles($event)"  style="display:none;" />
+                            </button>
+                        </div>
+                        <div class="form-group">
+                            <div class="gallery-item" *ngFor="let preview of previews; let i = index">
+                                <img [src]="preview" alt="gallery thumbnail" class="gallery-img preview" [ngClass]="{'thumbnail': thumbnailNumber === i}" />
+                                <a (click)="removeImgPreview(preview)" class="remove-button"><i class="fas fa-times-circle"></i></a>
+                                <a (click)="setThumbnail(i)" class="thumbnail-button"><i class="fas fa-bookmark"></i></a>
+                                <!-- <button class="btn btn-link gallery-button"></button> -->
+                            </div>
+                            <!-- <img *ngFor='let preview of previews' [src]="preview" class="preview"> -->
+                        </div>
+                        <!-- <h4 class="card-title mb-1">{{post?.title}}</h4>
                     <p class="card-text">{{post?.content}}</p>
                     <ngb-carousel *ngIf="post?.postImages">
                         <ng-template ngbSlide *ngFor="let image of post?.postImages">
@@ -67,9 +82,10 @@
                     <a href="javascript:void(0)" [routerLink]="['../../post/hashtag/', hashtag]" *ngFor="let hashtag of splitDescription(post.hashtag)" class="text-muted rounded mr-2 px-2 bg-pending my-1" style="width: fit-content;">
                         #{{hashtag}}
                     </a> -->
-                </div>
-                <div class="card-footer">
-                    <!-- <div class="row">
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" (click)="createPost()" class="btn btn-fooma">Create</button>
+                        <!-- <div class="row">
                         <div class="col-6">
                             <div class="d-inline-flex align-items-center text-fooma">
                                 <i class="ni ni-favourite-28"></i>
@@ -105,8 +121,9 @@
                             </div>
                         </div>
                     </div> -->
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 export interface Image {
-    id: string;
+    id?: string;
     imageUrl: string;
     isThumbnail: boolean;
+    orderNumber?: number;
     status: number;
 }

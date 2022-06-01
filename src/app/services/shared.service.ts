@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Category } from '../models/category.model';
 import { Ingredient } from '../models/ingredient.model';
+import { AppConst } from '../shared/constants/app-const';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,15 @@ export class SharedService {
 
   deleteIngredientDB(id: string): Observable<Ingredient> {
     return this.http.delete<any>(`${this.baseUrl}/ingredientdb/${id}`);
+  }
+
+  uploadImage(file: string): Observable<any> {
+    let data = {
+      "file": file,
+      "api_key": AppConst.API_CLOUDINARY,
+      "upload_preset": AppConst.UPLOAD_PRESET_CLOUDINARY,
+      "folder": AppConst.FOLDER_CLOUDINARY
+    }
+    return this.http.post<any>(`https://api.cloudinary.com/v1_1/fooma/auto/upload`, data);
   }
 }
