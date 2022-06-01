@@ -33,7 +33,6 @@ export class ManagePostComponent implements OnInit {
   //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
   //https://www.npmjs.com/package/ngx-toastr
   constructor(private managerService: ManagerService, private route: ActivatedRoute, private sharedService: SharedService) {
-    this.sharedService.setTabbar(true);
   }
 
   private loadPosts() {
@@ -136,6 +135,7 @@ export class ManagePostComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.listPost = this.listPost.filter((x) => x.id !== id);
+          this.loadPosts();
         }
       },
       error: (error) => {

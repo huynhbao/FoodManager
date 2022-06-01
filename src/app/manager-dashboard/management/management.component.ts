@@ -10,10 +10,7 @@ import { SharedService } from 'src/app/services/shared.service';
 export class ManagementComponent implements OnInit {
   tabbar: boolean = true;
 
-  constructor(public router: Router, private route: ActivatedRoute, private sharedService: SharedService) {
-    this.sharedService.postRecipeTabbar.subscribe((value) => {
-      this.tabbar = value;
-    })
+  constructor(public router: Router, private route: ActivatedRoute) {
   }
 
 

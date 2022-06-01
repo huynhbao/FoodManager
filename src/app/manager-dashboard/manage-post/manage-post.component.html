@@ -25,14 +25,9 @@
                 <div class="card-header border-0" style="border-radius: 0;">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Post - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Total Posts - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
-                            <!-- <a href="#" class="btn btn-sm btn-neutral btn-round btn-icon" data-toggle="tooltip"
-                                data-original-title="Edit product">
-                                <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span>
-                                <span class="btn-inner--text">Export</span>
-                            </a> -->
                             <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
                                 <span class="badge badge-dot"><i class="bg-success"></i></span>
                                 <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
@@ -103,7 +98,7 @@
                                     </div>
                                 </th>
                                 <th style="width: 25%;">Title</th>
-                                <th style="width: 12%;">User</th>
+                                <th style="width: 12%;">Poster</th>
                                 <th style="width: 10%;">Published Date</th>
                                 <th style="width: 12%;">Hashtag</th>
                                 <th>Total Comment</th>

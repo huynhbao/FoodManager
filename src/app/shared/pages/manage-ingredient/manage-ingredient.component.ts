@@ -207,7 +207,7 @@ export class ManageIngredientComponent implements OnInit {
     };
 
     if (isNewImg) {
-      await this.sharedService.uploadImage(form.imageUrl).subscribe({
+       this.sharedService.uploadImage(form.imageUrl).subscribe({
         next: (res:any) => {
           const imgUrl:string = res.secure_url;
           if (imgUrl) {

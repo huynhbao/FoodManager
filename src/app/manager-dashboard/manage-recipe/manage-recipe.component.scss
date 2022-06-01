@@ -137,3 +137,15 @@ tr > td:hover {
   overflow: visible;
   white-space: unset;
 }
+
+.img-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.active-status {
+  background-color: #ff6d22 !important;
+  color: #ffffff !important;
+  font-weight: bold;
+}

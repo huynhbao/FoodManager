@@ -143,3 +143,9 @@ tr > td:hover {
   color: #ffffff !important;
   font-weight: bold;
 }
+
+.img-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}

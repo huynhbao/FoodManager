@@ -51,9 +51,9 @@ export class ManagerService {
     );
   }
 
-  getRecipes(page: number): Observable<any> {
+  getRecipes(search: string = "", status: number, hashtag: string, page: number): Observable<any> {
     return this.http.get<any>(
-      `${this.baseUrl}/recipe?page=${page}&size=5`
+      `${this.baseUrl}/recipe?search=${search}&status=${status}&page=${page}&size=5`
     );
   }
 

@@ -22,14 +22,15 @@ export class ManageRecipeComponent implements OnInit {
   hastagSelected: number = 0;
   isLoading: boolean = false;
   isLoadingHashtag: boolean = false;
+  search: string = "";
+  statusSelected: number = 1;
   constructor(private managerService: ManagerService, private route: ActivatedRoute, public router: Router, private sharedService: SharedService) {
-    this.sharedService.setTabbar(true);
   }
 
   private loadRecipes() {
     this.isLoading = true;
     
-    this.managerService.getRecipes(this.currentPage).subscribe({
+    this.managerService.getRecipes(this.search, this.statusSelected, this.listHashtag[this.hastagSelected], this.currentPage).subscribe({
       next: (res:any) => {
         this.collectionSize = res.totalItem;
         let recipes: Recipe[] = res.items;
@@ -52,6 +53,18 @@ export class ManageRecipeComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  filterByStatus(status: number) {
+    this.statusSelected = status;
+    this.hastagSelected = 0;
+    this.loadRecipes();
+  }
+
+  onSearchChange(searchValue) {
+    this.search = searchValue;
+    this.currentPage = 1;
+    this.loadRecipes();
   }
 
   loadHashtag(hashtagParam?: string) {

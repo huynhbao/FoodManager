@@ -11,13 +11,8 @@ import { AppConst } from '../shared/constants/app-const';
 })
 export class SharedService {
   baseUrl = environment.apiUrl
-  private postRecipeTabbarSrc = new BehaviorSubject<boolean>(true);
-  postRecipeTabbar = this.postRecipeTabbarSrc.asObservable();
+  
   constructor(private http: HttpClient) {}
-
-  setTabbar(value: boolean) {
-    this.postRecipeTabbarSrc.next(value);
-  }
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/category`);

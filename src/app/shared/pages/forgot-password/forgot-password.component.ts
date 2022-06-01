@@ -30,7 +30,7 @@ export class ForgotPasswordComponent implements OnInit {
     
     this.accountService.forgotPassInit(email).subscribe({
       next: (value) => {
-        if (value.code == 200) {          
+        if (value.code == 200) {
           this.accountService.currentForgotData.subscribe((data) => {
             data.email = email;
             this.router.navigate(['code-confirm']);

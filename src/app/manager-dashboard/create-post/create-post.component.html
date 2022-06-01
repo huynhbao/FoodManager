@@ -15,112 +15,56 @@
             <form [formGroup]="createForm" (ngSubmit)="createPost()">
                 <div class="card">
                     <div class="card-header">
-                        <!-- <div class="row align-items-center">
-                        <div class="col-8">
-                            <div class="row">
-                                <div class="col-auto text-center">
-                                </div>
-                                <div class="col-auto">
-                                    <img alt="avatar" [src]="post?.user?.avatarUrl" class="avatar rounded-circle">
-                                </div>
-                                <div class="col-auto">
-                                    <h3 class="card-title font-weight-bold mb-0">{{post?.user?.fullname}}</h3>
-                                    <span class="h5 mb-0 font-weight-light">Posted {{ post?.publishedDate | time }} ({{post?.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="col-4 text-right">
-                            <button class="btn btn-light" data-toggle="notify" data-placement="top" data-align="center" data-type="info" data-icon="ni ni-bell-55">&bull;&bull;&bull;</button>
-                        </div>
-                    </div> -->
+                        <h2>Create Post</h2>
                     </div>
                     <div class="card-body">
-
                         <div class="form-group">
                             <label class="form-control-label" for="input-title">Title</label>
                             <input id="input-title" class="form-control form-control-alternative"
                                 placeholder="Input title" formControlName="title" type="text">
+                            <div *ngIf="submitted && f['title'].errors" class="invalid-feedback">
+                                <div *ngIf="f['title'].errors!['required']">Title is required</div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="form-control-label" for="input-content">Content</label>
                             <textarea class="form-control form-control-alternative" id="input-content"
                                 formControlName="content" placeholder="Input content"></textarea>
+                            <div *ngIf="submitted && f['content'].errors" class="invalid-feedback">
+                                <div *ngIf="f['content'].errors!['required']">Content is required</div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="form-control-label" for="input-hashtag">Hashtag</label>
                             <tag-input [(ngModel)]='hashtags' [theme]="'fooma-theme'" [ngModelOptions]="{standalone: true}">
                             </tag-input>
-                            <!-- <input [ngModel]="hashtagValue" (ngModelChange)='inputHashtag($event)' id="input-hashtag" class="form-control form-control-alternative" placeholder="Input hashtag" type="text"> -->
+                            <div *ngIf="submitted && hashtags.length === 0" class="invalid-feedback">
+                                Hashtag is required
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="form-control-label" for="input-hashtag">Upload Images</label><br>
-                            <button class="btn btn-info" (click)="fileInput.click()">
+                            <button type="button" class="btn btn-info" (click)="fileInput.click()">
                                 <span><i class="fas fa-upload"></i>  Upload</span>
                                 <input #fileInput type="file" accept="image/*" multiple (change)="selectFiles($event)"  style="display:none;" />
                             </button>
+                            <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
+                                Image is required
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="gallery-item" *ngFor="let preview of previews; let i = index">
                                 <img [src]="preview" alt="gallery thumbnail" class="gallery-img preview" [ngClass]="{'thumbnail': thumbnailNumber === i}" />
                                 <a (click)="removeImgPreview(preview)" class="remove-button"><i class="fas fa-times-circle"></i></a>
                                 <a (click)="setThumbnail(i)" class="thumbnail-button"><i class="fas fa-bookmark"></i></a>
-                                <!-- <button class="btn btn-link gallery-button"></button> -->
                             </div>
-                            <!-- <img *ngFor='let preview of previews' [src]="preview" class="preview"> -->
                         </div>
-                        <!-- <h4 class="card-title mb-1">{{post?.title}}</h4>
-                    <p class="card-text">{{post?.content}}</p>
-                    <ngb-carousel *ngIf="post?.postImages">
-                        <ng-template ngbSlide *ngFor="let image of post?.postImages">
-                            <div class="picsum-img-wrapper d-flex justify-content-center">
-                              <img [src]="image.imageUrl" alt="Random slide" style="height: 600px;">
-                            </div>
-                        </ng-template>
-                    </ngb-carousel>
-                    <br>
-                    <a href="javascript:void(0)" [routerLink]="['../../post/hashtag/', hashtag]" *ngFor="let hashtag of splitDescription(post.hashtag)" class="text-muted rounded mr-2 px-2 bg-pending my-1" style="width: fit-content;">
-                        #{{hashtag}}
-                    </a> -->
                     </div>
                     <div class="card-footer">
-                        <button type="submit" (click)="createPost()" class="btn btn-fooma">Create</button>
-                        <!-- <div class="row">
-                        <div class="col-6">
-                            <div class="d-inline-flex align-items-center text-fooma">
-                                <i class="ni ni-favourite-28"></i>
-                                <span class="ml-2 text-dark">{{post?.totalReact}}</span>
-                            </div>
+                        <button *ngIf="!isDone" type="submit" [disabled]="isLoading" (click)="createPost()" class="btn btn-fooma">Create</button>
+                        <div *ngIf="isDone" class="mt-2">
+                            <h2>Post created successfully <a class="text-fooma" [routerLink]="['../']">Go back</a></h2>
                         </div>
-                        <div class="col-6 text-right">
-                            <span>
-                                {{post?.totalComment}} comments
-                            </span>
-                        </div>
-                    </div>
-                    <hr class="mt-3">
-                    <div class="row mb-4" *ngFor="let comment of post?.postComments">
-                        <div class="col-auto">
-                            <img class="avatar rounded-circle" [src]="comment.userImageUrl" alt="avatar commentor">
-                        </div>
-                        <div class="col-11">
-                            <div class="px-3 py-2 w-100 rounded" style="background-color: #f6f6f6">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <h4 class="mb-0">{{comment.name}}</h4>
-                                    </div>
-                                    <div class="col-6 text-right">
-                                        <span>
-                                            {{comment.createDate | date: 'HH:mm dd/MM/yyyy'}}
-                                        </span>
-                                    </div>
-                                </div>
-                                <p class="mb-0">
-                                    {{comment.content}}
-                                </p>
-                            </div>
-                        </div>
-                    </div> -->
                     </div>
                 </div>
             </form>

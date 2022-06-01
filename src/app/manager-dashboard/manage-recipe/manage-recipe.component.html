@@ -1,6 +1,7 @@
 <div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
+            <a [routerLink]="['./create']" class="btn btn-info mb-4">Create Recipe</a>
         </div>
     </div>
 </div>
@@ -24,13 +25,28 @@
                 <div class="card-header border-0" style="border-radius: 0;">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Recipe - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Total Recipes - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="#" class="btn btn-sm btn-neutral btn-round btn-icon" data-toggle="tooltip"
-                                data-original-title="Edit product">
-                                <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span>
-                                <span class="btn-inner--text">Export</span>
+                            <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
+                                <span class="badge badge-dot"><i class="bg-success"></i></span>
+                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
+                                <span class="btn-inner--text">Active</span>
+                            </a>
+                            <a (click)="filterByStatus(2)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 2}" href="javascript:void(0)">
+                                <span class="badge badge-dot"><i class="bg-pending"></i></span>
+                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
+                                <span class="btn-inner--text">Pending</span>
+                            </a>
+                            <a (click)="filterByStatus(3)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 3}" href="javascript:void(0)">
+                                <span class="badge badge-dot"><i class="bg-red"></i></span>
+                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
+                                <span class="btn-inner--text">Denied</span>
+                            </a>
+                            <a (click)="filterByStatus(0)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 0}" href="javascript:void(0)">
+                                <span class="badge badge-dot"><i class="bg-gray"></i></span>
+                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
+                                <span class="btn-inner--text">Disable</span>
                             </a>
                         </div>
                     </div>
@@ -56,7 +72,7 @@
                                 <div class="input-group-prepend">
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" placeholder="Search" type="text" />
+                                <input class="form-control" placeholder="Search" [ngModel]="search" (ngModelChange)='onSearchChange($event)' type="text" />
                             </div>
                         </div>
                     </div>
@@ -103,7 +119,7 @@
                                 <td class="">
                                     <img src="{{recipe.thumbnail}}" style="height: 60px;"
                                         class="rounded img-thumbnail img-fluid mr-3">
-                                    <a [routerLink]="['../recipe', recipe.id]"
+                                    <a target="_blank" [routerLink]="['../recipe', recipe.id]"
                                         class="font-weight-bold text-dark">{{recipe.recipeName}}</a>
                                 </td>
                                 <td>
