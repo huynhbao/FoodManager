@@ -101,9 +101,8 @@
                                 <th style="width: 12%;">User</th>
                                 <th style="width: 10%;">Published Date</th>
                                 <th style="width: 12%;">Hashtag</th>
-                                <th>Preparation Time</th>
-                                <th>Cooking Time</th>
-                                <th>Status</th>
+                                <th>Cooking Method</th>
+                                <th>Category</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -118,8 +117,8 @@
                                 </td>
                                 <td class="">
                                     <img src="{{recipe.thumbnail}}" style="height: 60px;"
-                                        class="rounded img-thumbnail img-fluid mr-3">
-                                    <a target="_blank" [routerLink]="['../recipe', recipe.id]"
+                                        class="img-thumbnail img-fluid mr-3">
+                                    <a target="_blank" [routerLink]="['../recipe/detail', recipe.id]"
                                         class="font-weight-bold text-dark">{{recipe.recipeName}}</a>
                                 </td>
                                 <td>
@@ -133,20 +132,13 @@
                                         class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
                                         <a>#{{hashtag}}</a></div>
                                 </td>
-                                <td class="text-center">
-                                    <b>{{recipe.preparationTime}}</b>
+                                <td>
+                                    <b>{{recipe.cookingMethodName}}</b>
                                 </td>
-                                <td class="text-center">
-                                    <b>{{recipe.cookingTime}}</b>
+                                <td>
+                                    <b>{{recipe.manyToManyRecipeCategories[0].recipeCategoryName}}</b>
                                 </td>
-                                <td class="text-center">
-                                    <div [ngClass]="recipe.status == 1 ? 'bg-active' : 'bg-pending'" class="rounded px-2">
-                                        <span class="badge badge-dot"><i
-                                                [ngClass]="recipe.status == 1 ? 'bg-success' : 'bg-warning'"></i>
-                                            {{recipe.status == 1 ? 'Active' : 'Disabled'}}</span>
-                                    </div>
-                                </td>
-                                <td class="table-actions text-center">
+                                <td class="table-actions">
                                     <button [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 0)"
                                         class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip"
                                         data-original-title="Delete Post">

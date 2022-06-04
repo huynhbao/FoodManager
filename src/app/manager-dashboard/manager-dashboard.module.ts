@@ -21,6 +21,7 @@ import {
 import { faClock, faUsers, faFire, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { CreatePostComponent } from './create-post/create-post.component';
 import { TagInputModule } from 'ngx-chips';
+import { CreateRecipeComponent } from './create-recipe/create-recipe.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { TagInputModule } from 'ngx-chips';
     ManageRecipeComponent,
     RecipeDetailComponent,
     CreatePostComponent,
+    CreateRecipeComponent,
   ],
   imports: [
     TagInputModule,

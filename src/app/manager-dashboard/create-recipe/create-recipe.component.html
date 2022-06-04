@@ -1,0 +1,106 @@
+<div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 card-wrapper">
+                <div class="header-body">
+                    <a [routerLink]="['../']" class="btn btn-info mb-4">Go Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 card-wrapper">
+            <form [formGroup]="createForm" (ngSubmit)="createRecipe()">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Create Recipe</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-name">Name</label>
+                            <input id="input-name" class="form-control form-control-alternative"
+                                placeholder="Input name" formControlName="name" type="text">
+                            <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                                <div *ngIf="f['name'].errors!['required']">Name is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-description">Description</label>
+                            <textarea class="form-control form-control-alternative" id="input-description"
+                                formControlName="description" placeholder="Input description"></textarea>
+                            <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
+                                <div *ngIf="f['description'].errors!['required']">Description is required</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-hashtag">Category</label>
+                            <tag-input [(ngModel)]='categories' [theme]="'fooma-theme'" [identifyBy]="'id'"
+                                [displayBy]="'name'" [onlyFromAutocomplete]="true" placeholder="Add Category" (onSelect)="onTagSelected($event)"
+                                [ngModelOptions]="{standalone: true}">
+                                <tag-input-dropdown
+                                    [autocompleteObservable]="requestAutocompleteItems$"
+                                    [displayBy]="'categoryName'"
+                                    [identifyBy]="'id'"
+                                    [showDropdownIfEmpty]="true"
+                                    [minimumTextLength]="0"
+                                    [focusFirstElement]="true"
+                                >
+                                </tag-input-dropdown>
+                            </tag-input>
+                            <div *ngIf="submitted && categories.length === 0" class="invalid-feedback">
+                                Category is required
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-hashtag">Hashtag</label>
+                            <tag-input [(ngModel)]='hashtags' [theme]="'fooma-theme'"
+                                [ngModelOptions]="{standalone: true}">
+                            </tag-input>
+                            <div *ngIf="submitted && hashtags.length === 0" class="invalid-feedback">
+                                Hashtag is required
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="input-hashtag">Upload Images</label><br>
+                            <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
+                                Image is required
+                            </div>
+                            <div>
+                                <button type="button" class="btn-upload" (click)="fileInput.click()">
+                                    <span><i class="fas fa-upload"></i> Upload</span>
+                                    <input #fileInput type="file" accept="image/*" multiple
+                                        (change)="selectFiles($event)" style="display:none;" />
+                                </button>
+                                <span class="gallery-item" *ngFor="let preview of previews; let i = index">
+                                    <img [src]="preview" alt="gallery thumbnail" class="gallery-img preview"
+                                        [ngClass]="{'thumbnail': thumbnailNumber === i}" />
+                                    <a (click)="removeImgPreview(preview)" class="remove-button"><i
+                                            class="fas fa-times-circle"></i></a>
+                                    <a (click)="setThumbnail(i)" class="thumbnail-button"><i
+                                            class="fas fa-bookmark"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <button *ngIf="!isDone" type="submit" [disabled]="isLoading"
+                                    class="btn btn-fooma">Create</button>
+                                <div *ngIf="isDone" class="mt-2">
+                                    <h2>Post created successfully <a class="text-fooma" [routerLink]="['../']">Go
+                                            back</a></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
