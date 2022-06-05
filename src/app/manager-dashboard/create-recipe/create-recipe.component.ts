@@ -3,11 +3,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TagModel } from 'ngx-chips/core/tag-model';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { TagInputComponent } from 'ngx-chips';
-import { Category } from 'src/app/models/category.model';
+import { Category, RecipeCategory, RecipeMethod, RecipeOrigin } from 'src/app/models/category.model';
+import { RecipeIngredient } from 'src/app/models/recipe.model';
 
 @Component({
   selector: 'app-create-recipe',
@@ -20,8 +21,14 @@ export class CreateRecipeComponent implements OnInit {
   previews: string[] = [];
   selectedFiles?: FileList;
   categories = [];
-  categoriesDB:Category[] = [];
+  categoriesDB:RecipeCategory[] = [];
+  origin = [];
+  originsDB:RecipeOrigin[] = [];
+  method = [];
+  methodsDB:RecipeMethod[] = [];
   hashtags = [];
+  ingredients:[][] = [];
+  ingredientsDB: RecipeIngredient[] = [];
   thumbnailNumber: number = 0;
   createForm: FormGroup;
   submitted: boolean = false;
@@ -51,7 +58,7 @@ export class CreateRecipeComponent implements OnInit {
 
   async createRecipe() {
     this.submitted = true;
-    
+    console.log(this.ingredients);
     if (
       this.createForm.invalid ||
       this.previews.length === 0 ||
@@ -63,6 +70,7 @@ export class CreateRecipeComponent implements OnInit {
     this.isLoading = true;
 
     const hashtag = '#' + this.hashtags.map((e) => e['value']).join(' #');
+    
     /* let postImages:Image[] = []; 
     for (let i = 0; i < this.previews.length; i++) {
       
@@ -148,8 +156,29 @@ export class CreateRecipeComponent implements OnInit {
     this.tagInputRef.dropdown.show();
   }
 
-  public requestAutocompleteItems$ = (text: string): Observable<TagModel[]> => {
-    console.log('autocomplete', this.selectedTag);
+  requestAutocompleteItemsMethod$ = (text: string): Observable<TagModel[]> => {
+    if (this.selectedTag) {
+      return of(
+        this.methodsDB.filter(
+          method => method.id === this.selectedTag.id
+        )
+      );
+    }
+    return of(this.methodsDB);
+  };
+
+  requestAutocompleteItemsOrigin$ = (text: string): Observable<TagModel[]> => {
+    if (this.selectedTag) {
+      return of(
+        this.originsDB.filter(
+          origin => origin.id === this.selectedTag.id
+        )
+      );
+    }
+    return of(this.originsDB);
+  };
+
+  requestAutocompleteItemsCategory$ = (text: string): Observable<TagModel[]> => {
     if (this.selectedTag) {
       return of(
         this.categoriesDB.filter(
@@ -160,11 +189,77 @@ export class CreateRecipeComponent implements OnInit {
     return of(this.categoriesDB);
   };
 
+  requestAutocompleteItemsIngredient$ = (text: string): Observable<any> => {
+    return this.sharedService.getIngredientDb(text).pipe(map(data => {
+
+      return data.items
+    }));
+    /* return this.sharedService.getIngredientDb("").pipe(
+      map(data => {
+        data.json()
+      }
+    )); */
+  };
+
+  increaseIngredient() {
+    let ingredient:RecipeIngredient = {
+      ingredientDbid: "",
+      ingredientName: "",
+      quantity: 0,
+      isMain: false,
+      status: 1
+    }
+    this.ingredientsDB.push(ingredient);
+  }
+
+  removeIngredient(index) {
+    if (this.ingredientsDB.length == 1) return;
+    this.ingredientsDB.splice(index, 1);
+  }
+
   ngOnInit(): void {
-    this.sharedService.getCategories().subscribe({
-      next: (categories: Category[]) => {
-        this.categoriesDB = categories;
-        console.log(this.categoriesDB);
+    let ingredient:RecipeIngredient = {
+      ingredientDbid: "",
+      ingredientName: "",
+      quantity: 0,
+      isMain: false,
+      status: 1
+    }
+    this.ingredientsDB.push(ingredient);
+    /* this.sharedService.getIngredientDb("").pipe(
+      map(data => {
+        //data.items.json();
+        console.log(data.items);
+      }
+    )).subscribe({
+      next: (categories: any) => {
+        console.log(categories);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });; */
+    this.sharedService.getRecipeCategories(50).subscribe({
+      next: (categories: any) => {
+        this.categoriesDB = categories.items;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+
+    this.sharedService.getRecipeMethod(50).subscribe({
+      next: (methods: any) => {
+        this.methodsDB = methods.items;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
+
+    this.sharedService.getRecipeOrigin(50).subscribe({
+      next: (origins: any) => {
+        this.originsDB = origins.items;
       },
       error: (error) => {
         console.log(error);

@@ -4,3 +4,21 @@ export interface Category {
     createDate?: Date;
     status?: number;
 }
+
+export interface RecipeCategory {
+    id: string;
+    recipeCategoryName: string;
+    status?: number;
+}
+
+export interface RecipeOrigin {
+    id: string;
+    originName: string;
+    status?: number;
+}
+
+export interface RecipeMethod {
+    id: string;
+    cookingMethodName: string;
+    status?: number;
+}
