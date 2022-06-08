@@ -1,14 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TagModel } from 'ngx-chips/core/tag-model';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { map, Observable, of } from 'rxjs';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { TagInputComponent } from 'ngx-chips';
-import { Category, RecipeCategory, RecipeMethod, RecipeOrigin } from 'src/app/models/category.model';
+import {
+  Category,
+  RecipeCategory,
+  RecipeMethod,
+  RecipeOrigin,
+} from 'src/app/models/category.model';
 import { RecipeIngredient } from 'src/app/models/recipe.model';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-recipe',
@@ -21,13 +28,13 @@ export class CreateRecipeComponent implements OnInit {
   previews: string[] = [];
   selectedFiles?: FileList;
   categories = [];
-  categoriesDB:RecipeCategory[] = [];
+  categoriesDB: RecipeCategory[] = [];
   origin = [];
-  originsDB:RecipeOrigin[] = [];
+  originsDB: RecipeOrigin[] = [];
   method = [];
-  methodsDB:RecipeMethod[] = [];
+  methodsDB: RecipeMethod[] = [];
   hashtags = [];
-  ingredients:[][] = [];
+  ingredients: [][] = [];
   ingredientsDB: RecipeIngredient[] = [];
   thumbnailNumber: number = 0;
   createForm: FormGroup;
@@ -49,16 +56,37 @@ export class CreateRecipeComponent implements OnInit {
       cookingTime: ['', Validators.required],
       serves: ['', Validators.required],
       calories: ['', Validators.required],
+      ingredients: this.formBuilder.array([]),
+      methods: this.formBuilder.array([]),
     });
+
+    this.formIngredient.push(this.formBuilder.group({
+      ingredientName: ['', Validators.required],
+      quantity: ['', Validators.required],
+      unit: ['', Validators.required]
+    }));
+
+    this.formMethod.push(this.formBuilder.group({
+      step: ['', Validators.required],
+      content: ['', Validators.required]
+    }));
   }
 
   get f() {
     return this.createForm.controls;
   }
 
+  get formIngredient() { return this.f["ingredients"] as FormArray; }
+
+  get formMethod() { return this.f["methods"] as FormArray; }
+
+  getFormIngredientAt(i: number) {
+    return this.formIngredient.at(i) as FormGroup;
+  }
+
   async createRecipe() {
+    console.log(this.formIngredient);
     this.submitted = true;
-    console.log(this.ingredients);
     if (
       this.createForm.invalid ||
       this.previews.length === 0 ||
@@ -70,7 +98,9 @@ export class CreateRecipeComponent implements OnInit {
     this.isLoading = true;
 
     const hashtag = '#' + this.hashtags.map((e) => e['value']).join(' #');
+
     
+    //this.ingredients.filter((value, i) => {console.log(value.some(e => e["categoryId"] === '1aebc7b1-94fa-4883-9b8e-bffc9a2525b9'))});
     /* let postImages:Image[] = []; 
     for (let i = 0; i < this.previews.length; i++) {
       
@@ -159,9 +189,7 @@ export class CreateRecipeComponent implements OnInit {
   requestAutocompleteItemsMethod$ = (text: string): Observable<TagModel[]> => {
     if (this.selectedTag) {
       return of(
-        this.methodsDB.filter(
-          method => method.id === this.selectedTag.id
-        )
+        this.methodsDB.filter((method) => method.id === this.selectedTag.id)
       );
     }
     return of(this.methodsDB);
@@ -170,30 +198,71 @@ export class CreateRecipeComponent implements OnInit {
   requestAutocompleteItemsOrigin$ = (text: string): Observable<TagModel[]> => {
     if (this.selectedTag) {
       return of(
-        this.originsDB.filter(
-          origin => origin.id === this.selectedTag.id
-        )
+        this.originsDB.filter((origin) => origin.id === this.selectedTag.id)
       );
     }
     return of(this.originsDB);
   };
 
-  requestAutocompleteItemsCategory$ = (text: string): Observable<TagModel[]> => {
+  requestAutocompleteItemsCategory$ = (
+    text: string
+  ): Observable<TagModel[]> => {
     if (this.selectedTag) {
       return of(
         this.categoriesDB.filter(
-          category => category.id === this.selectedTag.id
+          (category) => category.id === this.selectedTag.id
         )
       );
     }
     return of(this.categoriesDB);
   };
 
-  requestAutocompleteItemsIngredient$ = (text: string): Observable<any> => {
-    return this.sharedService.getIngredientDb(text).pipe(map(data => {
+  onAdding(tag: TagModel): Observable<TagModel> {
+    //const confirm = window.confirm('Do you really want to add this tag?');
+    return of(tag).pipe(
+      map((value) => {
+        for (let i = 0; i < this.ingredients.length; i++) {
+          const element = this.ingredients[i];
+          console.log(element);
+        }
+        return tag;
+      })
+    );
+  }
 
-      return data.items
-    }));
+  requestAutocompleteItemsIngredient$ = (text: string): Observable<any> => {
+    let arr: any[] = [
+      {
+        categoryId: 'a03736d9-a346-48ad-a040-d5ddc72dacf3',
+        categoryName: 'thịt',
+        createDate: '2022-04-19T22:31:54.92',
+        id: undefined,
+        imageUrl:
+          'https://superawesomevectors.com/wp-content/uploads/2016/09/steak-meat-flat-vector-800x566.jpg',
+        ingredientName: 'phao câu gà',
+        name: 'phao câu gà',
+        status: 1,
+        unit: 'gram',
+      },
+    ];
+    
+    //console.log(this.ingredients[1]);
+    /* for (let i = 0; i < this.ingredients.length; i++) {
+      const element = this.ingredients[i];
+      console.log(element[i]);
+      arr.push(element[i]);
+    } */
+    return this.sharedService.getIngredientDb(text).pipe(
+      map((data) => {
+        let arr2 = data.items;
+        let ids = arr.map(c => c.categoryId);
+        arr = arr.concat(arr2.filter(({categoryId}) => !ids.includes(categoryId)))
+        console.log(arr.concat(arr2.filter(({categoryId}) => !ids.includes(categoryId))));
+        const array1 = data.items.filter((val) => !arr.includes(val));
+        // console.log(arr, array1);
+        return arr2;
+      })
+    );
     /* return this.sharedService.getIngredientDb("").pipe(
       map(data => {
         data.json()
@@ -201,31 +270,46 @@ export class CreateRecipeComponent implements OnInit {
     )); */
   };
 
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.formMethod.controls, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.formMethod.value, event.previousIndex, event.currentIndex);
+  }
+
   increaseIngredient() {
-    let ingredient:RecipeIngredient = {
-      ingredientDbid: "",
-      ingredientName: "",
-      quantity: 0,
-      isMain: false,
-      status: 1
-    }
-    this.ingredientsDB.push(ingredient);
+    this.formIngredient.push(this.formBuilder.group({
+      ingredientName: ['', Validators.required],
+      quantity: ['', Validators.required],
+      unit: ['', Validators.required]
+    }));
   }
 
   removeIngredient(index) {
-    if (this.ingredientsDB.length == 1) return;
-    this.ingredientsDB.splice(index, 1);
+    if (this.formIngredient.length == 1) return;
+    this.formIngredient.removeAt(index);
+  }
+
+  increaseMethod() {
+    this.formMethod.push(this.formBuilder.group({
+      step: ['', Validators.required],
+      content: ['', Validators.required]
+    }));
+  }
+
+  removeMethod(index) {
+    if (this.formMethod.length == 1) return;
+    this.formMethod.removeAt(index);
   }
 
   ngOnInit(): void {
-    let ingredient:RecipeIngredient = {
-      ingredientDbid: "",
-      ingredientName: "",
+    /* let ingredient: RecipeIngredient = {
+      ingredientDbid: '',
+      ingredientName: '',
       quantity: 0,
       isMain: false,
-      status: 1
-    }
-    this.ingredientsDB.push(ingredient);
+      status: 1,
+    };
+    this.ingredientsDB.push(ingredient); */
+
     /* this.sharedService.getIngredientDb("").pipe(
       map(data => {
         //data.items.json();
@@ -245,7 +329,7 @@ export class CreateRecipeComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-      }
+      },
     });
 
     this.sharedService.getRecipeMethod(50).subscribe({
@@ -254,7 +338,7 @@ export class CreateRecipeComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-      }
+      },
     });
 
     this.sharedService.getRecipeOrigin(50).subscribe({
@@ -263,7 +347,11 @@ export class CreateRecipeComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-      }
+      },
     });
+  }
+
+  print(value) {
+    console.log(value);
   }
 }
