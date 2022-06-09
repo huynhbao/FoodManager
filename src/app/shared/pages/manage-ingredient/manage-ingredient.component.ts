@@ -37,10 +37,6 @@ export class ManageIngredientComponent implements OnInit {
     this.loadIngredients();
   }
 
-  public changePagesize(num: number): void {
-    this.itemsPerPage = this.pageSize + num;
-  }
-
   // The master checkbox will check/ uncheck all items
   public checkUncheckAll() {
     for (var i = 0; i < this.ingredients.length; i++) {

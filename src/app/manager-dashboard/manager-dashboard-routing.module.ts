@@ -5,6 +5,7 @@ import { CreatePostComponent } from './create-post/create-post.component';
 import { CreateRecipeComponent } from './create-recipe/create-recipe.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ManagePostComponent } from './manage-post/manage-post.component';
+import { ManageRecipeAdministratorComponent } from './manage-recipe-administrator/manage-recipe-administrator.component';
 import { ManageRecipeComponent } from './manage-recipe/manage-recipe.component';
 import { ManagementComponent } from './management/management.component';
 import { PendingPostComponent } from './pending-post/pending-post.component';
@@ -35,6 +36,9 @@ const routes: Routes = [
       },
       {
         path: 'recipe', component: ManageRecipeComponent,
+      },
+      {
+        path: 'recipe-administrator', component: ManageRecipeAdministratorComponent,
       },
       {
         path: 'recipe/create', component: CreateRecipeComponent,

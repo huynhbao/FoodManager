@@ -11,10 +11,13 @@
             <div class="card mb-0" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" [routerLink]="['../post']">Posts</a>
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../post']">Bài viết</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../recipe']">Recipes</a>
+                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../recipe']">Công thức</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe-administrator']">Công thức (Quản lý)</a>
                     </li>
                 </ul>
             </div>
@@ -139,10 +142,17 @@
                                     <b>{{recipe.manyToManyRecipeCategories[0].recipeCategoryName}}</b>
                                 </td>
                                 <td class="table-actions">
-                                    <button [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 0)"
-                                        class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip"
-                                        data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
+                                        <i class="fas fa-check-double"></i>
+                                    </button>
+                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 3)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                        <i class="fas fa-ban"></i>
                                     </button>
                                 </td>
                             </tr>

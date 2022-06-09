@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CreatePost, Post } from '../models/post.model';
-import { Recipe } from '../models/recipe.model';
+import { CreateRecipe, Recipe } from '../models/recipe.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,9 +51,15 @@ export class ManagerService {
     );
   }
 
-  getRecipes(search: string = "", status: number, hashtag: string, page: number): Observable<any> {
+  createRecipe(recipe: CreateRecipe): Observable<any> {
+    return this.http.post<CreateRecipe>(
+      `${this.baseUrl}/recipe`, recipe
+    );
+  }
+
+  getRecipes(search: string = "", status: number, hashtag: string, page: number, role: number = 0): Observable<any> {
     return this.http.get<any>(
-      `${this.baseUrl}/recipe?search=${search}&status=${status}&page=${page}&size=5`
+      `${this.baseUrl}/recipe?search=${search}&status=${status}&page=${page}&size=5&role=${role}`
     );
   }
 
@@ -66,6 +72,12 @@ export class ManagerService {
   getHashtag() {
     return this.http.get<any>(
       `${this.baseUrl}/post/hashtag`
+    );
+  }
+
+  setRecipeByStatus(id: string, status: number) {
+    return this.http.put<any>(
+      `${this.baseUrl}/recipe/status/${id}`, {status: status}
     );
   }
 }

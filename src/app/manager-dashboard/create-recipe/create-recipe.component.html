@@ -34,6 +34,42 @@
                                 <div *ngIf="f['description'].errors!['required']">Description is required</div>
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="form-control-label" for="input-preparationTime">Preparation Time (minutes)</label>
+                                <input id="input-preparationTime" class="form-control form-control-alternative"
+                                    placeholder="Input preparation time (minutes)" formControlName="preparationTime" type="number">
+                                <div *ngIf="submitted && f['preparationTime'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['preparationTime'].errors!['required']">Preparation time is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="form-control-label" for="input-cookingTime">Cooking Time (minutes)</label>
+                                <input id="input-cookingTime" class="form-control form-control-alternative"
+                                    placeholder="Input cooking time (minutes)" formControlName="cookingTime" type="number">
+                                <div *ngIf="submitted && f['cookingTime'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['cookingTime'].errors!['required']">Cooking time is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="form-control-label" for="input-serves">Serves</label>
+                                <input id="input-serves" class="form-control form-control-alternative"
+                                    placeholder="Input serves" formControlName="serves" type="number">
+                                <div *ngIf="submitted && f['serves'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['serves'].errors!['required']">Serves is required</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label class="form-control-label" for="input-calories">Calories</label>
+                                <input id="input-calories" class="form-control form-control-alternative"
+                                    placeholder="Input calories" formControlName="calories" type="number">
+                                <div *ngIf="submitted && f['calories'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['calories'].errors!['required']">Calories is required</div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="form-control-label" for="input-hashtag">Origin</label>
                             <tag-input [(ngModel)]='origin' [theme]="'fooma-theme'" [identifyBy]="'id'"
@@ -123,16 +159,6 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <div class="row">
-                            <div class="col-md-12 text-right">
-                                <button *ngIf="!isDone" type="submit" [disabled]="isLoading"
-                                    class="btn btn-fooma">Create</button>
-                                <div *ngIf="isDone" class="mt-2">
-                                    <h2>Post created successfully <a class="text-fooma" [routerLink]="['../']">Go
-                                            back</a></h2>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="card">
@@ -158,7 +184,7 @@
                                     </div>
                                 </div>
                                 <tag-input  formControlName="ingredientName" [theme]="'fooma-theme'" [identifyBy]="'id'"
-                                    [displayBy]="'name'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Add Ingredient" placeholder="Add Ingredient" (onSelect)="onTagSelected($event)"
+                                    [displayBy]="'name'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Add Ingredient" placeholder="Add Ingredient" (onAdd)="onAdd($event, i)" [onAdding]="onAdding" (onSelect)="onTagSelected($event)"
                                     >
                                     <tag-input-dropdown
                                         [autocompleteObservable]="requestAutocompleteItemsIngredient$"
@@ -178,7 +204,7 @@
                                     <input id="input-quantity" class="form-control form-control-alternative"
                                         placeholder="Input quantity" type="number" min="1" formControlName="quantity" required>
                                     <div *ngIf="submitted && formIngredient.controls[i]['controls']['quantity']['errors']" class="invalid-feedback">
-                                        <div *ngIf="formIngredient.controls[i]['controls']['quantity']['errors']['required']">Quanity is required</div>
+                                        <div *ngIf="formIngredient.controls[i]['controls']['quantity']['errors']['required']">Quantity is required</div>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -205,11 +231,11 @@
                         <h2>Methods</h2>
                     </div>
                     <div class="card-body" formArrayName="methods">
-                        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" class="rounded px-4 py-2 mb-4 shadow" *ngFor="let method of formMethod.controls; let i = index">
-                            <div class="form-group" [formGroupName]="i">
+                        <div class="rounded px-4 py-2 mb-4 shadow" *ngFor="let method of formMethod.controls; let i = index" [formGroupName]="i">
+                            <div class="form-group">
                                 <div class="row">
                                     <div class="col-6 d-flex align-items-center">
-                                        <h3 for="input-hashtag" class="text-fooma"><span cdkDragHandle>Step {{i+1}}</span></h3>
+                                        <h3 for="input-hashtag" class="text-fooma">Step {{i+1}}</h3>
                                     </div>
                                     <div class="col-6 text-right">
                                         <div class="btn-group">
@@ -225,31 +251,24 @@
                                 <label class="form-control-label" for="input-content">Content</label>
                                 <textarea class="form-control form-control-alternative" id="input-content"
                                 formControlName="content" placeholder="Input content"></textarea>
-                                <div *ngIf="submitted && f['content'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['content'].errors!['required']">Content is required</div>
+                                <div *ngIf="submitted && formMethod.controls[i]['controls']['content']['errors']" class="invalid-feedback">
+                                    <div *ngIf="formMethod.controls[i]['controls']['content']['errors']['required']">Content is required</div>
                                 </div>
                             </div>
-                            <!-- <div class="form-group">
+                            <div class="form-group">
                                 <label class="form-control-label" for="input-hashtag">Upload Images</label><br>
-                                <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
-                                    Image is required
-                                </div>
-                                <div>
+                                <div class="d-inline-block">
                                     <button type="button" class="btn-upload" (click)="fileInput.click()">
                                         <span><i class="fas fa-upload"></i> Upload</span>
                                         <input #fileInput type="file" accept="image/*" multiple
-                                            (change)="selectFiles($event)" style="display:none;" />
+                                            (change)="selectFilesMethod($event, i)" style="display:none;" />
                                     </button>
-                                    <span class="gallery-item" *ngFor="let preview of previews; let i = index">
-                                        <img [src]="preview" alt="gallery thumbnail" class="gallery-img preview"
-                                            [ngClass]="{'thumbnail': thumbnailNumber === i}" />
-                                        <a (click)="removeImgPreview(preview)" class="remove-button"><i
-                                                class="fas fa-times-circle"></i></a>
-                                        <a (click)="setThumbnail(i)" class="thumbnail-button"><i
-                                                class="fas fa-bookmark"></i></a>
+                                    <span class="gallery-item" *ngFor="let preview of formMethod.controls[i]['controls']['images']['controls']; let j = index">
+                                        <img [src]="preview.value" alt="gallery thumbnail" class="gallery-img preview"/>
+                                        <a (click)="removeImgMethod(i,j)" class="remove-button"><i class="fas fa-times-circle"></i></a>
                                     </span>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -257,6 +276,14 @@
                             <div class="col-md-12 text-right">
                                 <button type="button" (click)="increaseMethod()" class="btn btn-fooma">Add Method</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button *ngIf="!isDone" type="submit" [disabled]="isLoading" class="btn btn-block btn-fooma mb-4">Create</button>
+                        <div *ngIf="isDone" class="mt-2">
+                            <h2>Recipe created successfully <a class="text-fooma" [routerLink]="['../']">Go back</a></h2>
                         </div>
                     </div>
                 </div>

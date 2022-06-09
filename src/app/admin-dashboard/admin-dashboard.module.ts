@@ -9,6 +9,7 @@ import { ManageCategoryComponent } from './manage-category/manage-category.compo
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipe } from './pipes/filter.pipe';
 import { BrowserModule } from '@angular/platform-browser';
+import { SharedModule } from '../shared/modules/shared/shared.module';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { BrowserModule } from '@angular/platform-browser';
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    SharedModule,
     RouterModule.forChild(AdminDashboardRoutes),
   ]
 })

@@ -24,4 +24,10 @@ export class AdminManageService {
       `${this.baseUrl}/category?page=${page}&size=5`
     );
   }
+
+  getUsers(search: string = "", status: number, page: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}/user/users?name=${search}&status=${status}&page=${page}&size=5`
+    );
+  }
 }

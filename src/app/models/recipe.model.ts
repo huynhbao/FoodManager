@@ -2,8 +2,9 @@ import { User } from "./user.model";
 
 export interface RecipeImage {
   imageUrl: string;
-  orderNumber: string;
+  orderNumber: number;
   status: number;
+  isThumbnail: boolean;
 }
 
 export interface RecipeCategory {
@@ -15,6 +16,7 @@ export interface RecipeIngredient {
   ingredientDbid: string;
   ingredientName: string;
   quantity: number;
+  unit: string;
   isMain: boolean;
   status: number;
 }
@@ -23,7 +25,7 @@ export interface RecipeMethod {
   content: string;
   recipeMethodImages: RecipeImage[];
   step: number;
-  status: boolean;
+  status: number;
 }
 
 export interface Recipe {
@@ -45,6 +47,22 @@ export interface Recipe {
   status: number;
   isSelected?: boolean;
   manyToManyRecipeCategories: RecipeCategory[];
+  recipeIngredients: RecipeIngredient[];
+  recipeMethods: RecipeMethod[];
+}
+
+export interface CreateRecipe {
+  originId: string;
+  cookingMethodId: string;
+  recipeName: string;
+  description: string;
+  preparationTime: number;
+  cookingTime: number;
+  serves: number;
+  calories: number;
+  hashtag: string;
+  manyToManyRecipeCategories: RecipeCategory[];
+  recipeImages: RecipeImage[];
   recipeIngredients: RecipeIngredient[];
   recipeMethods: RecipeMethod[];
 }

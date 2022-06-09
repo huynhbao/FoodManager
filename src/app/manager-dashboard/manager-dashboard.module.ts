@@ -22,6 +22,7 @@ import { faClock, faUsers, faFire, faCheckCircle } from '@fortawesome/free-solid
 import { CreatePostComponent } from './create-post/create-post.component';
 import { TagInputModule } from 'ngx-chips';
 import { CreateRecipeComponent } from './create-recipe/create-recipe.component';
+import { ManageRecipeAdministratorComponent } from './manage-recipe-administrator/manage-recipe-administrator.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { CreateRecipeComponent } from './create-recipe/create-recipe.component';
     RecipeDetailComponent,
     CreatePostComponent,
     CreateRecipeComponent,
+    ManageRecipeAdministratorComponent,
   ],
   imports: [
     TagInputModule,

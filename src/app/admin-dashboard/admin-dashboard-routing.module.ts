@@ -6,6 +6,19 @@ import { ManageUserComponent } from './manage-user/manage-user.component';
 export const AdminDashboardRoutes: Routes = [
   { path: '', redirectTo: 'dashboard',  pathMatch:'full' },
   { path: 'dashboard',      component: DashboardComponent},
-  { path: 'manage-user',      component: ManageUserComponent },
-  { path: 'manage-category',      component: ManageCategoryComponent },
+  { path: 'manage',
+    children: [
+      {
+        path:'',
+        redirectTo: 'user',
+        pathMatch: 'full' 
+      },
+      {
+        path: 'user', component: ManageUserComponent,
+      },
+      {
+        path: 'category', component: ManageCategoryComponent,
+      },
+    ]
+  }
 ];

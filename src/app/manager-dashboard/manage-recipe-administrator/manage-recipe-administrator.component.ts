@@ -6,11 +6,12 @@ import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
-  selector: 'app-manage-recipe',
-  templateUrl: './manage-recipe.component.html',
-  styleUrls: ['./manage-recipe.component.scss']
+  selector: 'app-manage-recipe-administrator',
+  templateUrl: './manage-recipe-administrator.component.html',
+  styleUrls: ['./manage-recipe-administrator.component.scss']
 })
-export class ManageRecipeComponent implements OnInit {
+export class ManageRecipeAdministratorComponent implements OnInit {
+
   recipes: Recipe[] = [];
   listHashtag: string[] = ["All"];
   currentPage: number = 1;
@@ -30,7 +31,7 @@ export class ManageRecipeComponent implements OnInit {
   private loadRecipes() {
     this.isLoading = true;
     
-    this.managerService.getRecipes(this.search, this.statusSelected, this.listHashtag[this.hastagSelected], this.currentPage).subscribe({
+    this.managerService.getRecipes(this.search, this.statusSelected, this.listHashtag[this.hastagSelected], this.currentPage, 1).subscribe({
       next: (res:any) => {
         this.collectionSize = res.totalItem;
         let recipes: Recipe[] = res.items;

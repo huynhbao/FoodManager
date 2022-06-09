@@ -1,7 +1,7 @@
 <div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            <a [routerLink]="['./create']" class="btn btn-info mb-4">Create Post</a>
+            <a [routerLink]="['./create']" class="btn btn-info mb-4">Create Recipe</a>
         </div>
     </div>
 </div>
@@ -11,13 +11,13 @@
             <div class="card mb-0" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../post']">Bài viết</a>
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../post']">Bài viết</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe']">Công thức</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe-administrator']">Công thức (Quản lý)</a>
+                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../recipe-administrator']">Công thức (Quản lý)</a>
                     </li>
                 </ul>
             </div>
@@ -28,7 +28,7 @@
                 <div class="card-header border-0" style="border-radius: 0;">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Posts - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Total Recipes - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
@@ -62,7 +62,7 @@
                                 <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
                                     <div *ngIf="!isLoadingHashtag">
                                         <button type="button" class="dropdown-item"
-                                            *ngFor="let hashtag of listHashtag; let i = index" (click)="filterHashtag(i, false)">
+                                            *ngFor="let hashtag of listHashtag; let i = index" (click)="filterHashtag(i)">
                                             {{hashtag}}
                                         </button>
                                     </div>
@@ -75,7 +75,7 @@
                                 <div class="input-group-prepend">
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" placeholder="Search" type="text" />
+                                <input class="form-control" placeholder="Search" [ngModel]="search" (ngModelChange)='onSearchChange($event)' type="text" />
                             </div>
                         </div>
                     </div>
@@ -101,56 +101,57 @@
                                     </div>
                                 </th>
                                 <th style="width: 25%;">Title</th>
-                                <th style="width: 12%;">Poster</th>
+                                <th style="width: 12%;">User</th>
                                 <th style="width: 10%;">Published Date</th>
                                 <th style="width: 12%;">Hashtag</th>
-                                <th>Total Comment</th>
-                                <th>Total React</th>
+                                <th>Cooking Method</th>
+                                <th>Category</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let post of listPost" [ngClass]="{'selected': post.isSelected === true}">
+                            <tr *ngFor="let recipe of recipes" [ngClass]="{'selected': recipe.isSelected === true}">
                                 <td class="text-center">
                                     <div class="custom-checkbox" style="font-size: 1.3rem;">
-                                        <input id="{{post.id}}" type="checkbox" [(ngModel)]="post.isSelected"
+                                        <input id="{{recipe.id}}" type="checkbox" [(ngModel)]="recipe.isSelected"
                                             (change)="isAllSelected()">
-                                        <label class="mb-0" for="{{post.id}}"></label>
+                                        <label class="mb-0" for="{{recipe.id}}"></label>
                                     </div>
                                 </td>
                                 <td class="">
-                                    <img src="{{post.postImages[0].imageUrl}}" style="height: 60px;"
+                                    <img src="{{recipe.thumbnail}}" style="height: 60px;"
                                         class="img-thumbnail img-fluid mr-3">
-                                    <a target="_blank" [routerLink]="['../post/detail', post.id]" class="font-weight-bold text-dark">{{post.title}}</a>
+                                    <a target="_blank" [routerLink]="['../recipe/detail', recipe.id]"
+                                        class="font-weight-bold text-dark">{{recipe.recipeName}}</a>
                                 </td>
                                 <td>
-                                    <b>{{post.user.fullname}}</b>
+                                    <b>{{recipe.user.fullname}}</b>
                                 </td>
                                 <td>
-                                    <span class="text-muted">{{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}}</span>
+                                    <span class="text-muted">{{recipe.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td style="width:1px; white-space:nowrap;">
-                                    <div *ngFor="let hashtag of splitDescription(post.hashtag)"
+                                    <div *ngFor="let hashtag of splitDescription(recipe.hashtag)"
                                         class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
                                         <a>#{{hashtag}}</a></div>
                                 </td>
                                 <td>
-                                    <b>{{post.totalComment}}</b>
+                                    <b>{{recipe.cookingMethodName}}</b>
                                 </td>
                                 <td>
-                                    <b>{{post.totalReact}}</b>
+                                    <b>{{recipe.manyToManyRecipeCategories[0].recipeCategoryName}}</b>
                                 </td>
                                 <td class="table-actions">
-                                    <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setPostByStatus(post.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-check-double"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="setPostByStatus(post.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setPostByStatus(post.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-check"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setPostByStatus(post.id, 3)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 3)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-ban"></i>
                                     </button>
                                 </td>
