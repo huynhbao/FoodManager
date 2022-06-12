@@ -87,15 +87,15 @@ export class CreateRecipeComponent implements OnInit {
 
   async createRecipe() {
     this.submitted = true;
-    /* if (
+    if (
       this.createForm.invalid ||
       this.previews.length === 0 ||
       this.hashtags.length === 0 ||
       this.categories.length === 0
     ) {
       return;
-    } */
-    //this.isLoading = true;
+    }
+    this.isLoading = true;
 
     const hashtag = '#' + this.hashtags.map((e) => e['value']).join(' #');
 

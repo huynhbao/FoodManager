@@ -27,7 +27,9 @@ export const ROUTES_MANAGER: RouteInfo[] = [
   { path: '', title: 'Ingredients',  icon:'ni-bullet-list-67 text-info', class: '', child: [
     { path: 'ingredient', title: 'Manage',  icon:'', class: '' },
   ]},
-  { path: 'category', title: 'View report list',  icon:'ni-bullet-list-67 text-danger', class: '' }
+  { path: '', title: 'Reports',  icon:'ni-bullet-list-67 text-danger', class: '', child: [
+    { path: 'manage', title: 'Manage',  icon:'', class: '' },
+  ]}
 ];
 
 @Component({
