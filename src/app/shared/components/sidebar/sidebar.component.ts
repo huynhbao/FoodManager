@@ -14,21 +14,23 @@ declare interface RouteInfo {
 }
 export const ROUTES_ADMIN: RouteInfo[] = [
   { path: '', title: 'Manage',  icon:'ni-bullet-list-67 text-success', class: '', child: [
-    { path: 'manage/user', title: 'User',  icon:'', class: '' },
-    { path: 'manage/category', title: 'Category',  icon:'', class: '' },
+    { path: 'user', title: 'User',  icon:'', class: '' },
+    { path: 'category', title: 'Category',  icon:'', class: '' },
+    { path: 'origin', title: 'Origin',  icon:'', class: '' },
   ]},
 ];
 
 export const ROUTES_MANAGER: RouteInfo[] = [
-  { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
+  // { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
   { path: '', title: 'Posts - Receipes',  icon:'ni-bullet-list-67 text-success', class: '', child: [
     { path: 'manage', title: 'Manage',  icon:'', class: '' },
+    { path: 'recipe-system', title: 'Manage Recipe (System)',  icon:'', class: '' },
   ]},
   { path: '', title: 'Ingredients',  icon:'ni-bullet-list-67 text-info', class: '', child: [
     { path: 'ingredient', title: 'Manage',  icon:'', class: '' },
   ]},
   { path: '', title: 'Reports',  icon:'ni-bullet-list-67 text-danger', class: '', child: [
-    { path: 'manage', title: 'Manage',  icon:'', class: '' },
+    { path: 'report', title: 'Manage',  icon:'', class: '' },
   ]}
 ];
 

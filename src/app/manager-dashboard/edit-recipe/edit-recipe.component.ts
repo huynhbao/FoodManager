@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,40 +13,37 @@ import {
   RecipeOrigin,
 } from 'src/app/models/category.model';
 import { RecipeIngredient, RecipeCategory as RecipeCategoryMany, RecipeImage, RecipeMethod as RecipeMethod_R, Recipe, CreateRecipe } from 'src/app/models/recipe.model';
+import { User } from 'src/app/models/user.model';
+import { AppConst } from 'src/app/shared/constants/app-const';
+import { Utils } from 'src/app/shared/tools/utils';
 
 @Component({
-  selector: 'app-create-recipe',
-  templateUrl: './create-recipe.component.html',
-  styleUrls: ['./create-recipe.component.scss'],
+  selector: 'app-edit-recipe',
+  templateUrl: './edit-recipe.component.html',
+  styleUrls: ['./edit-recipe.component.scss']
 })
-export class CreateRecipeComponent implements OnInit {
+export class EditRecipeComponent implements OnInit {
   @ViewChild('tagInput') tagInputRef!: TagInputComponent;
   selectedTag;
   previews: string[] = [];
   selectedFiles?: FileList;
-  categories = [];
+  categories:RecipeCategoryMany[] = [];
   categoriesDB: RecipeCategory[] = [];
-  origin = [];
+  origin:RecipeOrigin[] = [];
   originsDB: RecipeOrigin[] = [];
-  method = [];
+  method:RecipeMethod[] = [];
   methodsDB: RecipeMethod[] = [];
-  hashtags = [];
-  ingredients: [][] = [];
+  hashtags:string[] = [];
   ingredientsDB: RecipeIngredient[] = [];
   thumbnailNumber: number = 0;
-  createForm: FormGroup;
+  form!: FormGroup;
   submitted: boolean = false;
+  isGettingData: boolean = true;
   isLoading: boolean = false;
   isDone: boolean = false;
-  constructor(
-    private managerService: ManagerService,
-    private sharedService: SharedService,
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private http: HttpClient
-  ) {
-    this.createForm = this.formBuilder.group({
+  recipe!:Recipe;
+  constructor(private managerService: ManagerService, private sharedService: SharedService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {
+    this.form = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       preparationTime: ['', Validators.required],
@@ -57,40 +53,120 @@ export class CreateRecipeComponent implements OnInit {
       ingredients: this.formBuilder.array([]),
       methods: this.formBuilder.array([]),
     });
-
-    this.formIngredient.push(this.formBuilder.group({
-      ingredientName: ['', Validators.required],
-      quantity: ['', Validators.required],
-      unit: [{value: '', disabled: true}, Validators.required],
-      isMain: []
-    }));
-
-    this.formMethod.push(this.formBuilder.group({
-      step: [''],
-      content: ['', Validators.required],
-      images: this.formBuilder.array([])
-    }));
   }
 
   get f() {
-    return this.createForm.controls;
+    return this.form.controls;
   }
 
   get formIngredient() { return this.f["ingredients"] as FormArray; }
 
   get formMethod() { return this.f["methods"] as FormArray; }
 
+  loadItemDB() {
+    this.sharedService.getRecipeCategories(50).subscribe({
+      next: (categories: any) => {
+        this.categoriesDB = categories.items;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
 
-  getFormIngredientAt(i: number) {
-    return this.formIngredient.at(i) as FormGroup;
+    this.sharedService.getRecipeMethod(50).subscribe({
+      next: (methods: any) => {
+        this.methodsDB = methods.items;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+
+    this.sharedService.getRecipeOrigin(50).subscribe({
+      next: (origins: any) => {
+        this.originsDB = origins.items;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
-  async createRecipe() {
+  mapToForm(recipe: Recipe) {
+    this.form.setValue({
+      name: recipe.recipeName,
+      description: recipe.description,
+      preparationTime: recipe.preparationTime,
+      cookingTime: recipe.cookingTime,
+      serves: recipe.serves,
+      calories: recipe.calories,
+      ingredients: [],
+      methods: [],
+    });
+
+    recipe.recipeIngredients.forEach(ingredient => {
+      this.formIngredient.push(this.formBuilder.group({
+        id: [ingredient.ingredientDbid, Validators.required],
+        ingredientName: [
+          [{ingredientName: ingredient.ingredientName}]
+        ],
+        quantity: [ingredient.quantity, Validators.required],
+        unit: [{value: ingredient.unit, disabled: true}, Validators.required],
+        isMain: [ingredient.isMain]
+      }));
+    });
+
+    for (let i = 0; i < recipe.recipeMethods.length; i++) {
+      const method = recipe.recipeMethods[i];
+      this.formMethod.push(this.formBuilder.group({
+        step: [method.step, Validators.required],
+        content: [method.content, Validators.required],
+        images: this.formBuilder.array([]),
+      }));
+      method.recipeMethodImages.forEach(image => {
+        this.formMethod.controls[i]['controls']['images'].push(new FormControl(image.imageUrl, Validators.required));
+      })
+    }
+
+    recipe.manyToManyRecipeCategories.forEach(category => {
+      this.categories.push(category);
+    });
+
+    const origin:RecipeOrigin = {
+      id: recipe.originId,
+      originName: recipe.originName,
+    }
+    this.origin.push(origin);
+
+    const method:RecipeMethod = {
+      id: recipe.cookingMethodId,
+      cookingMethodName: recipe.cookingMethodName
+    }
+    this.method.push(method);
+    
+    if (recipe.hashtag != "#") {
+      const hashtag = recipe.hashtag.replace(/\s/g, '').split('#').slice(1);
+      this.hashtags = hashtag;
+    }
+
+    for (let i = 0; i < recipe.recipeImages.length; i++) {
+      const recipeImage = recipe.recipeImages[i];
+      if (recipeImage.isThumbnail) {
+        this.thumbnailNumber = i;
+      }
+      this.previews.push(recipeImage.imageUrl);
+    }
+    console.log(recipe);
+    
+    
+  }
+
+
+  async updateRecipe() {
     this.submitted = true;
     if (
-      this.createForm.invalid ||
+      this.form.invalid ||
       this.previews.length === 0 ||
-      // this.hashtags.length === 0 ||
       this.categories.length === 0
     ) {
       return;
@@ -107,7 +183,7 @@ export class CreateRecipeComponent implements OnInit {
     for (let i = 0; i < this.categories.length; i++) {
       const element = this.categories[i];
       const category:RecipeCategoryMany = {
-        recipeCategoryId: element["id"],
+        recipeCategoryId: element["recipeCategoryId"],
         recipeCategoryName: element["recipeCategoryName"]
       }
       manyToManyRecipeCategories.push(category);
@@ -140,30 +216,30 @@ export class CreateRecipeComponent implements OnInit {
       let recipeImages: RecipeImage[] = [];
       for (let j = 0; j < methodForm.images.controls.length; j++) {
         const img:string = methodForm.images.controls[j].value;
-        await new Promise(resolve => {
-          let recipeImage:RecipeImage = {
-            imageUrl: "",
-            orderNumber: i,
-            status: 1,
-            isThumbnail: i == this.thumbnailNumber,
-          }
-  
-          this.sharedService.uploadImage(img).subscribe({
-            next: (res:any) => {
-              const imgUrl:string = res.secure_url;
-              if (imgUrl) {
-                recipeImage.imageUrl = imgUrl
-                recipeImages.push(recipeImage);
-                resolve("");
+        let recipeImage:RecipeImage = {
+          imageUrl: this.recipe.recipeMethods[i].recipeMethodImages[j].imageUrl,
+          orderNumber: i,
+          status: 1,
+          isThumbnail: i == this.thumbnailNumber,
+        }
+
+        if (!Utils.isURL(img)) {
+          await new Promise(resolve => {
+            this.sharedService.uploadImage(img).subscribe({
+              next: (res:any) => {
+                const imgUrl:string = res.secure_url;
+                if (imgUrl) {
+                  recipeImage.imageUrl = imgUrl
+                  resolve("");
+                }
+              },
+              error: (error) => {
+                console.log(error);
               }
-            },
-            error: (error) => {
-              console.log(error);
-            }
+            });
           });
-  
-  
-        });
+        }
+        recipeImages.push(recipeImage);
       }
 
       recipeMethod.recipeMethodImages = recipeImages;
@@ -174,33 +250,36 @@ export class CreateRecipeComponent implements OnInit {
 
     let recipeImages: RecipeImage[] = [];
     for (let i = 0; i < this.previews.length; i++) {
-      await new Promise(resolve => {
-        const img = this.previews[i];
-        let recipeImage:RecipeImage = {
-          imageUrl: "",
-          orderNumber: i,
-          status: 1,
-          isThumbnail: i == this.thumbnailNumber,
-        }
+      const img = this.previews[i];
+      let recipeImage:RecipeImage = {
+        imageUrl: this.recipe.recipeImages[i].imageUrl,
+        orderNumber: i,
+        status: 1,
+        isThumbnail: i == this.thumbnailNumber,
+      }
 
-        this.sharedService.uploadImage(img).subscribe({
-          next: (res:any) => {
-            const imgUrl:string = res.secure_url;
-            if (imgUrl) {
-              recipeImage.imageUrl = imgUrl
-              recipeImages.push(recipeImage);
-              resolve("");
+      if (!Utils.isURL(img)) {
+        await new Promise(resolve => {
+          this.sharedService.uploadImage(img).subscribe({
+            next: (res:any) => {
+              const imgUrl:string = res.secure_url;
+              if (imgUrl) {
+                recipeImage.imageUrl = imgUrl
+                resolve("");
+              }
+            },
+            error: (error) => {
+              console.log(error);
             }
-          },
-          error: (error) => {
-            console.log(error);
-          }
+          });
         });
-      });
+      }
+      recipeImages.push(recipeImage);
+
       
     }
 
-
+    this.isLoading = false;
     let recipe:CreateRecipe = {
       originId: this.origin["0"]["id"],
       cookingMethodId: this.method["0"]["id"],
@@ -216,10 +295,9 @@ export class CreateRecipeComponent implements OnInit {
       recipeIngredients: recipeIngredients,
       recipeMethods: recipeMethods
     }
-    
-    
 
-    this.managerService.createRecipe(recipe).subscribe({
+
+    this.managerService.updateRecipe(this.recipe.id, recipe).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
@@ -228,12 +306,15 @@ export class CreateRecipeComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-        this.isLoading = false;
       },
       complete: () => {
+        this.isLoading = false;
       }
     });
-    
+  }
+
+  print(value) {
+    console.log(value)
   }
 
   selectFilesMethod(event: any, index: number): void {
@@ -320,6 +401,14 @@ export class CreateRecipeComponent implements OnInit {
   };
 
   onAdding(tag: TagModel): Observable<TagModel> {
+    console.log(this.thumbnailNumber);
+    /* for (let c of this.formIngredient.controls) {
+      const ingredientForm = c["controls"]["ingredientName"].value[0];
+      console.log(tag["id"], ingredientForm.id);
+      if (tag["id"] == ingredientForm.id) {
+        return of();
+      }
+    } */
     return of(tag);
   }
 
@@ -330,8 +419,7 @@ export class CreateRecipeComponent implements OnInit {
   requestAutocompleteItemsIngredient$ = (text: string): Observable<any> => {
     return this.sharedService.getIngredientDb(text).pipe(
       map((data) => {
-        let arr2 = data.items;
-        return arr2;
+        return data.items;
       })
     );
   };
@@ -341,7 +429,7 @@ export class CreateRecipeComponent implements OnInit {
       ingredientName: ['', Validators.required],
       quantity: ['', Validators.required],
       unit: [{value: '', disabled: true}, Validators.required],
-      isMain: []
+      isMain: [''],
     }));
   }
 
@@ -352,7 +440,7 @@ export class CreateRecipeComponent implements OnInit {
 
   increaseMethod() {
     this.formMethod.push(this.formBuilder.group({
-      step: ['', Validators.required],
+      step: [''],
       content: ['', Validators.required],
       images: this.formBuilder.array([])
     }));
@@ -363,36 +451,42 @@ export class CreateRecipeComponent implements OnInit {
     this.formMethod.removeAt(index);
   }
 
+  loadRecipe(id: string) {
+    this.managerService.getRecipeById(id).subscribe({
+      next: (recipe: Recipe) => {
+        let user: User = {
+          id: recipe["userId"],
+          fullname: recipe["name"],
+          avatarUrl: recipe["userImageUrl"] || "https://i.imgur.com/EreYJ0D.png",
+          role: recipe["role"]
+        }
+
+        if (user.role == AppConst.ADMIN_STR || user.role == AppConst.MANAGER_STR) {
+          recipe.user = user;
+          this.recipe = recipe;
+          this.loadItemDB();
+          this.mapToForm(recipe);
+        }
+        
+      },
+      error: (error) => {
+        this.router.navigate(['../'], { relativeTo: this.route });
+        this.isGettingData = false;
+      },
+      complete: () => {
+        this.isGettingData = false;
+      }
+    });
+  }
+
   ngOnInit(): void {
-    this.sharedService.getRecipeCategories(50).subscribe({
-      next: (categories: any) => {
-        this.categoriesDB = categories.items;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
-
-    this.sharedService.getRecipeMethod(50).subscribe({
-      next: (methods: any) => {
-        this.methodsDB = methods.items;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
-
-    this.sharedService.getRecipeOrigin(50).subscribe({
-      next: (origins: any) => {
-        this.originsDB = origins.items;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
+    let id = this.route.snapshot.params['id'];
+    if (id) {
+      this.loadRecipe(id);
+    }  else {
+      this.router.navigate(['../'], { relativeTo: this.route });
+    }
+    
   }
 
-  print(value) {
-    console.log(value);
-  }
 }

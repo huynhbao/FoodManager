@@ -49,6 +49,7 @@ export interface Recipe {
   manyToManyRecipeCategories: RecipeCategory[];
   recipeIngredients: RecipeIngredient[];
   recipeMethods: RecipeMethod[];
+  recipeImages: RecipeImage[];
 }
 
 export interface CreateRecipe {

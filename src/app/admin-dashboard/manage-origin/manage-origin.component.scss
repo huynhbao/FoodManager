@@ -1,13 +1,3 @@
-::ng-deep .appcustom-modal {
-    .modal-dialog {
-        max-width: calc(100vw - 700px);
-    }
-    /* .modal-body {
-        background-color: #f7fafc;
-        padding: 0;
-    } */
-}
-
 $primary-colour: #78b4ff;
 
 // mixin, should display proportional checkbox based on relative font-size of container

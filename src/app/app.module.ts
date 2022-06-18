@@ -24,6 +24,7 @@ import { ChangePasswordComponent } from './shared/pages/change-password/change-p
 import { ModalConfirmComponent } from './shared/components/modal-confirm/modal-confirm.component';
 import { SharedModule } from './shared/modules/shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReportPostComponent } from './shared/pages/report-post/report-post.component';
 
 export function tokenGetter() {
   let savedToken = localStorage.getItem("currentUser");
@@ -47,6 +48,7 @@ export function tokenGetter() {
     CodeConfirmComponent,
     ChangePasswordComponent,
     ModalConfirmComponent,
+    ReportPostComponent,
   ],
   imports: [
     BrowserModule,

@@ -48,6 +48,11 @@ export class SharedService {
     return this.http.delete<any>(`${this.baseUrl}/ingredientdb/${id}`);
   }
 
+  //Report
+  getReportPost(status: number, page: number = 1): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/report/post?status=${status}page=${page}&size=5`);
+  }
+
   uploadImage(file: string): Observable<any> {
     let data = {
       "file": file,

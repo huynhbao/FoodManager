@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipe } from './pipes/filter.pipe';
 import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../shared/modules/shared/shared.module';
+import { ManageOriginComponent } from './manage-origin/manage-origin.component';
+import { ManageMethodComponent } from './manage-method/manage-method.component';
 
 
 @NgModule({
@@ -17,7 +19,9 @@ import { SharedModule } from '../shared/modules/shared/shared.module';
     ManageUserComponent,
     DashboardComponent,
     ManageCategoryComponent,
-    FilterPipe
+    FilterPipe,
+    ManageOriginComponent,
+    ManageMethodComponent
   ],
   imports: [
     CommonModule,

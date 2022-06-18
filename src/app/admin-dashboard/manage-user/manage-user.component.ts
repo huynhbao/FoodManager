@@ -1,4 +1,7 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/models/user.model';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
 
@@ -19,10 +22,26 @@ export class ManageUserComponent implements OnInit {
   searchValue: string = "";
   statusSelected: number = 1;
   isLoading: boolean = false;
-
-  constructor(private adminService: AdminManageService) {
-    
+  selectedUser!: User;
+  
+  //form
+  form: FormGroup;
+  isDisabled: boolean = true;
+  
+  constructor(private adminService: AdminManageService, private modalService: NgbModal, private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      fullName: [{value: '', disabled: this.isDisabled}, Validators.required],
+      bio: [{value: '', disabled: this.isDisabled}, Validators.required],
+      phone: [{value: '', disabled: this.isDisabled}, [ Validators.required,
+        Validators.pattern("^[0-9]*$"),
+        Validators.minLength(10),
+        Validators.maxLength(10)
+      ]],
+      dob: [{value:'', disabled: this.isDisabled}, Validators.required],
+    });
   }
+
+  get f() { return this.form.controls; }
 
   // The master checkbox will check/ uncheck all items
   public checkUncheckAll() {
@@ -54,7 +73,34 @@ export class ManageUserComponent implements OnInit {
     this.loadUsers();
   }
 
-  openDetail(user:User) {
+  toggleEdit() {
+    const formStatus:boolean = this.form.enabled;
+    if (formStatus) {
+      this.form.disable();
+    } else {
+      this.form.enable();
+    }
+  }
+
+  openDetail(content:any, user:User) {
+    this.selectedUser = user;
+    console.log(this.selectedUser);
+    this.form.disable();
+    this.form.setValue({
+      fullName: this.selectedUser.name,
+      bio: this.selectedUser.bio,
+      phone: this.selectedUser.phoneNumber,
+      dob: formatDate(new Date(this.selectedUser.birthDate || new Date), 'yyyy-MM-dd', 'en'),
+    });
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static',}).result.then((result) => {
+      //this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  setUserStatus(id: String, status: number) {
+
   }
 
   loadUsers() {

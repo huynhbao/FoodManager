@@ -15,7 +15,7 @@ export class ModalUpdateComponent implements OnInit {
   submitted: boolean = false;
   previews: string[] = [];
   selectedFiles?: FileList;
-  constructor(private sharedService: SharedService, private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
+  constructor(private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
     this.form = this.formBuilder.group({});
   }
 

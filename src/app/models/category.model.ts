@@ -15,6 +15,7 @@ export interface RecipeOrigin {
     id: string;
     originName: string;
     status?: number;
+    isSelected?: boolean;
 }
 
 export interface RecipeMethod {

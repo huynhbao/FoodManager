@@ -57,6 +57,12 @@ export class ManagerService {
     );
   }
 
+  updateRecipe(id: string, recipe: CreateRecipe): Observable<any> {
+    return this.http.put<CreateRecipe>(
+      `${this.baseUrl}/recipe/${id}`, recipe
+    );
+  }
+
   getRecipes(search: string = "", status: number, hashtag: string, page: number, role: number = 0): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrl}/recipe?search=${search}&status=${status}&page=${page}&size=5&role=${role}`

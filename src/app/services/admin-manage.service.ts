@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
-import { Category } from '../models/category.model';
+import { Category, RecipeOrigin } from '../models/category.model';
 
 @Injectable({
   providedIn: 'root',
@@ -29,5 +29,24 @@ export class AdminManageService {
     return this.http.get<any>(
       `${this.baseUrl}/user/users?name=${search}&status=${status}&page=${page}&size=5`
     );
+  }
+
+  //origin
+  getOrigins(search: string = "", page: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}/reciperelate/origin?page=${page}&size=5`
+    );
+  }
+
+  createOrigin(origin: RecipeOrigin): Observable<RecipeOrigin> {
+    return this.http.post<RecipeOrigin>(`${this.baseUrl}/reciperelate/origin`, origin);
+  }
+
+  updateOrigin(origin: RecipeOrigin): Observable<RecipeOrigin> {
+    return this.http.put<RecipeOrigin>(`${this.baseUrl}/reciperelate/origin${origin.id}`, origin);
+  }
+
+  deleteOrigin(id: string): Observable<RecipeOrigin> {
+    return this.http.delete<any>(`${this.baseUrl}/reciperelate/origin${id}`);
   }
 }

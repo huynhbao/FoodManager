@@ -55,7 +55,7 @@ export class ModalCreateComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    if (this.form.invalid || this.previews.length === 0) {
+    if (this.form.invalid && this.previews.length === 0) {
       return;
     }
     

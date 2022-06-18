@@ -1,74 +1,3 @@
-//
-// Input group
-//
-
-.input-group {
-	box-shadow: $input-box-shadow;
-	border-radius: $input-border-radius;
-	transition: $transition-base;
-
-	.form-control {
-		box-shadow: none;
-
-		&:not(:first-child) {
-		    border-left: 0;
-		    padding-left: 0;
-		}
-		&:not(:last-child) {
-			border-right: 0;
-			padding-right: 0;
-		}
-		&:focus {
-			box-shadow: none;
-		}
-	}
-}
-
-.input-group-text {
-    transition: $input-transition;
-}
-
-
-// Alternative input groups related to .form-control-alternative
-
-
-.input-group-alternative {
-    box-shadow: $input-alternative-box-shadow;
-    border: 0;
-    transition: box-shadow .15s ease;
-
-    .form-control,
-    .input-group-text {
-        border: 0;
-        box-shadow: none;
-    }
-}
-
-.focused {
-	.input-group-alternative {
-        box-shadow: $input-focus-alternative-box-shadow !important;
-    }
-}
-
-
-// .focus class is applied dinamycally from theme.js
-
-.focused {
-	.input-group {
-		box-shadow: $input-focus-box-shadow;
-	}
-
-	.input-group-text {
-	    color: $input-group-addon-focus-color;
-	    background-color: $input-group-addon-focus-bg;
-	    border-color: $input-group-addon-focus-border-color;
-	}
-
-	.form-control {
-		border-color: $input-group-addon-focus-border-color;
-	}
-}
-
 $primary-colour: #78b4ff;
 
 // mixin, should display proportional checkbox based on relative font-size of container
@@ -113,7 +42,6 @@ $primary-colour: #78b4ff;
       transition: all .1s;
       vertical-align: middle;
       width: calc(3px + .8em);
-      margin-right: 0.7em;
     }
 
     &::after {
@@ -135,4 +63,89 @@ $primary-colour: #78b4ff;
 // applied mixin to container, margin just for demo purposes
 .custom-checkbox {
   @include custom-checkbox;
+}
+
+.nav-item a:focus {
+  outline: unset;
+}
+
+.nav-item a:hover {
+  border: 1px solid #fff !important;
+}
+
+.nav-item a {
+  color: black !important;
+  font-weight: 600;
+  padding: 12px 40px 12px 40px;
+}
+
+.nav-item .active {
+  color: #f36039 !important;
+  border: none !important;
+  border-bottom: 3px solid #f26139 !important;
+  background-color: transparent;
+  font-weight: 600;
+}
+
+.nav-item .active:hover {
+  border: none !important;
+  border-bottom: 3px solid #f26139 !important;
+}
+
+tr.selected {
+  background-color: rgba(145, 158, 171, 0.16);
+}
+
+.multi-selected {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 31px;
+  padding-right: 49px;
+  left: 0px;
+  right: 0px;
+  height: 68px;
+  border-radius: 8px;
+  position: absolute;
+  background-color: rgb(200, 250, 205);
+
+  h6 {
+    margin: 0px 0px 0px 50px;
+    font-weight: 600;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    color: rgb(0, 171, 85);
+    flex-grow: 1;
+  }
+}
+
+table {
+  &.table-fit {
+    table-layout: fixed;
+
+    tbody td,
+    tfoot td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+tr > td:hover {
+  overflow: visible;
+  white-space: unset;
+}
+
+.active-status {
+  background-color: #ff6d22 !important;
+  color: #ffffff !important;
+  font-weight: bold;
+}
+
+.img-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
 }
