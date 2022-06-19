@@ -42,10 +42,7 @@ export class CreateRecipeComponent implements OnInit {
   constructor(
     private managerService: ManagerService,
     private sharedService: SharedService,
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private http: HttpClient
+    private formBuilder: FormBuilder
   ) {
     this.createForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -62,7 +59,7 @@ export class CreateRecipeComponent implements OnInit {
       ingredientName: ['', Validators.required],
       quantity: ['', Validators.required],
       unit: [{value: '', disabled: true}, Validators.required],
-      isMain: []
+      isMain: [false]
     }));
 
     this.formMethod.push(this.formBuilder.group({
@@ -94,7 +91,7 @@ export class CreateRecipeComponent implements OnInit {
       this.categories.length === 0
     ) {
       return;
-    }
+    } 
     this.isLoading = true;
 
     let hashtag = "";
@@ -126,6 +123,8 @@ export class CreateRecipeComponent implements OnInit {
       }
       recipeIngredients.push(ingredient);
     }
+
+    console.log(recipeIngredients);
 
     let recipeMethods: RecipeMethod_R[] = [];
     for (let i = 0; i < this.formMethod.controls.length; i++) {
@@ -217,7 +216,7 @@ export class CreateRecipeComponent implements OnInit {
       recipeMethods: recipeMethods
     }
     
-    
+    console.log(recipe);
 
     this.managerService.createRecipe(recipe).subscribe({
       next: (res:any) => {
@@ -341,7 +340,7 @@ export class CreateRecipeComponent implements OnInit {
       ingredientName: ['', Validators.required],
       quantity: ['', Validators.required],
       unit: [{value: '', disabled: true}, Validators.required],
-      isMain: []
+      isMain: [false]
     }));
   }
 
@@ -352,7 +351,7 @@ export class CreateRecipeComponent implements OnInit {
 
   increaseMethod() {
     this.formMethod.push(this.formBuilder.group({
-      step: ['', Validators.required],
+      step: [''],
       content: ['', Validators.required],
       images: this.formBuilder.array([])
     }));

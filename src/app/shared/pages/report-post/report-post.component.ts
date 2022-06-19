@@ -19,7 +19,7 @@ export class ReportPostComponent implements OnInit {
   statusSelected: number = 1;
   constructor(private sharedService: SharedService) { }
 
-  private loadRecipes() {
+  private loadReports() {
     this.isLoading = true;
     
     this.sharedService.getReportPost(this.statusSelected, this.currentPage).subscribe({
@@ -38,6 +38,7 @@ export class ReportPostComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadReports();
   }
 
 }

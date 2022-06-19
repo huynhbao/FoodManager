@@ -12,7 +12,7 @@ export class Utils {
     }
 
     static async getBase64ImageFromUrl(imageUrl) {
-        var res = await fetch(imageUrl);
+        var res = await fetch(imageUrl, {mode: 'no-cors'});
         var blob = await res.blob();
         return new Promise((resolve, reject) => {
             var reader  = new FileReader();

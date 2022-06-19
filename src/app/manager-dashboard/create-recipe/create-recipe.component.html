@@ -79,7 +79,7 @@
                                     [autocompleteObservable]="requestAutocompleteItemsOrigin$"
                                     [displayBy]="'originName'"
                                     [identifyBy]="'id'"
-                                    [showDropdownIfEmpty]="true"
+                                    [showDropdownIfEmpty]="false"
                                     [minimumTextLength]="0"
                                     [focusFirstElement]="true"
                                 >
@@ -98,7 +98,7 @@
                                     [autocompleteObservable]="requestAutocompleteItemsMethod$"
                                     [displayBy]="'cookingMethodName'"
                                     [identifyBy]="'id'"
-                                    [showDropdownIfEmpty]="true"
+                                    [showDropdownIfEmpty]="false"
                                     [minimumTextLength]="0"
                                     [focusFirstElement]="true"
                                 >
@@ -117,7 +117,7 @@
                                     [autocompleteObservable]="requestAutocompleteItemsCategory$"
                                     [displayBy]="'recipeCategoryName'"
                                     [identifyBy]="'id'"
-                                    [showDropdownIfEmpty]="true"
+                                    [showDropdownIfEmpty]="false"
                                     [minimumTextLength]="0"
                                     [focusFirstElement]="true"
                                 >
@@ -183,8 +183,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <tag-input  formControlName="ingredientName" [theme]="'fooma-theme'" [identifyBy]="'id'"
-                                    [displayBy]="'name'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Add Ingredient" placeholder="Add Ingredient" (onAdd)="onAdd($event, i)" [onAdding]="onAdding" (onSelect)="onTagSelected($event)"
+                                <tag-input formControlName="ingredientName" [theme]="'fooma-theme'" [identifyBy]="'ingredientDbid'"
+                                    [displayBy]="'ingredientName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Add Ingredient" placeholder="Add Ingredient" (onAdd)="onAdd($event, i)" [onAdding]="onAdding" (onSelect)="onTagSelected($event)"
                                     >
                                     <tag-input-dropdown
                                         [autocompleteObservable]="requestAutocompleteItemsIngredient$"

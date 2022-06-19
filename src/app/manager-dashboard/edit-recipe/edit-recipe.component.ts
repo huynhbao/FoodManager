@@ -429,7 +429,7 @@ export class EditRecipeComponent implements OnInit {
       ingredientName: ['', Validators.required],
       quantity: ['', Validators.required],
       unit: [{value: '', disabled: true}, Validators.required],
-      isMain: [''],
+      isMain: [false],
     }));
   }
 
