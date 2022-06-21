@@ -33,7 +33,6 @@ import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
     ManagementComponent,
     PostDetailComponent,
     ManageIngredientComponent,
-    TimePipe,
     ManageRecipeComponent,
     RecipeDetailComponent,
     CreatePostComponent,

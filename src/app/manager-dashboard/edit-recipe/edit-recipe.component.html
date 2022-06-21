@@ -186,13 +186,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <tag-input formControlName="ingredientName" [theme]="'fooma-theme'" [identifyBy]="'ingredientDbid'"
+                                <tag-input formControlName="ingredientName" [theme]="'fooma-theme'" [identifyBy]="'id'"
                                     [displayBy]="'ingredientName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Add Ingredient" placeholder="Add Ingredient" (onAdd)="onAdd($event, i)" [onAdding]="onAdding" (onSelect)="onTagSelected($event)"
                                     >
                                     <tag-input-dropdown
                                         [autocompleteObservable]="requestAutocompleteItemsIngredient$"
                                         [displayBy]="'ingredientName'"
-                                        [identifyBy]="'ingredientDbid'"
+                                        [identifyBy]="'id'"
                                         [showDropdownIfEmpty]="false"
                                     >
                                     </tag-input-dropdown>
@@ -294,7 +294,7 @@
                     <div class="col-md-12 text-center">
                         <button type="submit" [disabled]="isLoading" class="btn btn-block btn-fooma mb-4">Update</button>
                         <div *ngIf="isDone" class="mt-2">
-                            <h2>Recipe updated <a class="text-fooma" [routerLink]="['../../detail/', recipe.id]">View</a></h2>
+                            <h2>Recipe updated <a class="text-fooma" [routerLink]="['../../../manage/recipe/detail/', recipe.id]">View</a></h2>
                         </div>
                     </div>
                 </div>

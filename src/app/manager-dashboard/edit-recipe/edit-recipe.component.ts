@@ -108,7 +108,10 @@ export class EditRecipeComponent implements OnInit {
       this.formIngredient.push(this.formBuilder.group({
         id: [ingredient.ingredientDbid, Validators.required],
         ingredientName: [
-          [{ingredientName: ingredient.ingredientName}]
+          [{
+            id: ingredient.ingredientDbid,
+            ingredientName: ingredient.ingredientName
+          }]
         ],
         quantity: [ingredient.quantity, Validators.required],
         unit: [{value: ingredient.unit, disabled: true}, Validators.required],
@@ -295,7 +298,6 @@ export class EditRecipeComponent implements OnInit {
       recipeIngredients: recipeIngredients,
       recipeMethods: recipeMethods
     }
-
 
     this.managerService.updateRecipe(this.recipe.id, recipe).subscribe({
       next: (res:any) => {

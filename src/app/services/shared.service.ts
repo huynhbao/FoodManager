@@ -49,8 +49,12 @@ export class SharedService {
   }
 
   //Report
-  getReportPost(status: number, page: number = 1): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/report/post?status=${status}page=${page}&size=5`);
+  getReportPost(search: string, status: number, page: number = 1): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/report/post?postReportTitle=${search}&status=${status}&page=${page}&size=5`);
+  }
+
+  acceptReportPost(id: string): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/report/post/accept/${id}`, {});
   }
 
   uploadImage(file: string): Observable<any> {
