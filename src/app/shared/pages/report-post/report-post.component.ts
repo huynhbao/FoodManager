@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ReportPost } from 'src/app/models/report.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ModalPostComponent } from '../../components/modal-post/modal-post.component';
 
 @Component({
   selector: 'app-report-post',
@@ -19,7 +21,9 @@ export class ReportPostComponent implements OnInit {
   isLoadingHashtag: boolean = false;
   statusSelected: number = 2;
   searchValue: string = "";
-  constructor(private sharedService: SharedService, private managerService: ManagerService) { }
+  modalRef!: NgbModalRef;
+  
+  constructor(private sharedService: SharedService, private managerService: ManagerService, private modalService: NgbModal) { }
 
   private loadReports() {
     this.isLoading = true;
@@ -75,6 +79,17 @@ export class ReportPostComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  showPost(postId: string, reportId: string) {
+    this.modalRef = this.modalService.open(ModalPostComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+    this.modalRef.componentInstance.id = postId;
+    this.modalRef.componentInstance.reportId = reportId;
+    this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
+  }
+
+  submitFunc() {
+    this.loadReports();
   }
 
   filterByStatus(status: number) {

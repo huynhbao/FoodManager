@@ -1,0 +1,9 @@
+::ng-deep .appcustom-modal {
+    .modal-dialog {
+        max-width: calc(100vw - 700px);
+    }
+    /* .modal-body {
+        background-color: #f7fafc;
+        padding: 0;
+    } */
+}

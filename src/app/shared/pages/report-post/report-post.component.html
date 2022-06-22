@@ -95,7 +95,7 @@
                                     <b>{{post.userName}}</b>
                                 </td>
                                 <td>
-                                    <a target="_blank" [routerLink]="['../../manage/post/detail', post.postId]" class="font-weight-bold text-dark">{{post.postTitle}}</a>
+                                    <a (click)="showPost(post.postId, post.id)" class="font-weight-bold text-dark" style="cursor: pointer;">{{post.postTitle}}</a>
                                 </td>
                                 <td>
                                     <span class="text-muted">{{post.title}}</span>

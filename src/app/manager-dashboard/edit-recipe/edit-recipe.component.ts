@@ -220,7 +220,7 @@ export class EditRecipeComponent implements OnInit {
       for (let j = 0; j < methodForm.images.controls.length; j++) {
         const img:string = methodForm.images.controls[j].value;
         let recipeImage:RecipeImage = {
-          imageUrl: this.recipe.recipeMethods[i].recipeMethodImages[j].imageUrl,
+          imageUrl: img,
           orderNumber: i,
           status: 1,
           isThumbnail: i == this.thumbnailNumber,
@@ -255,7 +255,7 @@ export class EditRecipeComponent implements OnInit {
     for (let i = 0; i < this.previews.length; i++) {
       const img = this.previews[i];
       let recipeImage:RecipeImage = {
-        imageUrl: this.recipe.recipeImages[i].imageUrl,
+        imageUrl: img,
         orderNumber: i,
         status: 1,
         isThumbnail: i == this.thumbnailNumber,
