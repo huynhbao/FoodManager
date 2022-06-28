@@ -19,7 +19,7 @@
                     <button class="btn btn-success btn-block" [disabled]="isLoading" (click)="setReportStatus(1)"><i class="fas fa-check"></i> Skip</button>
                 </div>
                 <div class="col-6">
-                    <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="setReportStatus(2)"><i class="fas fa-trash"></i> Delete post</button>
+                    <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Delete post</button>
                 </div>
             </div>
         </div>
@@ -101,3 +101,22 @@
 <div class="modal-footer">
     <button type="button" class="btn btn-danger" (click)="activeModal.close()">Close</button>
 </div>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">Confirm deletion</h4>
+        <button type="button" class="close" aria-describedby="modal-title" (click)="confirmModalRef.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p><strong>Are you sure you want to delete <span class="text-primary">"{{post.title}}"</span>?</strong></p>
+        <p>All information associated to this row will be deleted.
+            <span class="text-danger">This operation may not be undone.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.dismiss('Cancel click')">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Ok</button>
+    </div>
+</ng-template>

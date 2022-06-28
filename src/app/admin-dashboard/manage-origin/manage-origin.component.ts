@@ -23,10 +23,10 @@ export class ManageOriginComponent implements OnInit {
   numSelected: number = 0;
   searchValue: string = '';
   modalRef!: NgbModalRef;
-  constructor(private adminService: AdminManageService, private sharedService: SharedService, private modalService: NgbModal,) { }
+  constructor(private adminService: AdminManageService, private modalService: NgbModal) { }
 
   public onPageChange(pageNum: number): void {
-    this.loadRecipe();
+    this.loadOrigins();
   }
 
   // The master checkbox will check/ uncheck all items
@@ -99,7 +99,7 @@ export class ManageOriginComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
-          this.loadRecipe();
+          this.loadOrigins();
         }
       },
       error: (error) => {
@@ -119,7 +119,7 @@ export class ManageOriginComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
-          this.loadRecipe();
+          this.loadOrigins();
         }
       },
       error: (error) => {
@@ -134,7 +134,7 @@ export class ManageOriginComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
-          this.loadRecipe();
+          this.loadOrigins();
         }
       },
       error: (error) => {
@@ -143,7 +143,7 @@ export class ManageOriginComponent implements OnInit {
     });
   }
 
-  public loadRecipe() {
+  public loadOrigins() {
     this.adminService
       .getOrigins(this.searchValue, this.currentPage)
       .subscribe({
@@ -161,11 +161,11 @@ export class ManageOriginComponent implements OnInit {
   onSearchChange(searchValue) {
     this.searchValue = searchValue;
     this.currentPage = 1;
-    this.loadRecipe();
+    this.loadOrigins();
   }
 
   ngOnInit(): void {
-    this.loadRecipe();
+    this.loadOrigins();
   }
 
 }

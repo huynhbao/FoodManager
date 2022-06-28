@@ -10,10 +10,10 @@
             <div class="card mb-0" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../post']">Bài viết</a>
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../post']">Bài viết</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe']">Công thức</a>
+                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../recipe']">Công thức</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" [routerLink]="['../user']">Người dùng</a>
@@ -75,7 +75,7 @@
                                     </div>
                                 </th>
                                 <th>Reporter</th>
-                                <th>Post Title</th>
+                                <th>Recipe Name</th>
                                 <th>Title</th>
                                 <th>Content</th>
                                 <th>Report Date</th>
@@ -83,34 +83,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let post of reportPosts; let i = index" [ngClass]="{'selected': post.isSelected === true}">
+                            <tr *ngFor="let recipe of reportRecipes; let i = index" [ngClass]="{'selected': recipe.isSelected === true}">
                                 <td class="text-center">
                                     <div class="custom-checkbox" style="font-size: 1.3rem;">
-                                        <input id="{{post.id}}" type="checkbox" [(ngModel)]="post.isSelected"
+                                        <input id="{{recipe.id}}" type="checkbox" [(ngModel)]="recipe.isSelected"
                                             (change)="isAllSelected()">
-                                        <label class="mb-0" for="{{post.id}}"></label>
+                                        <label class="mb-0" for="{{recipe.id}}"></label>
                                     </div>
                                 </td>
                                 <td class="">
-                                    <b>{{post.userName}}</b>
+                                    <b>{{recipe.userName}}</b>
                                 </td>
                                 <td>
-                                    <a (click)="showPost(post.postId, post.id)" class="font-weight-bold text-dark" style="cursor: pointer;">{{post.postTitle}}</a>
+                                    <a (click)="showRecipe(recipe.recipeId, recipe.id)" class="font-weight-bold text-dark" style="cursor: pointer;">{{recipe.recipeName}}</a>
                                 </td>
                                 <td>
-                                    <span class="text-muted">{{post.title}}</span>
+                                    <span class="text-muted">{{recipe.title}}</span>
                                 </td>
                                 <td>
-                                    <span class="text-muted">{{post.content}}</span>
+                                    <span class="text-muted">{{recipe.content}}</span>
                                 </td>
                                 <td style="width:1px; white-space:nowrap;">
-                                    <span class="text-muted">{{post.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
+                                    <span class="text-muted">{{recipe.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td class="table-actions">
-                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(post.id, post.postId, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(recipe.id, recipe.recipeId, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Recipe">
                                         <i class="fas fa-check"></i>
                                     </button>
-                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="showPopup(confirmModal, i)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="showPopup(confirmModal, i)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Recipe">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
@@ -151,7 +151,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <p><strong>Are you sure you want to delete <span class="text-primary">"{{reportPosts[selectedIndex].postTitle}}"</span>?</strong></p>
+        <p><strong>Are you sure you want to delete <span class="text-primary">"{{reportRecipes[selectedIndex].recipeName}}"</span>?</strong></p>
         <p>All information associated to this row will be deleted.
             <span class="text-danger">This operation may not be undone.</span>
         </p>

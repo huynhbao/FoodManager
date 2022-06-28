@@ -17,6 +17,8 @@ export const ROUTES_ADMIN: RouteInfo[] = [
     { path: 'user', title: 'User',  icon:'', class: '' },
     { path: 'category', title: 'Category',  icon:'', class: '' },
     { path: 'origin', title: 'Origin',  icon:'', class: '' },
+    { path: 'method', title: 'Method',  icon:'', class: '' },
+    { path: 'recipe-category', title: 'Recipe Category',  icon:'', class: '' },
   ]},
 ];
 

@@ -47,7 +47,7 @@ export class ManagerService {
 
   setPostByStatus(id: string, status: number) {
     return this.http.put<any>(
-      `${this.baseUrl}/post/update-status`, {id: id, status: status}
+      `${this.baseUrl}/post/update-status`, {id: id, status: status, reason: ""}
     );
   }
 
@@ -66,6 +66,12 @@ export class ManagerService {
   getRecipes(search: string = "", status: number, hashtag: string, page: number, role: number = 0): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrl}/recipe?search=${search}&status=${status}&page=${page}&size=5&role=${role}`
+    );
+  }
+
+  getRecipesByFilter(search: string = "", status: number, hashtag: string, category: string, country: string, method: string, time: string, page: number, role: number = 0): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}/recipe?search=${search}&hashtag=${hashtag}&category=${category}&country=${country}&method=${method}&time=${time}&status=${status}&page=${page}&size=5&role=${role}`
     );
   }
 

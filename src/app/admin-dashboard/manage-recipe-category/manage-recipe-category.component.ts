@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { RecipeMethod } from 'src/app/models/category.model';
+import { RecipeCategory } from 'src/app/models/category.model';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
 import { ModalConfirmComponent } from 'src/app/shared/components/modal-confirm/modal-confirm.component';
 import { ModalCreateComponent } from 'src/app/shared/components/modal-create/modal-create.component';
 import { ModalUpdateComponent } from 'src/app/shared/components/modal-update/modal-update.component';
 
 @Component({
-  selector: 'app-manage-method',
-  templateUrl: './manage-method.component.html',
-  styleUrls: ['./manage-method.component.scss']
+  selector: 'app-manage-recipe-category',
+  templateUrl: './manage-recipe-category.component.html',
+  styleUrls: ['./manage-recipe-category.component.scss']
 })
-export class ManageMethodComponent implements OnInit {
-  methods!: RecipeMethod[];
+export class ManageRecipeCategoryComponent implements OnInit {
+  recipeCategories!: RecipeCategory[];
   currentPage: number = 1;
   itemsPerPage = 5;
   pageSize: number = 10;
@@ -26,10 +26,10 @@ export class ManageMethodComponent implements OnInit {
   constructor(private adminService: AdminManageService, private modalService: NgbModal) { }
 
   onPageChange(pageNum: number): void {
-    this.loadMethods();
+    this.loadRecipeCategories();
   }
 
-  triggerModal(method: String, recipeMethod?: RecipeMethod) {
+  triggerModal(method: String, recipeCategory?: RecipeCategory) {
     let content: any = ModalCreateComponent;
     if (method == 'create') {
       content = ModalCreateComponent;
@@ -38,7 +38,7 @@ export class ManageMethodComponent implements OnInit {
     } else if (method == 'confirm') {
       content = ModalConfirmComponent;
       this.modalRef = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
-      this.modalRef.componentInstance.fromParent = {id: recipeMethod?.id, title: recipeMethod?.cookingMethodName};
+      this.modalRef.componentInstance.fromParent = {id: recipeCategory?.id, title: recipeCategory?.recipeCategoryName};
       this.modalRef.componentInstance.submitFunc = this.submitDelete.bind(this);
       return;
     }
@@ -52,15 +52,15 @@ export class ManageMethodComponent implements OnInit {
     
     this.modalRef.componentInstance.fromParent = [
       {
-        id: recipeMethod?.id
+        id: recipeCategory?.id
       },
       {
-        key: 'cookingMethodName',
-        name: 'Cooking Method Name',
+        key: 'recipeCategoryName',
+        name: 'tên danh mục công thức',
         type: 'string',
         validator: {
           disabled: false,
-          defaultValue: recipeMethod?.cookingMethodName || '',
+          defaultValue: recipeCategory?.recipeCategoryName || '',
           valid: Validators.required,
         },
       }
@@ -69,17 +69,17 @@ export class ManageMethodComponent implements OnInit {
   }
 
   private submitCreate(form: any) {
-    const method: RecipeMethod = {
+    const recipeCategory: RecipeCategory = {
       id: "",
-      cookingMethodName: form.cookingMethodName
+      recipeCategoryName: form.recipeCategoryName
     };
     
-    this.adminService.createMethod(method).subscribe({
+    this.adminService.createRecipeCategory(recipeCategory).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
-          this.loadMethods();
+          this.loadRecipeCategories();
         }
       },
       error: (error) => {
@@ -89,17 +89,17 @@ export class ManageMethodComponent implements OnInit {
   }
 
   private async submitUpdate(form: any) {
-    const method: RecipeMethod = {
+    const recipeCategory: RecipeCategory = {
       id: form.id,
-      cookingMethodName: form.cookingMethodName
+      recipeCategoryName: form.recipeCategoryName
     };
 
-    this.adminService.updateMethod(method).subscribe({
+    this.adminService.updateRecipeCategory(recipeCategory).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
-          this.loadMethods();
+          this.loadRecipeCategories();
         }
       },
       error: (error) => {
@@ -109,12 +109,12 @@ export class ManageMethodComponent implements OnInit {
   }
 
   private submitDelete(id: string) {
-    this.adminService.deleteMethod(id).subscribe({
+    this.adminService.deleteRecipeCategory(id).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
-          this.loadMethods();
+          this.loadRecipeCategories();
         }
       },
       error: (error) => {
@@ -123,14 +123,14 @@ export class ManageMethodComponent implements OnInit {
     });
   }
 
-  loadMethods() {
+  loadRecipeCategories() {
     this.adminService
-      .getMethods(this.searchValue, this.currentPage)
+      .getRecipeCategory(this.searchValue, this.currentPage)
       .subscribe({
         next: (res: any) => {
           this.collectionSize = res.totalItem;
-          let methods: RecipeMethod[] = res.items;
-          this.methods = methods;
+          let recipeCategories: RecipeCategory[] = res.items;
+          this.recipeCategories = recipeCategories;
         },
         error: (error) => {
           console.log(error);
@@ -141,11 +141,11 @@ export class ManageMethodComponent implements OnInit {
   onSearchChange(searchValue) {
     this.searchValue = searchValue;
     this.currentPage = 1;
-    this.loadMethods();
+    this.loadRecipeCategories();
   }
 
   ngOnInit(): void {
-    this.loadMethods();
+    this.loadRecipeCategories();
   }
 
 }

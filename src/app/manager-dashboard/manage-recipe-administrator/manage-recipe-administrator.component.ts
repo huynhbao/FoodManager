@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Recipe } from 'src/app/models/recipe.model';
+import { TagInputComponent } from 'ngx-chips';
+import { TagModel } from 'ngx-chips/core/tag-model';
+import { Observable, of } from 'rxjs';
+import { RecipeMethod, RecipeOrigin } from 'src/app/models/category.model';
+import { Recipe, RecipeCategory as RecipeCategoryMany } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -13,7 +18,14 @@ import { SharedService } from 'src/app/services/shared.service';
 export class ManageRecipeAdministratorComponent implements OnInit {
 
   recipes: Recipe[] = [];
-  listHashtag: string[] = ["All"];
+  listHashtag: string[] = ["Hashtag"];
+  listCategory: RecipeCategoryMany[] = [];
+  listCategoryDB: RecipeCategoryMany[] = [];
+  listCountry: RecipeOrigin[] = [];
+  listCountryDB: RecipeOrigin[] = [];
+  listMethod: RecipeMethod[] = [];
+  listMethodDB: RecipeMethod[] = [];
+  listTime = [];
   currentPage: number = 1;
   itemsPerPage = 5;
   pageSize: number = 10;
@@ -25,7 +37,134 @@ export class ManageRecipeAdministratorComponent implements OnInit {
   isLoadingHashtag: boolean = false;
   search: string = "";
   statusSelected: number = 1;
+  isCollapsed = true;
+  @ViewChild('tagInput') tagInputRef!: TagInputComponent;
+  selectedTag;
+  
   constructor(private managerService: ManagerService, private route: ActivatedRoute, public router: Router, private sharedService: SharedService) {
+  }
+
+  initFilter() {
+    if (!this.isCollapsed) {
+      this.loadItemDB();
+    }
+  }
+
+  onTagSelected(event) {
+    this.selectedTag = event;
+    this.tagInputRef.dropdown.show();
+  }
+
+  validators = [ Validators.pattern("^[0-9]*$") ];
+
+  requestAutocompleteItemsCategory$ = (text: string): Observable<TagModel[]> => {
+    if (this.selectedTag) {
+      return of(
+        this.listCategoryDB.filter((category) => category.recipeCategoryId === this.selectedTag.id)
+      );
+    }
+    return of(this.listCategoryDB);
+  };
+
+  requestAutocompleteItemsCountry$ = (text: string): Observable<TagModel[]> => {
+    if (this.selectedTag) {
+      return of(
+        this.listCountryDB.filter((country) => country.id === this.selectedTag.id)
+      );
+    }
+    return of(this.listCountryDB);
+  };
+
+  requestAutocompleteItemsMethod$ = (text: string): Observable<TagModel[]> => {
+    if (this.selectedTag) {
+      return of(
+        this.listMethodDB.filter((method) => method.id === this.selectedTag.id)
+      );
+    }
+    return of(this.listMethodDB);
+  };
+
+  loadItemDB() {
+    this.sharedService.getRecipeCategories(50).subscribe({
+      next: (categories: any) => {
+        this.listCategoryDB = categories.items;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+
+    this.sharedService.getRecipeMethod(50).subscribe({
+      next: (methods: any) => {
+        this.listMethodDB = methods.items;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+
+    this.sharedService.getRecipeOrigin(50).subscribe({
+      next: (origins: any) => {
+        this.listCountryDB = origins.items;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  searchByFilter() {
+    let hashTag: string = "";
+    let category: string = "";
+    let country: string = "";
+    let method: string = "";
+    let time: string = "";
+
+    if (this.listCategory.length !== 0) {
+      category = this.listCategory[0]["id"];
+    }
+
+    if (this.listCountry.length !== 0) {
+      country = this.listCountry[0].id;
+    }
+
+    if (this.listMethod.length !== 0) {
+      method = this.listMethod[0].id;
+    }
+
+    if (this.listTime.length !== 0) {
+      time = this.listTime[0]["value"];
+    }
+
+    if (this.hastagSelected !== 0) {
+      hashTag = this.listHashtag[this.hastagSelected].replace("#", "");
+    }
+    
+    this.isLoading = true;
+    
+    this.managerService.getRecipesByFilter(this.search, this.statusSelected, hashTag, category, country, method, time, this.currentPage, 1).subscribe({
+      next: (res:any) => {
+        this.collectionSize = res.totalItem;
+        let recipes: Recipe[] = res.items;
+        this.recipes = recipes;
+        this.recipes.forEach(recipe => {
+          let user: User = {
+            id: recipe['userId'],
+            fullname: recipe['name'],
+            avatarUrl: recipe['userImageUrl'],
+            role: recipe['role']
+          };
+          recipe.user = user;
+        });
+        
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
   private loadRecipes() {
@@ -76,7 +215,7 @@ export class ManageRecipeAdministratorComponent implements OnInit {
     this.isLoadingHashtag = true;
     this.managerService.getHashtag().subscribe({
       next: (res) => {
-        this.listHashtag = ["All"];
+        this.listHashtag = ["Hashtag"];
         this.listHashtag =  [...this.listHashtag, ...res.items];
       },
       error: (error) => {
@@ -97,37 +236,7 @@ export class ManageRecipeAdministratorComponent implements OnInit {
   }
 
   filterHashtag(index: number) {
-    this.isLoading = true;
     this.hastagSelected = index;
-    let hastagValue: string = this.listHashtag[index].replace("#", "");
-    if (index == 0) {
-      hastagValue = "";
-    }
-    
-    this.managerService.getPostsByHashtag(hastagValue, this.currentPage = 0).subscribe({
-      next: (res:any) => {
-        this.recipes = [];
-        this.collectionSize = res.totalItem;
-        let recipes: Recipe[] = res.items;
-        this.recipes = recipes;
-        this.recipes.forEach(recipe => {
-          let user: User = {
-            id: recipe['userId'],
-            fullname: recipe['name'],
-            avatarUrl: recipe['userImageUrl'],
-            role: recipe['role']
-          };
-          recipe.user = user;
-        });
-        
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
   }
 
   setRecipeByStatus(id: string, status: number) {
@@ -157,25 +266,6 @@ export class ManageRecipeAdministratorComponent implements OnInit {
     value = value.replace(/\s/g, '');
     let hashtag = value.split('#').slice(1);
     return hashtag;
-  }
-
-  public checkUncheckAll() {
-    for (var i = 0; i < this.recipes.length; i++) {
-      this.recipes[i].isSelected = this.masterSelected;
-    }
-    this.numSelected = this.masterSelected ? this.recipes.length : 0;
-  }
-
-  // Check All Checkbox Checked
-  public isAllSelected() {
-    let count = 0;
-    this.masterSelected = this.recipes.every(function (item: any) {
-      if (item.isSelected == true) {
-        count++;
-      }
-      return item.isSelected == true;
-    })
-    this.numSelected = count;
   }
 
   public onPageChange(pageNum: number): void {

@@ -27,6 +27,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReportPostComponent } from './shared/pages/report-post/report-post.component';
 import { ModalPostComponent } from './shared/components/modal-post/modal-post.component';
 import { TimePipe } from './shared/pipes/time.pipe';
+import { ModalRecipeComponent } from './shared/components/modal-recipe/modal-recipe.component';
+import { ReportRecipeComponent } from './shared/pages/report-recipe/report-recipe.component';
 
 export function tokenGetter() {
   let savedToken = localStorage.getItem("currentUser");
@@ -51,7 +53,9 @@ export function tokenGetter() {
     ChangePasswordComponent,
     ModalConfirmComponent,
     ReportPostComponent,
-    ModalPostComponent
+    ModalPostComponent,
+    ModalRecipeComponent,
+    ReportRecipeComponent
   ],
   imports: [
     BrowserModule,

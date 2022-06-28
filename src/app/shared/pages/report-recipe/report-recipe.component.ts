@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ReportPost } from 'src/app/models/report.model';
+import { ReportRecipe } from 'src/app/models/report.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { ModalPostComponent } from '../../components/modal-post/modal-post.component';
+import { ModalRecipeComponent } from '../../components/modal-recipe/modal-recipe.component';
 
 @Component({
-  selector: 'app-report-post',
-  templateUrl: './report-post.component.html',
-  styleUrls: ['./report-post.component.scss']
+  selector: 'app-report-recipe',
+  templateUrl: './report-recipe.component.html',
+  styleUrls: ['./report-recipe.component.scss']
 })
-export class ReportPostComponent implements OnInit {
-  reportPosts: ReportPost[] = [];
+export class ReportRecipeComponent implements OnInit {
+  reportRecipes: ReportRecipe[] = [];
   currentPage: number = 1;
   itemsPerPage = 5;
   collectionSize: number = 0;
@@ -30,11 +30,11 @@ export class ReportPostComponent implements OnInit {
   private loadReports() {
     this.isLoading = true;
     
-    this.sharedService.getReportPost(this.searchValue, this.statusSelected, this.currentPage).subscribe({
+    this.sharedService.getReportRecipe(this.searchValue, this.statusSelected, this.currentPage).subscribe({
       next: (res:any) => {
         this.collectionSize = res.totalItem;
-        let reportPosts: ReportPost[] = res.items;
-        this.reportPosts = reportPosts;
+        let reportRecipes: ReportRecipe[] = res.items;
+        this.reportRecipes = reportRecipes;
       },
       error: (error) => {
         console.log(error);
@@ -45,11 +45,11 @@ export class ReportPostComponent implements OnInit {
     });
   }
 
-  setPostByStatus(id: string, status: number) {
-    this.managerService.setPostByStatus(id, status).subscribe({
+  setRecipeByStatus(id: string, status: number) {
+    this.managerService.setRecipeByStatus(id, status).subscribe({
       next: (res:any) => {
-        this.confirmModalRef.close();
         this.loadReports();
+        this.confirmModalRef.close();
       },
       error: (error) => {
         console.log(error);
@@ -60,13 +60,13 @@ export class ReportPostComponent implements OnInit {
     });
   }
 
-  setReportStatus(id: string, postId: string, status: number) {
-    this.sharedService.acceptReportPost(id).subscribe({
+  setReportStatus(id: string, recipeId: string, status: number) {
+    this.sharedService.acceptReportRecipe(id).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           if (status === 2) {
-            this.setPostByStatus(postId, 0);
+            this.setRecipeByStatus(recipeId, 0);
             this.confirmModalRef.close();
           } else {
             this.loadReports();
@@ -82,9 +82,9 @@ export class ReportPostComponent implements OnInit {
     });
   }
 
-  showPost(postId: string, reportId: string) {
-    this.modalRef = this.modalService.open(ModalPostComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
-    this.modalRef.componentInstance.id = postId;
+  showRecipe(recipeId: string, reportId: string) {
+    this.modalRef = this.modalService.open(ModalRecipeComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+    this.modalRef.componentInstance.id = recipeId;
     this.modalRef.componentInstance.reportId = reportId;
     this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
   }
@@ -95,7 +95,7 @@ export class ReportPostComponent implements OnInit {
   }
 
   confirmDelete() {
-    this.setReportStatus(this.reportPosts[this.selectedIndex].id, this.reportPosts[this.selectedIndex].postId, 2);
+    this.setReportStatus(this.reportRecipes[this.selectedIndex].id, this.reportRecipes[this.selectedIndex].recipeId, 2);
   }
 
   submitFunc() {
@@ -119,16 +119,16 @@ export class ReportPostComponent implements OnInit {
 
   // The master checkbox will check/ uncheck all items
   public checkUncheckAll() {
-    for (var i = 0; i < this.reportPosts.length; i++) {
-      this.reportPosts[i].isSelected = this.masterSelected;
+    for (var i = 0; i < this.reportRecipes.length; i++) {
+      this.reportRecipes[i].isSelected = this.masterSelected;
     }
-    this.numSelected = this.masterSelected ? this.reportPosts.length : 0;
+    this.numSelected = this.masterSelected ? this.reportRecipes.length : 0;
   }
 
   // Check All Checkbox Checked
   public isAllSelected() {
     let count = 0;
-    this.masterSelected = this.reportPosts.every(function (item: any) {
+    this.masterSelected = this.reportRecipes.every(function (item: any) {
       if (item.isSelected == true) {
         count++;
       }

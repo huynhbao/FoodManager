@@ -1,7 +1,7 @@
 <div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            <a [routerLink]="['./create']" class="btn btn-info mb-4">Create Recipe</a>
+            <a [routerLink]="['./create']" class="btn btn-info mb-4">Tạo công thức</a>
         </div>
     </div>
 </div>
@@ -13,7 +13,7 @@
                 <div class="card-header border-0" style="border-radius: 0;">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Recipes - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Tổng số công thức - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
@@ -39,20 +39,8 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-2">
-                            <div ngbDropdown class="d-inline-block w-100">
-                                <input class="btn btn-outline-fooma btn-block" id="dropdownBasic1" ngbDropdownToggle
-                                    [value]="listHashtag[hastagSelected]" (click)="loadHashtag()" readonly />
-                                <app-spinner [spinnerSize]="1" [enabled]="isLoadingHashtag"></app-spinner>
-                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
-                                    <div *ngIf="!isLoadingHashtag">
-                                        <button type="button" class="dropdown-item"
-                                            *ngFor="let hashtag of listHashtag; let i = index" (click)="filterHashtag(i)">
-                                            {{hashtag}}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn-outline-fooma btn-block" (click)="collapse.toggle()" (click)="initFilter()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">Bộ lọc</button>
                         </div>
                         <div class="col-10">
                             <div class="input-group input-group-alternative input-group-merge"
@@ -61,6 +49,91 @@
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
                                 <input class="form-control" placeholder="Search" [ngModel]="search" (ngModelChange)='onSearchChange($event)' type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row justify-content-center">
+                                            <div class="col-2">
+                                                <tag-input [(ngModel)]='listCategory' [theme]="'fooma-theme'" [identifyBy]="'recipeCategoryId'"
+                                                    [displayBy]="'recipeCategoryName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Danh mục" placeholder="Danh mục" (onSelect)="onTagSelected($event)"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                    <tag-input-dropdown
+                                                        [autocompleteObservable]="requestAutocompleteItemsCategory$"
+                                                        [displayBy]="'recipeCategoryName'"
+                                                        [identifyBy]="'recipeCategoryId'"
+                                                        [showDropdownIfEmpty]="true"
+                                                        [minimumTextLength]="0"
+                                                        [focusFirstElement]="true"
+                                                        [keepOpen]="false"
+                                                    >
+                                                    </tag-input-dropdown>
+                                                </tag-input>
+                                            </div>
+                                            <div class="col-2">
+                                                <tag-input [(ngModel)]='listCountry' [theme]="'fooma-theme'" [identifyBy]="'id'"
+                                                    [displayBy]="'originName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Xuất xứ" placeholder="Xuất xứ" (onSelect)="onTagSelected($event)"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                    <tag-input-dropdown
+                                                        [autocompleteObservable]="requestAutocompleteItemsCountry$"
+                                                        [displayBy]="'originName'"
+                                                        [identifyBy]="'id'"
+                                                        [showDropdownIfEmpty]="true"
+                                                        [minimumTextLength]="0"
+                                                        [focusFirstElement]="true"
+                                                        [keepOpen]="false"
+                                                    >
+                                                    </tag-input-dropdown>
+                                                </tag-input>
+                                            </div>
+                                            <div class="col-2">
+                                                <tag-input [(ngModel)]='listMethod' [theme]="'fooma-theme'" [identifyBy]="'id'"
+                                                    [displayBy]="'cookingMethodName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Phương pháp" placeholder="Phương pháp" (onSelect)="onTagSelected($event)"
+                                                    [ngModelOptions]="{standalone: true}">
+                                                    <tag-input-dropdown
+                                                        [autocompleteObservable]="requestAutocompleteItemsMethod$"
+                                                        [displayBy]="'cookingMethodName'"
+                                                        [identifyBy]="'id'"
+                                                        [showDropdownIfEmpty]="true"
+                                                        [minimumTextLength]="0"
+                                                        [focusFirstElement]="true"
+                                                        [keepOpen]="false"
+                                                    >
+                                                    </tag-input-dropdown>
+                                                </tag-input>
+                                            </div>
+                                            <div class="col-2">
+                                                <tag-input [(ngModel)]='listTime' [theme]="'fooma-theme'" [maxItems]="1" secondaryPlaceholder="Thời gian (phút)" placeholder="Thời gian (phút)" (onSelect)="onTagSelected($event)"
+                                                    [ngModelOptions]="{standalone: true}" [validators]="validators">
+                                                </tag-input>
+                                            </div>
+                                            <div class="col-2">
+                                                <div ngbDropdown class="d-inline-block w-100">
+                                                    <input class="btn btn-outline-fooma btn-block" id="dropdownBasic1" ngbDropdownToggle
+                                                        [value]="listHashtag[hastagSelected]" (click)="loadHashtag()" readonly />
+                                                    <app-spinner [spinnerSize]="1" [enabled]="isLoadingHashtag"></app-spinner>
+                                                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+                                                        <div *ngIf="!isLoadingHashtag">
+                                                            <button type="button" class="dropdown-item"
+                                                                *ngFor="let hashtag of listHashtag; let i = index" (click)="filterHashtag(i)">
+                                                                {{hashtag}}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-4">
+                                            <div class="col text-right">
+                                                <button class="btn btn-block btn-fooma" (click)="searchByFilter()">Tìm kiếm</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -78,13 +151,6 @@
                     <table class="table table-fit align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th class="text-center" style="width: 5%;">
-                                    <div class="custom-checkbox" style="font-size: 1.3rem;">
-                                        <input id="check-all" type="checkbox" [(ngModel)]="masterSelected"
-                                            (change)="checkUncheckAll()">
-                                        <label class="mb-0" style="margin-top: 3px;" for="check-all"></label>
-                                    </div>
-                                </th>
                                 <th style="width: 25%;">Title</th>
                                 <th style="width: 12%;">User</th>
                                 <th style="width: 10%;">Published Date</th>
@@ -96,13 +162,6 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let recipe of recipes" [ngClass]="{'selected': recipe.isSelected === true}">
-                                <td class="text-center">
-                                    <div class="custom-checkbox" style="font-size: 1.3rem;">
-                                        <input id="{{recipe.id}}" type="checkbox" [(ngModel)]="recipe.isSelected"
-                                            (change)="isAllSelected()">
-                                        <label class="mb-0" for="{{recipe.id}}"></label>
-                                    </div>
-                                </td>
                                 <td class="">
                                     <img src="{{recipe.thumbnail}}" style="height: 60px;"
                                         class="img-thumbnail img-fluid mr-3">

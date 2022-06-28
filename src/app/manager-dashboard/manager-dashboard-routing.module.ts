@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ManageIngredientComponent } from '../shared/pages/manage-ingredient/manage-ingredient.component';
 import { ReportPostComponent } from '../shared/pages/report-post/report-post.component';
+import { ReportRecipeComponent } from '../shared/pages/report-recipe/report-recipe.component';
 import { CreatePostComponent } from './create-post/create-post.component';
 import { CreateRecipeComponent } from './create-recipe/create-recipe.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -54,6 +55,9 @@ const routes: Routes = [
       },
       {
         path: 'post', component: ReportPostComponent,
+      },
+      {
+        path: 'recipe', component: ReportRecipeComponent,
       }
     ]
   },

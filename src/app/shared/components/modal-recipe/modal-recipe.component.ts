@@ -1,27 +1,28 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Post } from 'src/app/models/post.model';
+import { NgbActiveModal, NgbCarouselConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Recipe } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
 
 @Component({
-  selector: 'app-modal-post',
-  templateUrl: './modal-post.component.html',
-  styleUrls: ['./modal-post.component.scss']
+  selector: 'app-modal-recipe',
+  templateUrl: './modal-recipe.component.html',
+  styleUrls: ['./modal-recipe.component.scss']
 })
-export class ModalPostComponent implements OnInit {
+export class ModalRecipeComponent implements OnInit {
 
   @Input() id!: string;
   @Input() reportId!: string;
   @Input() submitFunc!: Function;
-  post!: Post;
-  isLoading: boolean = true;
   modalRef!: NgbModalRef;
   confirmModalRef!: NgbModalRef;
+  recipe!: Recipe;
+  isLoading: boolean = true;
   
-  constructor(private sharedService: SharedService, private managerService: ManagerService, public activeModal: NgbActiveModal, private modalService: NgbModal) { }
+  constructor(private sharedService: SharedService, private managerService: ManagerService, private config: NgbCarouselConfig, public activeModal: NgbActiveModal, private modalService: NgbModal) {
+    config.interval = 0;
+  }
 
   splitDescription(value: string) {
     value = value.replace(/\s/g, '');
@@ -30,14 +31,12 @@ export class ModalPostComponent implements OnInit {
     return hashtag;
   }
 
-  setPostByStatus(id: string, status: number) {
-    this.managerService.setPostByStatus(id, status).subscribe({
+  setRecipeByStatus(id: string, status: number) {
+    this.managerService.setRecipeByStatus(id, status).subscribe({
       next: (res:any) => {
         console.log(res);
-        if (res.code == 200) {
-          this.activeModal.close();
-          this.submitFunc();
-        }
+        this.activeModal.close();
+        this.submitFunc();
       },
       error: (error) => {
         console.log(error);
@@ -49,12 +48,14 @@ export class ModalPostComponent implements OnInit {
   }
 
   setReportStatus(status: number = 2) {
-    this.sharedService.acceptReportPost(this.reportId).subscribe({
+    this.setRecipeByStatus(this.id, 0);
+    this.sharedService.acceptReportRecipe(this.reportId).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           if (status === 2) {
-            this.setPostByStatus(this.id, 0);
+            console.log(this.id);
+            this.setRecipeByStatus(this.id, 0);
           } else {
             this.activeModal.close();
             this.submitFunc();
@@ -77,29 +78,30 @@ export class ModalPostComponent implements OnInit {
   showPopup(content) {
     this.confirmModalRef = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
   }
-  
+
   ngOnInit(): void {
     if (this.id) {
-      this.managerService.getPostById(this.id).subscribe({
-        next: (post: Post) => {
+      this.managerService.getRecipeById(this.id).subscribe({
+        next: (recipe: Recipe) => {
+          
           let user: User = {
-            id: post["userId"],
-            fullname: post["name"],
-            avatarUrl: post["userImageUrl"]
+            id: recipe["userId"],
+            fullname: recipe["name"],
+            avatarUrl: recipe["userImageUrl"] || "https://i.imgur.com/EreYJ0D.png",
+            role: recipe["role"]
           } 
-          this.post = post;
-          this.post.user = user;
-          console.log(this.post);
+          this.recipe = recipe;
+          this.recipe.user = user;
+          console.log(this.recipe);
         },
         error: (error) => {
-          //this.router.navigate(['manager/manage/post']);
+          this.isLoading = false;
         },
         complete: () => {
           this.isLoading = false;
         }
       });
     }
-    
   }
 
 }

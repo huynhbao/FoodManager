@@ -18,11 +18,10 @@ export class ManageCategoryComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 5;
   collectionSize = 0;
-  // categoryForm: FormGroup;
   listStatus: string[] = ["Enable", "Disable"];
   selectedStatus: string = this.listStatus[0];
   selectedCategory?: Category;
-  searchText = "";
+  searchValue: string = '';
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal, private adminManageService: AdminManageService) {
   }
 
@@ -31,14 +30,11 @@ export class ManageCategoryComponent implements OnInit {
   }
 
   private loadCategories() {
-    this.adminManageService.getCategories(this.currentPage).subscribe({
-      next: (categories: Category[]) => {
-        this.listCategory = categories;
-        this.collectionSize = this.listCategory.length;
-        /* for (let i in this.listCategory) {
-          console.log(typeof this.listCategory[i].status);
-          //this.listCategory[i].status = Math.random() < 0.5;
-        } */
+    this.adminManageService.getCategories(this.searchValue, this.currentPage).subscribe({
+      next: (res: any) => {
+        this.collectionSize = res.totalItem;
+        let listCategory: Category[] = res.items;
+        this.listCategory = listCategory;
       },
       error: (error) => {
         console.log(error);
@@ -52,6 +48,12 @@ export class ManageCategoryComponent implements OnInit {
 
   public changePagesize(num: number): void {
     
+  }
+
+  onSearchChange(searchValue) {
+    this.searchValue = searchValue;
+    this.currentPage = 1;
+    this.loadCategories();
   }
 
   triggerModal(method: String, dto: any) {

@@ -12,6 +12,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../shared/modules/shared/shared.module';
 import { ManageOriginComponent } from './manage-origin/manage-origin.component';
 import { ManageMethodComponent } from './manage-method/manage-method.component';
+import { ManageRecipeCategoryComponent } from './manage-recipe-category/manage-recipe-category.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { ManageMethodComponent } from './manage-method/manage-method.component';
     ManageCategoryComponent,
     FilterPipe,
     ManageOriginComponent,
-    ManageMethodComponent
+    ManageMethodComponent,
+    ManageRecipeCategoryComponent
   ],
   imports: [
     CommonModule,

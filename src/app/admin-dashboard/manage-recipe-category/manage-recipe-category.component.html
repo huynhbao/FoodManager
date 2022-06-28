@@ -1,7 +1,7 @@
 <div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            <a (click)="triggerModal('create')" class="btn btn-info mb-4">Create Method</a>
+            <a (click)="triggerModal('create')" class="btn btn-info mb-4">Tạo danh mục công thức</a>
         </div>
     </div>
 </div>
@@ -13,7 +13,7 @@
                 <div class="card-header border-0">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Method - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Tổng số danh mục công thức - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                         </div>
@@ -49,20 +49,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let method of methods">
+                            <tr *ngFor="let recipeCategory of recipeCategories">
                                 <td>
-                                    <h5>{{method.id}}</h5>
+                                    <h5>{{recipeCategory.id}}</h5>
                                 </td>
                                 <td class="table-user">
                                     <div class="row align-items-center">
                                         <div class="col-auto">
-                                            <h5>{{method.cookingMethodName | titlecase}}</h5>
+                                            <h5>{{recipeCategory.recipeCategoryName | titlecase}}</h5>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="table-actions">
-                                    <a class="text-default mr-2" href="javascript:void(0)" (click)="triggerModal('update', method)"><i class="fas fa-edit"></i></a>
-                                    <a (click)="triggerModal('confirm', method)" class="table-action table-action-delete text-danger" data-toggle="tooltip"
+                                    <a class="text-default mr-2" href="javascript:void(0)" (click)="triggerModal('update', recipeCategory)"><i class="fas fa-edit"></i></a>
+                                    <a (click)="triggerModal('confirm', recipeCategory)" class="table-action table-action-delete text-danger" data-toggle="tooltip"
                                         data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
                                     </a>
