@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Category, RecipeCategory } from '../models/category.model';
 import { Ingredient } from '../models/ingredient.model';
+import { User } from '../models/user.model';
 import { AppConst } from '../shared/constants/app-const';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class SharedService {
   baseUrl = environment.apiUrl
   
   constructor(private http: HttpClient) {}
-
+  
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/category`);
   }
@@ -63,6 +64,14 @@ export class SharedService {
 
   acceptReportRecipe(id: string): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/report/recipe/accept/${id}`, {});
+  }
+
+  getReportUser(search: string, status: number, page: number = 1): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/report/user?userReportTitle=${search}&status=${status}&page=${page}&size=5`);
+  }
+
+  acceptReportUser(id: string): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/report/user/accept/${id}`, {});
   }
 
   uploadImage(file: string): Observable<any> {

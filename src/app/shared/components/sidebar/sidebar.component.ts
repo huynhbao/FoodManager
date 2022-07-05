@@ -13,12 +13,16 @@ declare interface RouteInfo {
   isCollapsed?: boolean;
 }
 export const ROUTES_ADMIN: RouteInfo[] = [
-  { path: '', title: 'Manage',  icon:'ni-bullet-list-67 text-success', class: '', child: [
+  { path: '', title: 'Manage User',  icon:'ni-bullet-list-67 text-success', class: '', child: [
     { path: 'user', title: 'User',  icon:'', class: '' },
-    { path: 'category', title: 'Category',  icon:'', class: '' },
+  ]},
+  { path: '', title: 'Manage Recipe',  icon:'ni-bullet-list-67 text-pink', class: '', child: [
+    { path: 'recipe-category', title: 'Recipe Category',  icon:'', class: '' },
     { path: 'origin', title: 'Origin',  icon:'', class: '' },
     { path: 'method', title: 'Method',  icon:'', class: '' },
-    { path: 'recipe-category', title: 'Recipe Category',  icon:'', class: '' },
+  ]},
+  { path: '', title: 'Manage Ingredient',  icon:'ni-bullet-list-67 text-yellow', class: '', child: [
+    { path: 'category', title: 'Ingredient Category',  icon:'', class: '' },
   ]},
 ];
 

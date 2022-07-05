@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ManageIngredientComponent } from '../shared/pages/manage-ingredient/manage-ingredient.component';
+import { ProfileComponent } from '../shared/pages/profile/profile.component';
 import { ReportPostComponent } from '../shared/pages/report-post/report-post.component';
 import { ReportRecipeComponent } from '../shared/pages/report-recipe/report-recipe.component';
+import { ReportUserComponent } from '../shared/pages/report-user/report-user.component';
 import { CreatePostComponent } from './create-post/create-post.component';
 import { CreateRecipeComponent } from './create-recipe/create-recipe.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -58,11 +60,15 @@ const routes: Routes = [
       },
       {
         path: 'recipe', component: ReportRecipeComponent,
+      },
+      {
+        path: 'user', component: ReportUserComponent,
       }
     ]
   },
   { path: 'pending-post', component: PendingPostComponent },
   { path: 'ingredient', component: ManageIngredientComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: 'recipe-system', children: [
     {
       path:'',

@@ -23,3 +23,16 @@ export interface ReportRecipe {
     status: number
     isSelected?: boolean
 }
+
+export interface ReportUser {
+    id: string,
+    reportedUserId: string,
+    userId: string,
+    userName: string,
+    reportedUserName: string,
+    title: string,
+    content: string,
+    createDate: Date,
+    status: number
+    isSelected?: boolean
+}

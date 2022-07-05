@@ -1,0 +1,119 @@
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+    style="min-height: 600px; background-image: url(assets/img/theme/profile-cover.png); background-size: cover; background-position: center top;">
+    <!-- Mask -->
+    <span class="mask bg-gradient-danger opacity-8"></span>
+    <!-- Header container -->
+    <div class="container-fluid d-flex align-items-center" *ngIf="!isGettingData">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="display-2 text-white">Xin chào {{user.name}}</h1>
+                <p class="text-white mt-0 mb-5">Đây là trang thông tin cá nhân của bạn. Bạn có thể xem hoặc sửa các thông tin các nhân của mình.</p>
+                <a (click)="toggleEdit()" class="btn btn-info">Sửa thông tin</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--7">
+    <div class="row" *ngIf="!isGettingData">
+        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+            <div class="card card-profile shadow">
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 order-lg-2">
+                        <div class="card-profile-image">
+                            <a href="javascript:void(0)">
+                                <img [src]="user.imageUrl" class="rounded-circle">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                    <div class="d-flex justify-content-between">
+                    </div>
+                </div>
+                <div class="card-body pt-0 pt-md-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                                <div>
+                                    <span class="heading">{{user.totalPost}}</span>
+                                    <span class="description">Tổng số bài viết</span>
+                                </div>
+                                <div>
+                                    <span class="heading">{{user.totalRecipe}}</span>
+                                    <span class="description">Tổng số công thức</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h3>
+                            {{user.name | titlecase}}<span class="font-weight-light">, {{getAge(user.birthDate)}}</span>
+                        </h3>
+                        <hr class="my-4" />
+                        <p>{{user.bio}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 order-xl-1">
+            <div class="card bg-secondary shadow">
+                <div class="card-header bg-white border-0">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">Tài khoản của tôi</h3>
+                        </div>
+                        <div class="col-4 text-right">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                        <h6 class="heading-small text-muted mb-4">Thông tin cá nhân</h6>
+                        <div class="pl-lg-4">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-fullname">Họ và tên</label>
+                                        <input type="text" id="input-fullname" class="form-control form-control-alternative"
+                                            placeholder="Họ và tên" formControlName="fullName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-phone">Số điện thoại</label>
+                                        <input type="text" id="input-phone" class="form-control form-control-alternative"
+                                            placeholder="0123456789" formControlName="phone">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-dob">Ngày sinh</label>
+                                        <input type="date" id="input-dob" class="form-control form-control-alternative"
+                                        formControlName="dob" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <!-- Description -->
+                        <h6 class="heading-small text-muted mb-4">Miêu tả về bạn</h6>
+                        <div class="pl-lg-4">
+                            <div class="form-group">
+                                <label>Bio</label>
+                                <textarea rows="4" class="form-control form-control-alternative"
+                                    placeholder="A few words about you ..." formControlName="bio"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button *ngIf="form.enabled" [disabled]="isLoading" type="submit" class="btn btn-block btn-fooma">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

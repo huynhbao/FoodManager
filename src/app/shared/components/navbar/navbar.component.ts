@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
   public focus?: boolean;
   public listTitles!: any[];
   public location: Location;
+  role!: String;
   title: string = 'Dashboard';
   constructor(
     location: Location,
@@ -27,6 +28,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     let role = this.authenticationService.currentUserValue.currentUser.role;
+    this.role = role;
     if (role == AppConst.ADMIN_STR) {
       this.listTitles = ROUTES_ADMIN.filter(menuItem => menuItem);
     } else if (role == AppConst.MANAGER_STR) {

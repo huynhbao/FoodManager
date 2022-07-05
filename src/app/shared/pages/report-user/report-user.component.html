@@ -13,10 +13,10 @@
                         <a class="nav-link" data-toggle="tab" [routerLink]="['../post']">Bài viết</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../recipe']">Công thức</a>
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe']">Công thức</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" [routerLink]="['../user']">Người dùng</a>
+                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../user']">Người dùng</a>
                     </li>
                 </ul>
             </div>
@@ -27,7 +27,7 @@
                 <div class="card-header border-0" style="border-radius: 0;">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Reports - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Tổng số báo cáo - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <a (click)="filterByStatus(2)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 2}" href="javascript:void(0)">
@@ -67,33 +67,33 @@
                     <table class="table table-fit align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th>Reporter</th>
-                                <th>Recipe Name</th>
-                                <th>Title</th>
-                                <th>Content</th>
-                                <th>Report Date</th>
-                                <th>Action</th>
+                                <th>Người báo cáo</th>
+                                <th>Người dùng</th>
+                                <th>Tiêu đề</th>
+                                <th>Nội dung</th>
+                                <th>Ngày báo cáo</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let recipe of reportRecipes; let i = index" [ngClass]="{'selected': recipe.isSelected === true}">
+                            <tr *ngFor="let user of reportUsers; let i = index" [ngClass]="{'selected': user.isSelected === true}">
                                 <td>
-                                    <b>{{recipe.userName}}</b>
+                                    <a (click)="showUser(user.userId, user.id)" class="font-weight-bold text-dark" style="cursor: pointer;">{{user.userName}}</a>
                                 </td>
                                 <td>
-                                    <a (click)="showRecipe(recipe.recipeId, recipe.id)" class="font-weight-bold text-dark" style="cursor: pointer;">{{recipe.recipeName}}</a>
+                                    <a (click)="showUser(user.reportedUserId, user.id)" class="font-weight-bold text-dark" style="cursor: pointer;">{{user.reportedUserName}}</a>
                                 </td>
                                 <td>
-                                    <span class="text-muted">{{recipe.title}}</span>
+                                    <span class="text-muted">{{user.title}}</span>
                                 </td>
                                 <td>
-                                    <span class="text-muted">{{recipe.content}}</span>
+                                    <span class="text-muted">{{user.content}}</span>
                                 </td>
                                 <td style="width:1px; white-space:nowrap;">
-                                    <span class="text-muted">{{recipe.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
+                                    <span class="text-muted">{{user.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td class="table-actions">
-                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(recipe.id, recipe.recipeId, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Recipe">
+                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(user.id, user.userId, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Recipe">
                                         <i class="fas fa-check"></i>
                                     </button>
                                     <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="showPopup(confirmModal, i)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Recipe">
@@ -137,7 +137,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <p><strong>Are you sure you want to delete <span class="text-primary">"{{reportRecipes[selectedIndex].recipeName}}"</span>?</strong></p>
+        <p><strong>Are you sure you want to delete <span class="text-primary">"{{reportUsers[selectedIndex].userName}}"</span>?</strong></p>
         <p>All information associated to this row will be deleted.
             <span class="text-danger">This operation may not be undone.</span>
         </p>

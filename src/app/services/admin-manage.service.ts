@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Category, RecipeCategory, RecipeMethod, RecipeOrigin } from '../models/category.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,12 @@ export class AdminManageService {
   getUsers(search: string = "", status: number, page: number): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrl}/user/users?name=${search}&status=${status}&page=${page}&size=5`
+    );
+  }
+
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(
+      `${this.baseUrl}/user/${id}`
     );
   }
 

@@ -29,6 +29,9 @@ import { ModalPostComponent } from './shared/components/modal-post/modal-post.co
 import { TimePipe } from './shared/pipes/time.pipe';
 import { ModalRecipeComponent } from './shared/components/modal-recipe/modal-recipe.component';
 import { ReportRecipeComponent } from './shared/pages/report-recipe/report-recipe.component';
+import { ReportUserComponent } from './shared/pages/report-user/report-user.component';
+import { ModalUserComponent } from './shared/components/modal-user/modal-user.component';
+import { ProfileComponent } from './shared/pages/profile/profile.component';
 
 export function tokenGetter() {
   let savedToken = localStorage.getItem("currentUser");
@@ -55,7 +58,10 @@ export function tokenGetter() {
     ReportPostComponent,
     ModalPostComponent,
     ModalRecipeComponent,
-    ReportRecipeComponent
+    ReportRecipeComponent,
+    ReportUserComponent,
+    ModalUserComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

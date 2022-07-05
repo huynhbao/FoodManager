@@ -7,6 +7,7 @@ import { ChangePasswordComponent } from './shared/pages/change-password/change-p
 import { CodeConfirmComponent } from './shared/pages/code-confirm/code-confirm.component';
 import { ForgotPasswordComponent } from './shared/pages/forgot-password/forgot-password.component';
 import { LoginComponent } from './shared/pages/login/login.component';
+import { ProfileComponent } from './shared/pages/profile/profile.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent},
