@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Post Detail</h4>
+    <h4 class="modal-title" id="modal-basic-title">Thông tin bài viết</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">×</span>
     </button>
@@ -9,17 +9,17 @@
         <div *ngIf="!post" class="card">
             <div class="card-body text-center">
                 <img src="./assets/img/brand/logo.png" class="navbar-brand-img mb-4" alt="logo" style="width: 230px;">
-                <h3>This post does not exist</h3>
-                <a class="" [routerLink]="['../../post']">Go back</a>
+                <h3>Bài viết không tồn tại</h3>
+                <a class="" (click)="activeModal.dismiss('Cross click')">Quay lại</a>
             </div>
         </div>
         <div *ngIf="!isLoading && post && reportId" class="card">
             <div class="row">
                 <div class="col-6">
-                    <button class="btn btn-success btn-block" [disabled]="isLoading" (click)="setReportStatus(1)"><i class="fas fa-check"></i> Skip</button>
+                    <button class="btn btn-success btn-block" [disabled]="isLoading" (click)="setReportStatus(1)"><i class="fas fa-check"></i> Bỏ qua</button>
                 </div>
                 <div class="col-6">
-                    <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Delete post</button>
+                    <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Bỏ qua và xóa bài viết</button>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                             </div>
                             <div class="col-auto">
                                 <h3 class="card-title font-weight-bold mb-0">{{post?.user?.fullname}}</h3>
-                                <span class="h5 mb-0 font-weight-light">Posted {{ post?.publishedDate}} ({{post?.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
+                                <span class="h5 mb-0 font-weight-light">Đã đăng {{ post?.publishedDate}} ({{post?.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
                             </div>
                             
                         </div>
@@ -67,7 +67,7 @@
                     </div>
                     <div class="col-6 text-right">
                         <span>
-                            {{post?.totalComment}} comments
+                            {{post?.totalComment}} bình luận
                         </span>
                     </div>
                 </div>
@@ -104,19 +104,19 @@
 
 <ng-template #confirmModal let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-title">Confirm deletion</h4>
+        <h4 class="modal-title" id="modal-title">Xác nhận xóa</h4>
         <button type="button" class="close" aria-describedby="modal-title" (click)="confirmModalRef.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p><strong>Are you sure you want to delete <span class="text-primary">"{{post.title}}"</span>?</strong></p>
-        <p>All information associated to this row will be deleted.
-            <span class="text-danger">This operation may not be undone.</span>
+        <p><strong>Bạn có chắc là muốn xóa <span class="text-primary">"{{post.title}}"</span>?</strong></p>
+        <p>Tất cả các thông tin liên quan đến dữ liệu này sẽ bị xóa.
+            <span class="text-danger">Hành động này có thể không được hoàn tác.</span>
         </p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.dismiss('Cancel click')">Cancel</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.dismiss('Cancel click')">Hủy</button>
         <button type="button" class="btn btn-danger" (click)="confirmDelete()">Ok</button>
     </div>
 </ng-template>

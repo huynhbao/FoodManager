@@ -12,7 +12,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Users - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Tổng số người dùng - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <!-- <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
@@ -74,32 +74,18 @@
                     <table class="table table-fit align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th class="text-center" style="width: 5%;">
-                                    <div class="custom-checkbox" style="font-size: 1.3rem;">
-                                        <input id="check-all" type="checkbox" [(ngModel)]="masterSelected"
-                                            (change)="checkUncheckAll()">
-                                        <label class="mb-0" style="margin-top: 3px;" for="check-all"></label>
-                                    </div>
-                                </th>
-                                <th style="width: 25%;">Name</th>
+                                <th style="width: 25%;">Tên</th>
                                 <th style="width: 12%;">Email</th>
-                                <th style="width: 10%;">Join Date</th>
-                                <th style="width: 12%;">Role</th>
-                                <th>Total Post</th>
-                                <th>Total Recipe</th>
-                                <th>Action</th>
+                                <th style="width: 10%;">Ngày đăng ký</th>
+                                <th style="width: 12%;">Quyền</th>
+                                <th>Tổng số bài viết</th>
+                                <th>Tổng số công thức</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let user of listUser" [ngClass]="{'selected': user.isSelected === true}">
-                                <td class="text-center">
-                                    <div class="custom-checkbox" style="font-size: 1.3rem;">
-                                        <input id="{{user.id}}" type="checkbox" [(ngModel)]="user.isSelected"
-                                            (change)="isAllSelected()">
-                                        <label class="mb-0" for="{{user.id}}"></label>
-                                    </div>
-                                </td>
-                                <td class="">
+                                <td>
                                     <img src="{{user.imageUrl}}" class="avatar rounded-circle mr-3">
                                     <a href="javascript:void()" (click)="openDetail(userModal, user)"
                                         class="font-weight-bold text-dark">{{user.name}}</a>
@@ -173,7 +159,7 @@
 
 <ng-template #userModal let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">User Profile</h4>
+        <h4 class="modal-title" id="modal-basic-title">Thông tin người dùng</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">×</span>
         </button>
@@ -188,10 +174,10 @@
                     <div class="col-auto">
                         <h2 class="mb-2">{{selectedUser.email}}</h2>
                         <h5 class="text-muted">ID: <b>{{selectedUser.id}}</b></h5>
-                        <h5 class="text-muted">Role: <b>{{selectedUser.role | titlecase}}</b></h5>
-                        <h5 class="text-muted">Join date: <b>{{selectedUser.createDate | date: 'dd/MM/yyyy'}}</b></h5>
-                        <h5 class="text-muted">Total Posts: <b>{{selectedUser.totalPost}}</b></h5>
-                        <h5 class="text-muted">Total Recipes: <b>{{selectedUser.totalRecipe}}</b></h5>
+                        <h5 class="text-muted">Quyền: <b>{{selectedUser.role | titlecase}}</b></h5>
+                        <h5 class="text-muted">Ngày đăng ký: <b>{{selectedUser.createDate | date: 'dd/MM/yyyy'}}</b></h5>
+                        <h5 class="text-muted">Tổng số bài viết: <b>{{selectedUser.totalPost}}</b></h5>
+                        <h5 class="text-muted">Tổng số công thức: <b>{{selectedUser.totalRecipe}}</b></h5>
                     </div>
                     <div class="col text-right align-items-start">
                         <button type="button" class="btn btn-success" (click)="toggleEdit()">Edit</button>
@@ -201,9 +187,9 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label class="form-control-label" for="input-fullname">Full Name</label>
+                            <label class="form-control-label" for="input-fullname">Họ và tên</label>
                             <input type="text" id="input-fullname" class="form-control form-control-alternative"
-                                placeholder="Full name" formControlName="fullName">
+                                placeholder="Họ và tên" formControlName="fullName">
                         </div>
                     </div>
                 </div>
@@ -219,14 +205,14 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-control-label" for="input-phone">Phone number</label>
+                            <label class="form-control-label" for="input-phone">Số điện thoại</label>
                             <input type="text" id="input-phone" class="form-control form-control-alternative"
                                 placeholder="0123456789" formControlName="phone">
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-control-label" for="input-dob">Date of birth</label>
+                            <label class="form-control-label" for="input-dob">Ngày sinh</label>
                             <input type="date" id="input-dob" class="form-control form-control-alternative"
                             formControlName="dob" />
                         </div>
@@ -237,6 +223,6 @@
         
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-fooma" (click)="modal.close('Save click')">{{form.enabled ? 'Update' : 'Close'}}</button>
+        <button type="button" class="btn btn-fooma" (click)="modal.close('Save click')">{{form.enabled ? 'Cập nhật' : 'Đóng'}}</button>
     </div>
 </ng-template>

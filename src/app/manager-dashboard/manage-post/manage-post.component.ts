@@ -17,7 +17,7 @@ import { SharedService } from 'src/app/services/shared.service';
 export class ManagePostComponent implements OnInit {
   images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
   listPost: Post[] = [];
-  listHashtag: string[] = ["All"];
+  listHashtag: string[] = ["Tất cả"];
   paging?: Paging;
   currentPage: number = 1;
   itemsPerPage = 5;
@@ -46,7 +46,7 @@ export class ManagePostComponent implements OnInit {
       }
     ]
     let hashtag = this.listHashtag[this.hastagSelected];
-    if (hashtag == "All") {
+    if (hashtag == "Tất cả") {
       hashtag = "";
     }
 
@@ -154,7 +154,7 @@ export class ManagePostComponent implements OnInit {
     this.isLoadingHashtag = true;
     this.managerService.getHashtag().subscribe({
       next: (res) => {
-        this.listHashtag = ["All"];
+        this.listHashtag = ["Tất cả"];
         this.listHashtag =  [...this.listHashtag, ...res.items];
       },
       error: (error) => {

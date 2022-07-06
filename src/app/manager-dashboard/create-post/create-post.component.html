@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 card-wrapper">
                 <div class="header-body">
-                    <a [routerLink]="['../']" class="btn btn-info mb-4">Go Back</a>
+                    <a [routerLink]="['../']" class="btn btn-info mb-4">Quay lại</a>
                 </div>
             </div>
         </div>
@@ -15,7 +15,7 @@
             <form [formGroup]="createForm" (ngSubmit)="createPost()">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Create Post</h2>
+                        <h2>Tạo bài viết</h2>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -23,7 +23,7 @@
                             <input id="input-title" class="form-control form-control-alternative"
                                 placeholder="Input title" formControlName="title" type="text">
                             <div *ngIf="submitted && f['title'].errors" class="invalid-feedback">
-                                <div *ngIf="f['title'].errors!['required']">Title is required</div>
+                                <div *ngIf="f['title'].errors!['required']">Tiêu đề không được để trống</div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -31,7 +31,7 @@
                             <textarea class="form-control form-control-alternative" id="input-content"
                                 formControlName="content" placeholder="Input content"></textarea>
                             <div *ngIf="submitted && f['content'].errors" class="invalid-feedback">
-                                <div *ngIf="f['content'].errors!['required']">Content is required</div>
+                                <div *ngIf="f['content'].errors!['required']">Nội dung không được để trống</div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -39,14 +39,14 @@
                             <tag-input [(ngModel)]='hashtags' [theme]="'fooma-theme'" [ngModelOptions]="{standalone: true}">
                             </tag-input>
                             <div *ngIf="submitted && hashtags.length === 0" class="invalid-feedback">
-                                Hashtag is required
+                                Hashtag không được để trống
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-control-label" for="input-hashtag">Upload Images</label><br>
+                            <label class="form-control-label" for="input-hashtag">Tải hình ảnh</label><br>
                             <div >
                                 <button type="button" class="btn-upload" (click)="fileInput.click()">
-                                    <span><i class="fas fa-upload"></i>  Upload</span>
+                                    <span><i class="fas fa-upload"></i>  Tải lên</span>
                                     <input #fileInput type="file" accept="image/*" multiple (change)="selectFiles($event)"  style="display:none;" />
                                 </button>
                                 <span class="gallery-item" *ngFor="let preview of previews; let i = index">
@@ -56,7 +56,7 @@
                                 </span>
                             </div>
                             <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
-                                Image is required
+                                Hình ảnh không được để trống
                             </div>
                         </div>
                         <div class="form-group">
@@ -66,9 +66,9 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                <button *ngIf="!isDone" type="submit" [disabled]="isLoading" class="btn btn-fooma">Create</button>
+                                <button *ngIf="!isDone" type="submit" [disabled]="isLoading" class="btn btn-fooma">Tạo</button>
                                 <div *ngIf="isDone" class="mt-2">
-                                    <h2>Post created successfully <a class="text-fooma" [routerLink]="['../']">Go back</a></h2>
+                                    <h2>Đã tạo bài viết thành công <a class="text-fooma" [routerLink]="['../']">Quay lại</a></h2>
                                 </div>
                             </div>
                         </div>

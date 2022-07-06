@@ -18,19 +18,19 @@
                         <div class="col-6 text-right">
                             <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
                                 <span class="badge badge-dot"><i class="bg-success"></i></span>
-                                <span class="btn-inner--text">Active</span>
+                                <span class="btn-inner--text">Đang kích hoạt</span>
                             </a>
                             <a (click)="filterByStatus(2)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 2}" href="javascript:void(0)">
                                 <span class="badge badge-dot"><i class="bg-pending"></i></span>
-                                <span class="btn-inner--text">Pending</span>
+                                <span class="btn-inner--text">Đang chờ duyệt</span>
                             </a>
                             <a (click)="filterByStatus(3)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 3}" href="javascript:void(0)">
                                 <span class="badge badge-dot"><i class="bg-red"></i></span>
-                                <span class="btn-inner--text">Denied</span>
+                                <span class="btn-inner--text">Đã từ chối</span>
                             </a>
                             <a (click)="filterByStatus(0)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 0}" href="javascript:void(0)">
                                 <span class="badge badge-dot"><i class="bg-gray"></i></span>
-                                <span class="btn-inner--text">Disable</span>
+                                <span class="btn-inner--text">Đã xóa</span>
                             </a>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                                 <div class="input-group-prepend">
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" placeholder="Search" [ngModel]="search" (ngModelChange)='onSearchChange($event)' type="text" />
+                                <input class="form-control" placeholder="Tìm kiếm" [ngModel]="search" (ngModelChange)='onSearchChange($event)' type="text" />
                             </div>
                         </div>
                     </div>
@@ -147,13 +147,13 @@
                     <table class="table table-fit align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th style="width: 25%;">Title</th>
-                                <th style="width: 12%;">User</th>
-                                <th style="width: 10%;">Published Date</th>
+                                <th style="width: 25%;">Tiêu đề</th>
+                                <th style="width: 12%;">Người đăng</th>
+                                <th style="width: 10%;">Ngày đăng</th>
                                 <th style="width: 12%;">Hashtag</th>
-                                <th>Cooking Method</th>
-                                <th>Category</th>
-                                <th>Action</th>
+                                <th>Phương thức nấu</th>
+                                <th>Danh mục</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>

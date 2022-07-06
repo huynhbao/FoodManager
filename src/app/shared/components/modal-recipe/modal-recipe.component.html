@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Recipe Detail</h4>
+    <h4 class="modal-title" id="modal-basic-title">Thông tin công thức</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">×</span>
     </button>
@@ -9,17 +9,17 @@
         <div *ngIf="!isLoading && recipe && reportId" class="card">
             <div class="row">
                 <div class="col-6">
-                    <button class="btn btn-success btn-block" [disabled]="isLoading" (click)="setReportStatus(1)"><i class="fas fa-check"></i> Skip</button>
+                    <button class="btn btn-success btn-block" [disabled]="isLoading" (click)="setReportStatus(1)"><i class="fas fa-check"></i> Bỏ qua</button>
                 </div>
                 <div class="col-6">
-                    <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Delete Recipe</button>
+                    <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Bỏ qua và xóa công thức</button>
                 </div>
             </div>
         </div>
         <div class="card">
             <div class="card-body">
                 <h1 class="mx-3 my-2">{{recipe?.recipeName}}</h1>
-                <div class="mx-3 my-2">Cooking Method <span
+                <div class="mx-3 my-2">Phương pháp nấu <span
                         class="rounded text-dark px-2 mx-1 bg-active badge badge-dot"><b>{{recipe?.cookingMethodName}}</b></span>
                 </div>
                 <div *ngIf="recipe.hashtag.length !== 0 && recipe.hashtag != '#'" class="mx-3 my-2">Hashtag
@@ -28,18 +28,18 @@
                         class="rounded text-dark px-2 mx-1 bg-pending badge badge-dot"><b>{{recipe?.hashtag}}</b></a>
                 </div>
                 <div class="mx-3 my-2">
-                    Categories 
+                    Danh mục 
                     <a href="javascript:void(0)" [routerLink]="['../../recipe/hashtag/', category.recipeCategoryId]"
                         *ngFor="let category of recipe.manyToManyRecipeCategories"
                         class="rounded text-dark px-2 mx-1 bg-category badge badge-dot"><b>{{category.recipeCategoryName}}</b></a>
                 </div>
                 <div class="mx-3 my-2">
-                    Origin
+                    Xuất xứ
                     <a href="javascript:void(0)" [routerLink]="['../../recipe/hashtag/', recipe?.originId]"
                         class="rounded text-dark px-2 mx-1 bg-origin badge badge-dot"><b>{{recipe?.originName}}</b></a>
                 </div>
                 <div class="mx-3 my-2">
-                    Status
+                    Trạng thái
                     <span class="rounded text-dark px-2 mx-1 mb-2 badge badge-dot"><i
                         [ngClass]="recipe?.status == 1 ? 'bg-success' : 'bg-warning'"></i>
                     {{recipe?.status == 1 ? 'Active' : 'Disabled'}}</span>
@@ -52,16 +52,16 @@
                 <div class="row justify-content-center">
                     <div class="col-2 py-2 bg-fooma rounded mx-2">
                         <h5 class="text-secondary mb-1">
-                            <fa-icon [icon]="['far', 'clock']"></fa-icon> Cooking Time
+                            <fa-icon [icon]="['far', 'clock']"></fa-icon> Thời gian chuẩn bị
                         </h5>
-                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.cookingTime}} minutes</h4>
+                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.preparationTime}} phút
+                        </h4>
                     </div>
                     <div class="col-2 py-2 bg-fooma rounded mx-2">
                         <h5 class="text-secondary mb-1">
-                            <fa-icon [icon]="['far', 'clock']"></fa-icon> Preparation Time
+                            <fa-icon [icon]="['far', 'clock']"></fa-icon> Thời gian nấu
                         </h5>
-                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.preparationTime}} minutes
-                        </h4>
+                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.cookingTime}} phút</h4>
                     </div>
                     <div class="col-2 py-2 bg-fooma rounded mx-2">
                         <h5 class="text-secondary mb-1">
@@ -71,9 +71,9 @@
                     </div>
                     <div class="col-2 py-2 bg-fooma rounded mx-2">
                         <h5 class="text-secondary mb-1">
-                            <fa-icon [icon]="['fas', 'users']"></fa-icon> Serves
+                            <fa-icon [icon]="['fas', 'users']"></fa-icon> Khẩu phần
                         </h5>
-                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.serves}} people</h4>
+                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.serves}} người</h4>
                     </div>
                 </div>
             </div>
@@ -85,8 +85,8 @@
                 <div class="card-body text-center">
                     <img src="./assets/img/brand/logo.png" class="navbar-brand-img mb-4" alt="logo"
                         style="width: 230px;">
-                    <h3>This recipe does not exist</h3>
-                    <a class="" [routerLink]="['../../recipe']">Go back</a>
+                    <h3>Công thức này không tồn tại</h3>
+                    <a class="" (click)="activeModal.dismiss('Cross click')">Quay lại</a>
                 </div>
             </div>
             <div *ngIf="!isLoading && recipe" class="card">
@@ -101,8 +101,8 @@
                                 </div>
                                 <div class="col-auto">
                                     <h3 class="card-title font-weight-bold mb-1">{{recipe?.user?.fullname}}</h3>
-                                    <h5 class="mb-0">Role: {{recipe?.user?.role | titlecase}}</h5>
-                                    <span class="h5 mb-0 font-weight-light">Posted {{ recipe?.createDate | time }}
+                                    <h5 class="mb-0">Quyền: {{recipe?.user?.role | titlecase}}</h5>
+                                    <span class="h5 mb-0 font-weight-light">Đã đăng {{ recipe?.createDate | time }}
                                         ({{recipe?.createDate | date: 'HH:mm dd/MM/yyyy'}})</span>
                                 </div>
 
@@ -127,13 +127,13 @@
         <div class="col card-wrapper">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="mb-0">Total Ingrediens: {{recipe?.recipeIngredients?.length}}</h2>
+                    <h2 class="mb-0">Tổng số nguyên liệu: {{recipe?.recipeIngredients?.length}}</h2>
                 </div>
                 <div class="card-body">
                     <div class="rounded bg-disable px-4 py-2 mb-4 shadow" *ngFor="let ingredient of recipe?.recipeIngredients; let i = index">
                         <h2>{{i + 1}}. {{ingredient.ingredientName | titlecase}}</h2>
-                        <h4>Quantity: {{ingredient.quantity}} {{ingredient.unit}}</h4>
-                        <!-- <h4>Main: {{ingredient.isMain ? 'Yes' : 'No'}}</h4> -->
+                        <h4>Số lượng: {{ingredient.quantity}} {{ingredient.unit}}</h4>
+                        <h4 *ngIf="ingredient.isMain" class="text-primary">Nguyên liệu chính</h4>
                     </div>
                 </div>
             </div>
@@ -143,11 +143,11 @@
         <div class="col card-wrapper">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="mb-0">Methods: {{recipe?.recipeMethods?.length}}</h2>
+                    <h2 class="mb-0">Phương pháp: {{recipe?.recipeMethods?.length}}</h2>
                 </div>
                 <div class="card-body">
                     <div class="rounded bg-active px-4 py-2 mb-4 shadow" *ngFor="let method of recipe?.recipeMethods; let i = index">
-                        <h2>Step {{method.step}}</h2>
+                        <h2>Bước {{method.step}}</h2>
                         <div>
                             {{method.content}}
                         </div>
@@ -166,24 +166,24 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="activeModal.close()">Close</button>
+    <button type="button" class="btn btn-danger" (click)="activeModal.close()">Đóng</button>
 </div>
 
 <ng-template #confirmModal let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-title">Confirm deletion</h4>
+        <h4 class="modal-title" id="modal-title">Xác nhận xóa</h4>
         <button type="button" class="close" aria-describedby="modal-title" (click)="confirmModalRef.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p><strong>Are you sure you want to delete <span class="text-primary">"{{recipe.recipeName}}"</span>?</strong></p>
-        <p>All information associated to this row will be deleted.
-            <span class="text-danger">This operation may not be undone.</span>
+        <p><strong>Bạn có chắc là muốn xóa <span class="text-primary">"{{recipe.recipeName}}"</span>?</strong></p>
+        <p>Tất cả các thông tin liên quan đến dữ liệu này sẽ bị xóa.
+            <span class="text-danger">Hành động này có thể không được hoàn tác.</span>
         </p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.dismiss('Cancel click')">Cancel</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.dismiss('Cancel click')">Hủy</button>
         <button type="button" class="btn btn-danger" (click)="confirmDelete()">Ok</button>
     </div>
 </ng-template>

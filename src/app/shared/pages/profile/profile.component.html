@@ -19,11 +19,32 @@
             <div class="card card-profile shadow">
                 <div class="row justify-content-center">
                     <div class="col-lg-3 order-lg-2">
-                        <div class="card-profile-image">
-                            <a href="javascript:void(0)">
-                                <img [src]="user.imageUrl" class="rounded-circle">
-                            </a>
+                        <!-- <div class="card-profile-image">
+                            <img [src]="user.imageUrl" class="rounded-circle">
+                            <div class="hover-text">Choose file</div>
+                            <div class="background"></div>
+                        </div> -->
+                        <!-- <label class="hoverable card-profile-image" for="fileInput">
+                            <img [src]="user.imageUrl" class="rounded-circle">
+                            <div class="hover-text text-success">
+                                <i class="fas fa-camera"></i>
+                                <div class="text-profilepic">Change it</div>
+                            </div>
+                            <div class="background"></div>
+                        </label>
+                        <br/>
+                        <input id="fileInput" type='file'> -->
+
+                        <div class="card-profile-image container-profilepic">
+                            <img [src]="user.imageUrl" class="rounded-circle">
+                            <label for="fileInput" class="middle-profilepic text-center card-img-overlay d-none flex-column justify-content-center">
+                                <div class="text-profilepic text-success">
+                                    <i class="fas fa-camera"></i>
+                                    <label class="text-profilepic">Upload</label>
+                                </div>
+                            </label>
                         </div>
+                        <input id="fileInput" type='file'>
                     </div>
                 </div>
                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">

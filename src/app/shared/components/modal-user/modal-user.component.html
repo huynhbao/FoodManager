@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">User Profile</h4>
+    <h4 class="modal-title" id="modal-basic-title">Thông tin người dùng</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.close()">
         <span aria-hidden="true">×</span>
     </button>
@@ -15,10 +15,10 @@
                 <div class="col-auto">
                     <h2 class="mb-2">{{user.email}}</h2>
                     <h5 class="text-muted">ID: <b>{{user.id}}</b></h5>
-                    <h5 class="text-muted">Role: <b>{{user.role | titlecase}}</b></h5>
+                    <h5 class="text-muted">Quyền: <b>{{user.role | titlecase}}</b></h5>
                     <h5 class="text-muted">Join date: <b>{{user.createDate | date: 'dd/MM/yyyy'}}</b></h5>
-                    <h5 class="text-muted">Total Posts: <b>{{user.totalPost}}</b></h5>
-                    <h5 class="text-muted">Total Recipes: <b>{{user.totalRecipe}}</b></h5>
+                    <h5 class="text-muted">Tổng số bài viết: <b>{{user.totalPost}}</b></h5>
+                    <h5 class="text-muted">Tổng số công thức: <b>{{user.totalRecipe}}</b></h5>
                 </div>
                 <div class="col text-right align-items-start">
                     <!-- <button type="button" class="btn btn-success" (click)="toggleEdit()">Edit</button> -->
@@ -28,9 +28,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <label class="form-control-label" for="input-fullname">Full Name</label>
+                        <label class="form-control-label" for="input-fullname">Họ và tên</label>
                         <input type="text" id="input-fullname" class="form-control form-control-alternative"
-                            placeholder="Full name" formControlName="fullName">
+                            placeholder="Họ và tên" formControlName="fullName">
                     </div>
                 </div>
             </div>
@@ -46,14 +46,14 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label class="form-control-label" for="input-phone">Phone number</label>
+                        <label class="form-control-label" for="input-phone">Số điện thoại</label>
                         <input type="text" id="input-phone" class="form-control form-control-alternative"
                             placeholder="0123456789" formControlName="phone">
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label class="form-control-label" for="input-dob">Date of birth</label>
+                        <label class="form-control-label" for="input-dob">Ngày sinh</label>
                         <input type="date" id="input-dob" class="form-control form-control-alternative"
                         formControlName="dob" />
                     </div>
@@ -63,5 +63,5 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-danger" (click)="activeModal.close()">Close</button>
+    <button type="button" class="btn btn-danger" (click)="activeModal.close()">Đóng</button>
 </div>

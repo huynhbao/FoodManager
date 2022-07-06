@@ -3,8 +3,8 @@
         <div class="header-body text-center mb-7">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-6">
-                    <h1 class="text-white">Welcome to FOOMA!</h1>
-                    <p class="text-lead text-light">Login to perform the management.</p>
+                    <h1 class="text-white">Chào mừng đến với FOOMA!</h1>
+                    <p class="text-lead text-light">Đăng nhập để thực hiện việc quản lý</p>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
                         </a>
                     </div>
                     <div class="text-center text-muted mb-4">
-                        <small>Enter your details below.</small>
+                        <small>Nhập thông tin của bạn ở bên dưới.</small>
                     </div>
                     <form role="form" [formGroup]="form" (ngSubmit)="onSubmit()">
                         <div class="form-group mb-3">
@@ -47,17 +47,17 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                 </div>
-                                <input class="form-control" formControlName="password" placeholder="Password" type="password">
+                                <input class="form-control" formControlName="password" placeholder="Mật khẩu" type="password">
                             </div>
                             <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-                                <div *ngIf="f['password'].errors['required']">Password is required</div>
+                                <div *ngIf="f['password'].errors['required']">Mật khẩu không được trống</div>
                             </div>
                             <div *ngIf="form.hasError('unauthorized')" class="invalid-feedback">
-                                Email or Password incorrect
+                                Email hoặc mật khẩu không đúng.
                             </div>
                         </div>
                         <div class="text-center">
-                            <button type="submit" [disabled]="loading" class="btn btn-fooma my-4">Sign in</button>
+                            <button type="submit" [disabled]="loading" class="btn btn-fooma my-4">Đăng nhập</button>
                         </div>
                     </form>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="col-6">
                 </div>
                 <div class="col-6 text-right">
-                    <a href="forgot-password" class="text-light"><small>Forgot password?</small></a>
+                    <a href="forgot-password" class="text-light"><small>Quên mật khẩu?</small></a>
                 </div>
             </div>
         </div>

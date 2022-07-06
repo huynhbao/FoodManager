@@ -1,7 +1,7 @@
 <div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
-            <a (click)="triggerModal('create')" class="btn btn-info mb-4">Create Ingredient</a>
+            <a (click)="triggerModal('create')" class="btn btn-info mb-4">Tạo nguyên liệu</a>
         </div>
     </div>
 </div>
@@ -13,7 +13,7 @@
                 <div class="card-header border-0">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Ingredient - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Tổng số nguyên liệu - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                         </div>
@@ -25,7 +25,7 @@
                                 <div class="input-group-prepend">
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" placeholder="Search" type="text" [ngModel]="searchValue" (ngModelChange)='onSearchChange($event)'/>
+                                <input class="form-control" placeholder="Tìm kiếm" type="text" [ngModel]="searchValue" (ngModelChange)='onSearchChange($event)'/>
                             </div>
                         </div>
                     </div>
@@ -43,12 +43,12 @@
                     <table class="table align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th>Title</th>
-                                <th>Create Date</th>
-                                <th>Category Name</th>
-                                <th>Unit</th>
-                                <th>Status</th>
-                                <th>Action</th>
+                                <th>Tiêu đề</th>
+                                <th>Ngày tạo</th>
+                                <th>Danh mục</th>
+                                <th>Đơn vị</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,7 +76,7 @@
                                     <div [ngClass]="ingredient.status == 1 ? 'bg-active' : 'bg-disable'" class="rounded px-2">
                                         <span class="badge badge-dot"><i
                                             [ngClass]="ingredient.status == 1 ? 'bg-success' : 'bg-warning'"></i>
-                                        {{ingredient.status == 1 ? 'Enabled' : 'Disabled'}}</span>
+                                        {{ingredient.status == 1 ? 'Kích hoạt' : 'Không kích hoạt'}}</span>
                                     </div>
                                 </td>
                                 <td class="table-actions">

@@ -53,6 +53,18 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  /* onSelectFile(event) {
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+
+      reader.onload = (event) => { // called once readAsDataURL is completed
+        this.user.avatarUrl = event.target.result || "";
+      }
+    }
+  } */
+
   onSubmit() {
     this.submitted = true;
     
@@ -81,7 +93,7 @@ export class ProfileComponent implements OnInit {
           fullName: this.user.name,
           bio: this.user.bio,
           phone: this.user.phoneNumber,
-          dob: formatDate(new Date(this.user.birthDate || new Date), 'yyyy-MM-dd', 'en'),
+          dob: formatDate(new Date(this.user.birthDate || new Date), 'yyyy-MM-dd', 'en')
         });
       },
       error: (error) => {

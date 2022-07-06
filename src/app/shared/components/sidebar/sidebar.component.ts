@@ -13,30 +13,30 @@ declare interface RouteInfo {
   isCollapsed?: boolean;
 }
 export const ROUTES_ADMIN: RouteInfo[] = [
-  { path: '', title: 'Manage User',  icon:'ni-bullet-list-67 text-success', class: '', child: [
-    { path: 'user', title: 'User',  icon:'', class: '' },
+  { path: '', title: 'Quản lý người dùng',  icon:'ni-bullet-list-67 text-success', class: '', child: [
+    { path: 'user', title: 'Người dùng',  icon:'', class: '' },
   ]},
-  { path: '', title: 'Manage Recipe',  icon:'ni-bullet-list-67 text-pink', class: '', child: [
-    { path: 'recipe-category', title: 'Recipe Category',  icon:'', class: '' },
-    { path: 'origin', title: 'Origin',  icon:'', class: '' },
-    { path: 'method', title: 'Method',  icon:'', class: '' },
+  { path: '', title: 'Quản lý công thức',  icon:'ni-bullet-list-67 text-pink', class: '', child: [
+    { path: 'recipe-category', title: 'Danh mục công thức',  icon:'', class: '' },
+    { path: 'origin', title: 'Xuất xứ',  icon:'', class: '' },
+    { path: 'method', title: 'Phương thức nấu',  icon:'', class: '' },
   ]},
-  { path: '', title: 'Manage Ingredient',  icon:'ni-bullet-list-67 text-yellow', class: '', child: [
-    { path: 'category', title: 'Ingredient Category',  icon:'', class: '' },
+  { path: '', title: 'Quản lý nguyên liệu',  icon:'ni-bullet-list-67 text-yellow', class: '', child: [
+    { path: 'category', title: 'Danh mục nguyên liệu',  icon:'', class: '' },
   ]},
 ];
 
 export const ROUTES_MANAGER: RouteInfo[] = [
   // { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
-  { path: '', title: 'Posts - Receipes',  icon:'ni-bullet-list-67 text-success', class: '', child: [
-    { path: 'manage', title: 'Manage',  icon:'', class: '' },
-    { path: 'recipe-system', title: 'Manage Recipe (System)',  icon:'', class: '' },
+  { path: '', title: 'Bài viết - Công thức',  icon:'ni-bullet-list-67 text-success', class: '', child: [
+    { path: 'manage', title: 'Quản lý',  icon:'', class: '' },
+    { path: 'recipe-system', title: 'Quản lý công thức (Hệ thống)',  icon:'', class: '' },
   ]},
-  { path: '', title: 'Ingredients',  icon:'ni-bullet-list-67 text-info', class: '', child: [
-    { path: 'ingredient', title: 'Manage',  icon:'', class: '' },
+  { path: '', title: 'Nguyên liệu',  icon:'ni-bullet-list-67 text-info', class: '', child: [
+    { path: 'ingredient', title: 'Quản lý',  icon:'', class: '' },
   ]},
-  { path: '', title: 'Reports',  icon:'ni-bullet-list-67 text-danger', class: '', child: [
-    { path: 'report', title: 'Manage',  icon:'', class: '' },
+  { path: '', title: 'Báo cáo',  icon:'ni-bullet-list-67 text-danger', class: '', child: [
+    { path: 'report', title: 'Quản lý',  icon:'', class: '' },
   ]}
 ];
 

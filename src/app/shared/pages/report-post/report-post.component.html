@@ -27,7 +27,7 @@
                 <div class="card-header border-0" style="border-radius: 0;">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Total Reports - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Tổng số báo cáo - {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <a (click)="filterByStatus(2)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 2}" href="javascript:void(0)">
@@ -49,7 +49,7 @@
                                 <div class="input-group-prepend">
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" placeholder="Search" type="text" [ngModel]="searchValue" (ngModelChange)='onSearchChange($event)'/>
+                                <input class="form-control" placeholder="Tìm kiếm" type="text" [ngModel]="searchValue" (ngModelChange)='onSearchChange($event)'/>
                             </div>
                         </div>
                     </div>
@@ -67,12 +67,12 @@
                     <table class="table table-fit align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th>Reporter</th>
-                                <th>Post Title</th>
-                                <th>Title</th>
-                                <th>Content</th>
-                                <th>Report Date</th>
-                                <th>Action</th>
+                                <th>Người báo cáo</th>
+                                <th>Tên bài viết</th>
+                                <th>Tiêu đề</th>
+                                <th>Nội dung</th>
+                                <th>Ngày báo cáo</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -131,19 +131,19 @@
 
 <ng-template #confirmModal let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-title">Confirm deletion</h4>
+        <h4 class="modal-title" id="modal-title">Xác nhận xóa</h4>
         <button type="button" class="close" aria-describedby="modal-title" (click)="confirmModalRef.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <p><strong>Are you sure you want to delete <span class="text-primary">"{{reportPosts[selectedIndex].postTitle}}"</span>?</strong></p>
-        <p>All information associated to this row will be deleted.
-            <span class="text-danger">This operation may not be undone.</span>
+        <p><strong>Bạn có chắc là muốn xóa <span class="text-primary">"{{reportPosts[selectedIndex].postTitle}}"</span>?</strong></p>
+        <p>Tất cả các thông tin liên quan đến dữ liệu này sẽ bị xóa.
+            <span class="text-danger">Hành động này có thể không được hoàn tác.</span>
         </p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.dismiss('Cancel click')">Cancel</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.dismiss('Cancel click')">Hủy</button>
         <button type="button" class="btn btn-danger" (click)="confirmDelete()">Ok</button>
     </div>
 </ng-template>

@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 card-wrapper">
                 <div class="header-body">
-                    <a [routerLink]="['../../']" class="btn btn-info mb-4">Go Back</a>
+                    <a [routerLink]="['../../']" class="btn btn-info mb-4">Quay lại</a>
                 </div>
             </div>
         </div>
@@ -22,46 +22,46 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label class="form-control-label" for="input-name">Name</label>
+                            <label class="form-control-label" for="input-name">Tên công thức</label>
                             <input id="input-name" class="form-control form-control-alternative"
                                 placeholder="Input name" formControlName="name" type="text">
                             <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
-                                <div *ngIf="f['name'].errors!['required']">Name is required</div>
+                                <div *ngIf="f['name'].errors!['required']">Tên công thức không được để trống</div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-control-label" for="input-description">Description</label>
+                            <label class="form-control-label" for="input-description">Miêu tả</label>
                             <textarea class="form-control form-control-alternative" id="input-description"
                                 formControlName="description" placeholder="Input description"></textarea>
                             <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
-                                <div *ngIf="f['description'].errors!['required']">Description is required</div>
+                                <div *ngIf="f['description'].errors!['required']">Miêu tả không được để trống</div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label class="form-control-label" for="input-preparationTime">Preparation Time (minutes)</label>
+                                <label class="form-control-label" for="input-preparationTime">Thời gian chuẩn bị (phút)</label>
                                 <input id="input-preparationTime" class="form-control form-control-alternative"
                                     placeholder="Input preparation time (minutes)" formControlName="preparationTime" type="number">
                                 <div *ngIf="submitted && f['preparationTime'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['preparationTime'].errors!['required']">Preparation time is required</div>
+                                    <div *ngIf="f['preparationTime'].errors!['required']">Thời gian chuẩn bị không được để trống</div>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
-                                <label class="form-control-label" for="input-cookingTime">Cooking Time (minutes)</label>
+                                <label class="form-control-label" for="input-cookingTime">Thời gian nấu (phút)</label>
                                 <input id="input-cookingTime" class="form-control form-control-alternative"
                                     placeholder="Input cooking time (minutes)" formControlName="cookingTime" type="number">
                                 <div *ngIf="submitted && f['cookingTime'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['cookingTime'].errors!['required']">Cooking time is required</div>
+                                    <div *ngIf="f['cookingTime'].errors!['required']">Thời gian nấu không được để trống</div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label class="form-control-label" for="input-serves">Serves</label>
+                                <label class="form-control-label" for="input-serves">Khẩu phần</label>
                                 <input id="input-serves" class="form-control form-control-alternative"
                                     placeholder="Input serves" formControlName="serves" type="number">
                                 <div *ngIf="submitted && f['serves'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['serves'].errors!['required']">Serves is required</div>
+                                    <div *ngIf="f['serves'].errors!['required']">Khẩu phần không được để trống</div>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
@@ -69,14 +69,14 @@
                                 <input id="input-calories" class="form-control form-control-alternative"
                                     placeholder="Input calories" formControlName="calories" type="number">
                                 <div *ngIf="submitted && f['calories'].errors" class="invalid-feedback">
-                                    <div *ngIf="f['calories'].errors!['required']">Calories is required</div>
+                                    <div *ngIf="f['calories'].errors!['required']">Calories không được để trống</div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-control-label" for="input-hashtag">Origin</label>
+                            <label class="form-control-label" for="input-hashtag">Xuất xứ</label>
                             <tag-input [(ngModel)]='origin' [theme]="'fooma-theme'" [identifyBy]="'id'"
-                                [displayBy]="'originName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Add Origin" placeholder="Add Origin" (onSelect)="onTagSelected($event)"
+                                [displayBy]="'originName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Xuất xứ" placeholder="Xuất xứ" (onSelect)="onTagSelected($event)"
                                 [ngModelOptions]="{standalone: true}">
                                 <tag-input-dropdown
                                     [autocompleteObservable]="requestAutocompleteItemsOrigin$"
@@ -89,13 +89,13 @@
                                 </tag-input-dropdown>
                             </tag-input>
                             <div *ngIf="submitted && origin.length === 0" class="invalid-feedback">
-                                Origin is required
+                                Xuất xứ không được để trống
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-control-label" for="input-hashtag">Method</label>
+                            <label class="form-control-label" for="input-hashtag">Phương pháp</label>
                             <tag-input [(ngModel)]='method' [theme]="'fooma-theme'" [identifyBy]="'id'"
-                                [displayBy]="'cookingMethodName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Add Method" placeholder="Add Method" (onSelect)="onTagSelected($event)"
+                                [displayBy]="'cookingMethodName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Phương pháp" placeholder="Phương pháp" (onSelect)="onTagSelected($event)"
                                 [ngModelOptions]="{standalone: true}">
                                 <tag-input-dropdown
                                     [autocompleteObservable]="requestAutocompleteItemsMethod$"
@@ -108,13 +108,13 @@
                                 </tag-input-dropdown>
                             </tag-input>
                             <div *ngIf="submitted && origin.length === 0" class="invalid-feedback">
-                                Origin is required
+                                Phương pháp không được để trống
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-control-label" for="input-hashtag">Category</label>
+                            <label class="form-control-label" for="input-hashtag">Danh mục</label>
                             <tag-input [(ngModel)]='categories' [theme]="'fooma-theme'" [identifyBy]="'recipeCategoryId'"
-                                [displayBy]="'recipeCategoryName'" [onlyFromAutocomplete]="true" secondaryPlaceholder="Add Category" placeholder="Add Category" (onSelect)="onTagSelected($event)"
+                                [displayBy]="'recipeCategoryName'" [onlyFromAutocomplete]="true" secondaryPlaceholder="Danh mục" placeholder="Danh mục" (onSelect)="onTagSelected($event)"
                                 [ngModelOptions]="{standalone: true}">
                                 <tag-input-dropdown
                                     [autocompleteObservable]="requestAutocompleteItemsCategory$"
@@ -127,12 +127,12 @@
                                 </tag-input-dropdown>
                             </tag-input>
                             <div *ngIf="submitted && categories.length === 0" class="invalid-feedback">
-                                Category is required
+                                Danh mục không được để trống
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-control-label" for="input-hashtag">Hashtag</label>
-                            <tag-input placeholder="Add Hashtag" secondaryPlaceholder="Add Hashtag" [(ngModel)]='hashtags' [theme]="'fooma-theme'"
+                            <tag-input placeholder="Add Hashtag" secondaryPlaceholder="Thêm Hashtag" [(ngModel)]='hashtags' [theme]="'fooma-theme'"
                                 [ngModelOptions]="{standalone: true}">
                             </tag-input>
                             <!-- <div *ngIf="submitted && hashtags.length === 0" class="invalid-feedback">
@@ -140,9 +140,9 @@
                             </div> -->
                         </div>
                         <div class="form-group">
-                            <label class="form-control-label" for="input-hashtag">Upload Images</label><br>
+                            <label class="form-control-label" for="input-hashtag">Upload ảnh</label><br>
                             <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
-                                Image is required
+                                Hình ảnh không được để trống
                             </div>
                             <div>
                                 <button type="button" class="btn-upload" (click)="fileInput.click()">
@@ -166,14 +166,14 @@
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <h2>Ingredients</h2>
+                        <h2>Nguyên liệu</h2>
                     </div>
                     <div class="card-body" formArrayName="ingredients">
                         <div class="rounded px-4 py-2 mb-4 shadow" *ngFor="let ingredient of formIngredient.controls; let i = index">
                             <div class="form-group" [formGroupName]="i">
                                 <div class="row">
                                     <div class="col-6 d-flex align-items-center">
-                                        <label class="form-control-label" for="input-hashtag">Ingredient Name</label>
+                                        <label class="form-control-label" for="input-hashtag">Tên nguyên liệu</label>
                                     </div>
                                     <div class="col-6 text-right">
                                         <div class="btn-group">
@@ -187,7 +187,7 @@
                                     </div>
                                 </div>
                                 <tag-input formControlName="ingredientName" [theme]="'fooma-theme'" [identifyBy]="'id'"
-                                    [displayBy]="'ingredientName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Add Ingredient" placeholder="Add Ingredient" (onAdd)="onAdd($event, i)" [onAdding]="onAdding" (onSelect)="onTagSelected($event)"
+                                    [displayBy]="'ingredientName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Thêm nguyên liệu" placeholder="Thêm nguyên liệu" (onAdd)="onAdd($event, i)" [onAdding]="onAdding" (onSelect)="onTagSelected($event)"
                                     >
                                     <tag-input-dropdown
                                         [autocompleteObservable]="requestAutocompleteItemsIngredient$"
@@ -198,31 +198,31 @@
                                     </tag-input-dropdown>
                                 </tag-input>
                                 <div *ngIf="submitted && formIngredient.controls[i]['controls']['ingredientName']['errors']" class="invalid-feedback">
-                                    <div *ngIf="formIngredient.controls[i]['controls']['ingredientName']['errors']['required']">Ingredient is required</div>
+                                    <div *ngIf="formIngredient.controls[i]['controls']['ingredientName']['errors']['required']">Nguyên liệu không được để trống</div>
                                 </div>
                             </div>
                             <div class="form-row" [formGroupName]="i">
                                 <div class="col">
-                                    <label class="form-control-label" for="input-quantity">Quantity</label>
+                                    <label class="form-control-label" for="input-quantity">Số lượng</label>
                                     <input id="input-quantity" class="form-control form-control-alternative"
                                         placeholder="Input quantity" type="number" min="1" formControlName="quantity" required>
                                     <div *ngIf="submitted && formIngredient.controls[i]['controls']['quantity']['errors']" class="invalid-feedback">
-                                        <div *ngIf="formIngredient.controls[i]['controls']['quantity']['errors']['required']">Quantity is required</div>
+                                        <div *ngIf="formIngredient.controls[i]['controls']['quantity']['errors']['required']">Số lượng không được để trống</div>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <label class="form-control-label" for="input-unit">Unit</label>
+                                    <label class="form-control-label" for="input-unit">Đơn vị</label>
                                     <input id="input-unit" class="form-control form-control-alternative"
                                         placeholder="Input unit" type="string" formControlName="unit" required>
                                     <div *ngIf="submitted && formIngredient.controls[i]['controls']['unit']['errors']" class="invalid-feedback">
-                                        <div *ngIf="formIngredient.controls[i]['controls']['unit']['errors']['required']">Unit is required</div>
+                                        <div *ngIf="formIngredient.controls[i]['controls']['unit']['errors']['required']">Đơn vị không được để trống</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group mt-3" [formGroupName]="i">
                                 <div class="custom-checkbox" style="color: #525f7f; font-size: 0.875rem; font-weight: 600;">
                                     <input id="check-{{i}}" type="checkbox" formControlName="isMain">
-                                    <label class="mb-0" for="check-{{i}}">Main Ingredient</label>
+                                    <label class="mb-0" for="check-{{i}}">Nguyên liệu chính</label>
                                 </div>
                             </div>
                         </div>
@@ -230,21 +230,21 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                <button type="button" (click)="increaseIngredient()" class="btn btn-fooma">Add Ingredient</button>
+                                <button type="button" (click)="increaseIngredient()" class="btn btn-fooma">Thêm nguyên liệu</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <h2>Methods</h2>
+                        <h2>Các bước làm</h2>
                     </div>
                     <div class="card-body" formArrayName="methods">
                         <div class="rounded px-4 py-2 mb-4 shadow" *ngFor="let method of formMethod.controls; let i = index" [formGroupName]="i">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-6 d-flex align-items-center">
-                                        <h3 for="input-hashtag" class="text-fooma">Step {{i+1}}</h3>
+                                        <h3 for="input-hashtag" class="text-fooma">Bước {{i+1}}</h3>
                                     </div>
                                     <div class="col-6 text-right">
                                         <div class="btn-group">
@@ -257,19 +257,19 @@
                                 <hr>
                             </div>
                             <div class="form-group">
-                                <label class="form-control-label" for="input-content">Content</label>
+                                <label class="form-control-label" for="input-content">Nội dung</label>
                                 <textarea class="form-control form-control-alternative" id="input-content"
                                 formControlName="content" placeholder="Input content"></textarea>
                                 <div *ngIf="submitted && formMethod.controls[i]['controls']['content']['errors']" class="invalid-feedback">
-                                    <div *ngIf="formMethod.controls[i]['controls']['content']['errors']['required']">Content is required</div>
+                                    <div *ngIf="formMethod.controls[i]['controls']['content']['errors']['required']">Nội dung không được để trống</div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 
-                                <label class="form-control-label" for="input-hashtag">Upload Images</label><br>
+                                <label class="form-control-label" for="input-hashtag">Upload ảnh</label><br>
                                 <div class="d-inline-block">
                                     <button type="button" class="btn-upload" (click)="fileInput.click()">
-                                        <span><i class="fas fa-upload"></i> Upload</span>
+                                        <span><i class="fas fa-upload"></i> Tải lên</span>
                                         <input #fileInput type="file" accept="image/*" multiple
                                             (change)="selectFilesMethod($event, i)" style="display:none;" />
                                     </button>
@@ -285,16 +285,16 @@
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                <button type="button" (click)="increaseMethod()" class="btn btn-fooma">Add Method</button>
+                                <button type="button" (click)="increaseMethod()" class="btn btn-fooma">Thêm bước</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <button type="submit" [disabled]="isLoading" class="btn btn-block btn-fooma mb-4">Update</button>
+                        <button type="submit" [disabled]="isLoading" class="btn btn-block btn-fooma mb-4">Cập nhật</button>
                         <div *ngIf="isDone" class="mt-2">
-                            <h2>Recipe updated <a class="text-fooma" [routerLink]="['../../../manage/recipe/detail/', recipe.id]">View</a></h2>
+                            <h2>Đã cập nhật công thức thành công. <a class="text-fooma" [routerLink]="['../../../manage/recipe/detail/', recipe.id]">Xem</a></h2>
                         </div>
                     </div>
                 </div>
