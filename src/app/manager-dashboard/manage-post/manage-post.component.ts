@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Image } from 'src/app/models/image.model';
 import { Paging } from 'src/app/models/paging.model';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ModalInputComponent } from 'src/app/shared/components/modal-input/modal-input.component';
 
 @Component({
   selector: 'app-manage-post',
@@ -29,10 +30,11 @@ export class ManagePostComponent implements OnInit {
   isLoading: boolean = false;
   isLoadingHashtag: boolean = false;
   statusSelected: number = 1;
+  modalRef!: NgbModalRef;
   //masterSelected: boolean;
   //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
   //https://www.npmjs.com/package/ngx-toastr
-  constructor(private managerService: ManagerService, private route: ActivatedRoute, private sharedService: SharedService) {
+  constructor(private managerService: ManagerService, private route: ActivatedRoute, private sharedService: SharedService, private modalService: NgbModal) {
   }
 
   private loadPosts() {
@@ -124,13 +126,20 @@ export class ManagePostComponent implements OnInit {
     return hashtag;
   }
 
-  setPostByStatus(id: string, status: number) {
+  showPopup(id: string) {
+    this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+    this.modalRef.componentInstance.id = id;
+    this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
+  }
+
+  setPostByStatus(id: string, status: number, reason?: string) {
+
     this.isLoading = true;
     const post = this.listPost.find((x) => x.id === id);
     
     if (!post) return;
     
-    this.managerService.setPostByStatus(id, status).subscribe({
+    this.managerService.setPostByStatus(id, status, reason).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
@@ -145,6 +154,11 @@ export class ManagePostComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  submitFunc(id: string, reason: string) {
+    this.setPostByStatus(id, 3, reason);
+    this.modalRef.close();
   }
 
   loadHashtag(hashtagParam?: string) {

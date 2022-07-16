@@ -45,9 +45,9 @@ export class ManagerService {
     );
   }
 
-  setPostByStatus(id: string, status: number) {
+  setPostByStatus(id: string, status: number, reason: string = "") {
     return this.http.put<any>(
-      `${this.baseUrl}/post/update-status`, {id: id, status: status, reason: ""}
+      `${this.baseUrl}/post/update-status`, {id: id, status: status, reason: reason}
     );
   }
 
@@ -87,9 +87,9 @@ export class ManagerService {
     );
   }
 
-  setRecipeByStatus(id: string, status: number) {
+  setRecipeByStatus(id: string, status: number, reason: string = "") {
     return this.http.put<any>(
-      `${this.baseUrl}/recipe/status/${id}`, {status: status}
+      `${this.baseUrl}/recipe/status/${id}`, {status: status, reason: reason}
     );
   }
 }

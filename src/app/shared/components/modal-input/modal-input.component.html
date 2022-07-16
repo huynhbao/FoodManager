@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Lý do</h4>
+    <button type="button" class="close" aria-describedby="modal-title" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <textarea type="text" id="input-bio" placeholder="Nhập lý do" class="form-control form-control-alternative" [(ngModel)]="reasonModel"></textarea>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('Cancel click')">Hủy</button>
+    <button type="button" class="btn btn-danger" (click)="onSubmit()">Ok</button>
+</div>

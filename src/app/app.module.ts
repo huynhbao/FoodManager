@@ -32,6 +32,7 @@ import { ReportRecipeComponent } from './shared/pages/report-recipe/report-recip
 import { ReportUserComponent } from './shared/pages/report-user/report-user.component';
 import { ModalUserComponent } from './shared/components/modal-user/modal-user.component';
 import { ProfileComponent } from './shared/pages/profile/profile.component';
+import { ModalInputComponent } from './shared/components/modal-input/modal-input.component';
 
 export function tokenGetter() {
   let savedToken = localStorage.getItem("currentUser");
@@ -61,7 +62,8 @@ export function tokenGetter() {
     ReportRecipeComponent,
     ReportUserComponent,
     ModalUserComponent,
-    ProfileComponent
+    ProfileComponent,
+    ModalInputComponent
   ],
   imports: [
     BrowserModule,
