@@ -165,7 +165,7 @@
                                 <th style="width: 25%;">Tiêu đề</th>
                                 <th style="width: 12%;">Người đăng</th>
                                 <th style="width: 10%;">Ngày đăng</th>
-                                <th style="width: 12%;">Hashtag</th>
+                                <th style="width: 12%;">{{statusSelected !== 3 ? 'Hashtag' : 'Lý do từ chối'}}</th>
                                 <th>Phương thức nấu</th>
                                 <th>Danh mục</th>
                                 <th>Hành động</th>
@@ -176,8 +176,7 @@
                                 <td class="">
                                     <img src="{{recipe.thumbnail}}" style="height: 60px;"
                                         class="img-thumbnail img-fluid mr-3">
-                                    <a target="_blank" [routerLink]="['../recipe/detail', recipe.id]"
-                                        class="font-weight-bold text-dark">{{recipe.recipeName}}</a>
+                                    <a href="javascript:void(0)" (click)="showRecipe(recipe.id)" class="font-weight-bold text-dark">{{recipe.recipeName}}</a>
                                 </td>
                                 <td>
                                     <b>{{recipe.user.fullname}}</b>
@@ -186,9 +185,13 @@
                                     <span class="text-muted">{{recipe.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td style="width:1px; white-space:nowrap;">
-                                    <div *ngFor="let hashtag of splitDescription(recipe.hashtag)"
-                                        class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
-                                        <a>#{{hashtag}}</a></div>
+                                    <div *ngIf="statusSelected !== 3">
+                                        <div *ngFor="let hashtag of splitDescription(recipe.hashtag)"
+                                            class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
+                                            <a>#{{hashtag}}</a>
+                                        </div>
+                                    </div>
+                                    <b *ngIf="statusSelected === 3">{{recipe.reason}}</b>
                                 </td>
                                 <td>
                                     <b>{{recipe.cookingMethodName}}</b>

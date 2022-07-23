@@ -11,6 +11,7 @@ import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ModalInputComponent } from 'src/app/shared/components/modal-input/modal-input.component';
+import { ModalRecipeComponent } from 'src/app/shared/components/modal-recipe/modal-recipe.component';
 
 @Component({
   selector: 'app-manage-recipe',
@@ -275,6 +276,11 @@ export class ManageRecipeComponent implements OnInit {
     this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = id;
     this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
+  }
+
+  showRecipe(recipeId: string) {
+    this.modalRef = this.modalService.open(ModalRecipeComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+    this.modalRef.componentInstance.id = recipeId;
   }
 
   setRecipeByStatus(id: string, status: number, reason?: string) {

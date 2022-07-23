@@ -21,7 +21,7 @@
                         <div class="form-group">
                             <label class="form-control-label" for="input-name">Tên công thức</label>
                             <input id="input-name" class="form-control form-control-alternative"
-                                placeholder="Input name" formControlName="name" type="text">
+                                placeholder="Nhập tên công thức" formControlName="name" type="text">
                             <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
                                 <div *ngIf="f['name'].errors!['required']">Tên công thức không được để trống</div>
                             </div>
@@ -29,7 +29,7 @@
                         <div class="form-group">
                             <label class="form-control-label" for="input-description">Miêu tả</label>
                             <textarea class="form-control form-control-alternative" id="input-description"
-                                formControlName="description" placeholder="Input description"></textarea>
+                                formControlName="description" placeholder="Nhập miêu tả"></textarea>
                             <div *ngIf="submitted && f['description'].errors" class="invalid-feedback">
                                 <div *ngIf="f['description'].errors!['required']">Miêu tả không được để trống</div>
                             </div>
@@ -38,7 +38,7 @@
                             <div class="form-group col-md-6">
                                 <label class="form-control-label" for="input-preparationTime">Thời gian chuẩn bị (phút)</label>
                                 <input id="input-preparationTime" class="form-control form-control-alternative"
-                                    placeholder="Input preparation time (minutes)" formControlName="preparationTime" type="number">
+                                    placeholder="Nhập thời gian chuẩn bị (phút)" formControlName="preparationTime" type="number">
                                 <div *ngIf="submitted && f['preparationTime'].errors" class="invalid-feedback">
                                     <div *ngIf="f['preparationTime'].errors!['required']">Thời gian chuẩn bị không được để trống</div>
                                 </div>
@@ -46,7 +46,7 @@
                             <div class="form-group col-md-6">
                                 <label class="form-control-label" for="input-cookingTime">Thời gian nấu (phút)</label>
                                 <input id="input-cookingTime" class="form-control form-control-alternative"
-                                    placeholder="Input cooking time (minutes)" formControlName="cookingTime" type="number">
+                                    placeholder="Nhập thời gian nấu (phút)" formControlName="cookingTime" type="number">
                                 <div *ngIf="submitted && f['cookingTime'].errors" class="invalid-feedback">
                                     <div *ngIf="f['cookingTime'].errors!['required']">Thời gian nấu không được để trống</div>
                                 </div>
@@ -54,9 +54,9 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label class="form-control-label" for="input-serves">Khẩu phần</label>
+                                <label class="form-control-label" for="input-serves">Khẩu phần (người)</label>
                                 <input id="input-serves" class="form-control form-control-alternative"
-                                    placeholder="Input serves" formControlName="serves" type="number">
+                                    placeholder="Nhập khẩu phần (người)" formControlName="serves" type="number">
                                 <div *ngIf="submitted && f['serves'].errors" class="invalid-feedback">
                                     <div *ngIf="f['serves'].errors!['required']">Khẩu phần không được để trống</div>
                                 </div>
@@ -64,7 +64,7 @@
                             <div class="form-group col-md-6">
                                 <label class="form-control-label" for="input-calories">Calories</label>
                                 <input id="input-calories" class="form-control form-control-alternative"
-                                    placeholder="Input calories" formControlName="calories" type="number">
+                                    placeholder="Nhập calories" formControlName="calories" type="number">
                                 <div *ngIf="submitted && f['calories'].errors" class="invalid-feedback">
                                     <div *ngIf="f['calories'].errors!['required']">Calories không được để trống</div>
                                 </div>
@@ -202,7 +202,7 @@
                                 <div class="col">
                                     <label class="form-control-label" for="input-quantity">Số lượng</label>
                                     <input id="input-quantity" class="form-control form-control-alternative"
-                                        placeholder="Input quantity" type="number" min="1" formControlName="quantity" required>
+                                        placeholder="Nhập số lượng" type="number" min="1" formControlName="quantity" required>
                                     <div *ngIf="submitted && formIngredient.controls[i]['controls']['quantity']['errors']" class="invalid-feedback">
                                         <div *ngIf="formIngredient.controls[i]['controls']['quantity']['errors']['required']">Số lượng không được để trống</div>
                                     </div>
@@ -210,7 +210,7 @@
                                 <div class="col">
                                     <label class="form-control-label" for="input-unit">Đơn vị</label>
                                     <input id="input-unit" class="form-control form-control-alternative"
-                                        placeholder="Input unit" type="string" formControlName="unit" required>
+                                        placeholder="Nhập đơn vị" type="string" formControlName="unit" required>
                                     <div *ngIf="submitted && formIngredient.controls[i]['controls']['unit']['errors']" class="invalid-feedback">
                                         <div *ngIf="formIngredient.controls[i]['controls']['unit']['errors']['required']">Đơn vị không được để trống</div>
                                     </div>
@@ -256,7 +256,7 @@
                             <div class="form-group">
                                 <label class="form-control-label" for="input-content">Nội dung</label>
                                 <textarea class="form-control form-control-alternative" id="input-content"
-                                formControlName="content" placeholder="Input content"></textarea>
+                                formControlName="content" placeholder="Nhập nội dung"></textarea>
                                 <div *ngIf="submitted && formMethod.controls[i]['controls']['content']['errors']" class="invalid-feedback">
                                     <div *ngIf="formMethod.controls[i]['controls']['content']['errors']['required']">Nội dung không được để trống</div>
                                 </div>

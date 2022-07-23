@@ -8,6 +8,7 @@ import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ModalInputComponent } from 'src/app/shared/components/modal-input/modal-input.component';
+import { ModalPostComponent } from 'src/app/shared/components/modal-post/modal-post.component';
 
 @Component({
   selector: 'app-manage-post',
@@ -130,6 +131,11 @@ export class ManagePostComponent implements OnInit {
     this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = id;
     this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
+  }
+
+  showPost(postId: string) {
+    this.modalRef = this.modalService.open(ModalPostComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+    this.modalRef.componentInstance.id = postId;
   }
 
   setPostByStatus(id: string, status: number, reason?: string) {

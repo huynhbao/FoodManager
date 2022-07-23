@@ -93,7 +93,7 @@
                                 <th style="width: 25%;">Tiêu đề</th>
                                 <th style="width: 12%;">Người đăng</th>
                                 <th style="width: 10%;">Ngày đăng</th>
-                                <th style="width: 12%;">Hashtag</th>
+                                <th style="width: 12%;">{{statusSelected !== 3 ? 'Hashtag' : 'Lý do từ chối'}}</th>
                                 <th>Tổng số bình luận</th>
                                 <th>Tổng số tương tác</th>
                                 <th>Hành động</th>
@@ -104,7 +104,7 @@
                                 <td>
                                     <img src="{{post.postImages[0].imageUrl}}" style="height: 60px;"
                                         class="img-thumbnail img-fluid mr-3">
-                                    <a target="_blank" [routerLink]="['../post/detail', post.id]" class="font-weight-bold text-dark">{{post.title}}</a>
+                                    <a href="javascript:void(0)" (click)="showPost(post.id)" class="font-weight-bold text-dark">{{post.title}}</a>
                                 </td>
                                 <td>
                                     <b>{{post.user.fullname}}</b>
@@ -113,9 +113,13 @@
                                     <span class="text-muted">{{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td style="width:1px; white-space:nowrap;">
-                                    <div *ngFor="let hashtag of splitDescription(post.hashtag)"
-                                        class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
-                                        <a>#{{hashtag}}</a></div>
+                                    <div *ngIf="statusSelected !== 3">
+                                        <div *ngFor="let hashtag of splitDescription(post.hashtag)"
+                                            class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
+                                            <a>#{{hashtag}}</a>
+                                        </div>
+                                    </div>
+                                    <b *ngIf="statusSelected === 3">{{post.reason}}</b>
                                 </td>
                                 <td>
                                     <b>{{post.totalComment}}</b>

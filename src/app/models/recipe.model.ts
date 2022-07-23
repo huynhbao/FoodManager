@@ -44,6 +44,7 @@ export interface Recipe {
   serves: number;
   calories: number;
   hashtag: string;
+  reason: string;
   status: number;
   isSelected?: boolean;
   manyToManyRecipeCategories: RecipeCategory[];

@@ -22,6 +22,7 @@ export interface Post {
     totalReact: number;
     postImages: Image[];
     postComments?: Comment[];
+    reason: string;
     isSelected?: boolean;
 }
 
