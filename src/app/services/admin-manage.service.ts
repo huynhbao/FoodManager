@@ -32,10 +32,33 @@ export class AdminManageService {
     );
   }
 
+  getBannedUsers(status: number, page: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}/user/ban-list?status=${status}&page=${page}&size=5`
+    );
+  }
+
   getUserById(id: string): Observable<User> {
     return this.http.get<User>(
       `${this.baseUrl}/user/${id}`
     );
+  }
+
+  banUser(id: string, reason: string, expiredDate: string): Observable<any> {
+    const banBody = {
+      "userId": id,
+      "expiredDate": expiredDate,
+      "reason": reason
+    };
+    console.log(banBody);
+    return this.http.post<any>(`${this.baseUrl}/user/ban`, banBody);
+  }
+
+  unbanUser(id: string): Observable<any> {
+    const banBody = {
+      "userId": id
+    };
+    return this.http.post<any>(`${this.baseUrl}/user/unban`, banBody);
   }
 
   //origin

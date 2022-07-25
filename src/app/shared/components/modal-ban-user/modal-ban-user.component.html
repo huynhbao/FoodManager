@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Ban người dùng <b>{{user.name}}</b></h4>
+    <button type="button" class="close" aria-describedby="modal-title" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <div ngbDropdown class="d-inline-block w-100">
+            <label class="form-control-label" for="dropdownBasic1">Chọn thời gian ban</label>
+            <input class="btn btn-outline-fooma btn-block" id="dropdownBasic1" ngbDropdownToggle
+                [value]="banInfo[selectedBanDay].display" readonly />
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+                <button type="button" class="dropdown-item"
+                    *ngFor="let ban of banInfo; let i = index" (click)="selectedBanDay = i" >
+                    {{ban.display}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="form-control-label" for="input-reason">Lý do</label>
+        <textarea type="text" id="input-reason" placeholder="Nhập lý do" class="form-control form-control-alternative" [(ngModel)]="reason"></textarea>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('Cancel click')">Hủy</button>
+    <button type="button" class="btn btn-danger" (click)="onSubmit()">Ok</button>
+</div>

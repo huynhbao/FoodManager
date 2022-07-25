@@ -2,6 +2,7 @@
     .modal-dialog {
         max-width: calc(100vw - 700px);
     }
+
     /* .modal-body {
         background-color: #f7fafc;
         padding: 0;
@@ -97,4 +98,31 @@ $primary-colour: #78b4ff;
         color: rgb(0, 171, 85);
         flex-grow: 1;
     }
+}
+
+.nav-item a:focus {
+    outline: unset;
+}
+
+.nav-item a:hover {
+    border: 1px solid #fff !important;
+}
+
+.nav-item a {
+    color: black !important;
+    font-weight: 600;
+    padding: 12px 40px 12px 40px;
+}
+
+.nav-item .active {
+    color: #f36039 !important;
+    border: none !important;
+    border-bottom: 3px solid #f26139 !important;
+    background-color: transparent;
+    font-weight: 600;
+}
+
+.nav-item .active:hover {
+    border: none !important;
+    border-bottom: 3px solid #f26139 !important;
 }

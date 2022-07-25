@@ -4,15 +4,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/models/user.model';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
-import { ModalBanUserComponent } from 'src/app/shared/components/modal-ban-user/modal-ban-user.component';
+import { ModalUnbanUserComponent } from 'src/app/shared/components/modal-unban-user/modal-unban-user.component';
 
 @Component({
-  selector: 'app-manage-user',
-  templateUrl: './manage-user.component.html',
-  styleUrls: ['./manage-user.component.scss']
+  selector: 'app-manage-ban-user',
+  templateUrl: './manage-ban-user.component.html',
+  styleUrls: ['./manage-ban-user.component.scss']
 })
-
-export class ManageUserComponent implements OnInit {
+export class ManageBanUserComponent implements OnInit {
   listUser!: User[];
   currentPage: number = 1;
   itemsPerPage = 5;
@@ -25,7 +24,7 @@ export class ManageUserComponent implements OnInit {
   isLoading: boolean = false;
   selectedUser!: User;
   modalRef!: NgbModalRef;
-  
+
   //form
   form: FormGroup;
   isDisabled: boolean = true;
@@ -44,26 +43,6 @@ export class ManageUserComponent implements OnInit {
   }
 
   get f() { return this.form.controls; }
-
-  // The master checkbox will check/ uncheck all items
-  public checkUncheckAll() {
-    for (var i = 0; i < this.listUser.length; i++) {
-      this.listUser[i].isSelected = this.masterSelected;
-    }
-    this.numSelected = this.masterSelected ? this.listUser.length : 0;
-  }
-
-  // Check All Checkbox Checked
-  public isAllSelected() {
-    let count = 0;
-    this.masterSelected = this.listUser.every(function (item: any) {
-      if (item.isSelected == true) {
-        count++;
-      }
-      return item.isSelected == true;
-    })
-    this.numSelected = count;
-  }
 
   public onPageChange(pageNum: number): void {
     this.loadUsers();
@@ -102,7 +81,7 @@ export class ManageUserComponent implements OnInit {
   }
 
   setUserStatus(user: User) {
-    this.modalRef = this.modalService.open(ModalBanUserComponent, {ariaLabelledBy: 'modal-basic-title'});
+    this.modalRef = this.modalService.open(ModalUnbanUserComponent, {ariaLabelledBy: 'modal-basic-title'});
     this.modalRef.componentInstance.user = user;
     this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
   }
@@ -113,7 +92,7 @@ export class ManageUserComponent implements OnInit {
 
   loadUsers() {
     this.isLoading = true;
-    this.adminService.getUsers(this.searchValue, this.statusSelected, this.currentPage).subscribe({
+    this.adminService.getBannedUsers(this.statusSelected, this.currentPage).subscribe({
       next: (res: any) => {
         this.collectionSize = res.totalItem;
         let users: User[] = res.items;
@@ -127,7 +106,7 @@ export class ManageUserComponent implements OnInit {
       }
     });
   }
-
+  
   ngOnInit(): void {
     this.loadUsers();
   }

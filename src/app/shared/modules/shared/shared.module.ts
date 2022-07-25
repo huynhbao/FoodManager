@@ -7,11 +7,16 @@ import {
   faClock as farClock,
 } from '@fortawesome/free-regular-svg-icons';
 import { faClock, faUsers, faFire, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
     CommonModule,
     FontAwesomeModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+    }),
   ],
   declarations: [
     SpinnerComponent,

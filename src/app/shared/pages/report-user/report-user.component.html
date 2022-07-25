@@ -96,8 +96,8 @@
                                     <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(user.id, user.userId, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Recipe">
                                         <i class="fas fa-check"></i>
                                     </button>
-                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="showPopup(confirmModal, i)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Recipe">
-                                        <i class="fas fa-trash"></i>
+                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="banUser(user, i)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Recipe">
+                                        <i class="fas fa-user-slash"></i>
                                     </button>
                                 </td>
                             </tr>

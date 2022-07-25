@@ -1,5 +1,6 @@
 export interface User {
     id: string;
+    userId?: string;
     email?: string;
     name?: string;
     birthDate?: Date;
@@ -14,4 +15,6 @@ export interface User {
     fullname?: string;
     avatarUrl?: string;
     isSelected?: boolean;
+    expiredDate?: Date;
+    reason?: string;
 }

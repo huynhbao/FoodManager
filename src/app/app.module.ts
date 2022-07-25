@@ -33,6 +33,8 @@ import { ReportUserComponent } from './shared/pages/report-user/report-user.comp
 import { ModalUserComponent } from './shared/components/modal-user/modal-user.component';
 import { ProfileComponent } from './shared/pages/profile/profile.component';
 import { ModalInputComponent } from './shared/components/modal-input/modal-input.component';
+import { ModalBanUserComponent } from './shared/components/modal-ban-user/modal-ban-user.component';
+import { ModalUnbanUserComponent } from './shared/components/modal-unban-user/modal-unban-user.component';
 
 export function tokenGetter() {
   let savedToken = localStorage.getItem("currentUser");
@@ -63,7 +65,9 @@ export function tokenGetter() {
     ReportUserComponent,
     ModalUserComponent,
     ProfileComponent,
-    ModalInputComponent
+    ModalInputComponent,
+    ModalBanUserComponent,
+    ModalUnbanUserComponent
   ],
   imports: [
     BrowserModule,

@@ -13,6 +13,7 @@ import { SharedModule } from '../shared/modules/shared/shared.module';
 import { ManageOriginComponent } from './manage-origin/manage-origin.component';
 import { ManageMethodComponent } from './manage-method/manage-method.component';
 import { ManageRecipeCategoryComponent } from './manage-recipe-category/manage-recipe-category.component';
+import { ManageBanUserComponent } from './manage-ban-user/manage-ban-user.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ManageRecipeCategoryComponent } from './manage-recipe-category/manage-r
     FilterPipe,
     ManageOriginComponent,
     ManageMethodComponent,
-    ManageRecipeCategoryComponent
+    ManageRecipeCategoryComponent,
+    ManageBanUserComponent
   ],
   imports: [
     CommonModule,

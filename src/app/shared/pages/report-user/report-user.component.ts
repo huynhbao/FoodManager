@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ReportUser } from 'src/app/models/report.model';
+import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ModalBanUserComponent } from '../../components/modal-ban-user/modal-ban-user.component';
 import { ModalUserComponent } from '../../components/modal-user/modal-user.component';
 
 @Component({
@@ -80,6 +82,23 @@ export class ReportUserComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  banUser(reportUser: ReportUser, index: number) {
+    this.selectedIndex = index;
+    const user:User = {
+      id: reportUser.id,
+      name: reportUser.reportedUserName
+    }
+    this.modalRef = this.modalService.open(ModalBanUserComponent, {ariaLabelledBy: 'modal-basic-title'});
+    this.modalRef.componentInstance.user = user;
+    this.modalRef.componentInstance.reportId = reportUser.id;
+    this.modalRef.componentInstance.submitFunc = this.submitBanUser.bind(this);
+  }
+
+  submitBanUser(reportId: string) {
+    this.setReportStatus(this.reportUsers[this.selectedIndex].id, this.reportUsers[this.selectedIndex].userId, 2);
+    this.loadReports();
   }
 
   showUser(userId: string, reportId: string) {
