@@ -211,6 +211,7 @@ export class CreateRecipeComponent implements OnInit {
       calories: this.f['calories'].value,
       hashtag: hashtag,
       manyToManyRecipeCategories: manyToManyRecipeCategories,
+      manyToManyRecipeNutritions: [],
       recipeImages: recipeImages,
       recipeIngredients: recipeIngredients,
       recipeMethods: recipeMethods

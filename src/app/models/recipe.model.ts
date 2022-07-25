@@ -67,4 +67,5 @@ export interface CreateRecipe {
   recipeImages: RecipeImage[];
   recipeIngredients: RecipeIngredient[];
   recipeMethods: RecipeMethod[];
+  manyToManyRecipeNutritions: [];
 }

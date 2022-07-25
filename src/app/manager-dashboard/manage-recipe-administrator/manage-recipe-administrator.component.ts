@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TagInputComponent } from 'ngx-chips';
 import { TagModel } from 'ngx-chips/core/tag-model';
 import { Observable, of } from 'rxjs';
@@ -9,6 +10,7 @@ import { Recipe, RecipeCategory as RecipeCategoryMany } from 'src/app/models/rec
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ModalRecipeComponent } from 'src/app/shared/components/modal-recipe/modal-recipe.component';
 
 @Component({
   selector: 'app-manage-recipe-administrator',
@@ -40,8 +42,10 @@ export class ManageRecipeAdministratorComponent implements OnInit {
   isCollapsed = true;
   @ViewChild('tagInput') tagInputRef!: TagInputComponent;
   selectedTag;
+  modalRef!: NgbModalRef;
+
   
-  constructor(private managerService: ManagerService, private route: ActivatedRoute, public router: Router, private sharedService: SharedService) {
+  constructor(private managerService: ManagerService, private route: ActivatedRoute, public router: Router, private sharedService: SharedService, private modalService: NgbModal) {
   }
 
   initFilter() {
@@ -165,6 +169,11 @@ export class ManageRecipeAdministratorComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  showRecipe(recipeId: string) {
+    this.modalRef = this.modalService.open(ModalRecipeComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+    this.modalRef.componentInstance.id = recipeId;
   }
 
   private loadRecipes() {

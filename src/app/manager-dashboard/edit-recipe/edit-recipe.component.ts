@@ -296,7 +296,8 @@ export class EditRecipeComponent implements OnInit {
       manyToManyRecipeCategories: manyToManyRecipeCategories,
       recipeImages: recipeImages,
       recipeIngredients: recipeIngredients,
-      recipeMethods: recipeMethods
+      recipeMethods: recipeMethods,
+      manyToManyRecipeNutritions: []
     }
 
     this.managerService.updateRecipe(this.recipe.id, recipe).subscribe({
