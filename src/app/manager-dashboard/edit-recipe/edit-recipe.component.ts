@@ -16,6 +16,7 @@ import { RecipeIngredient, RecipeCategory as RecipeCategoryMany, RecipeImage, Re
 import { User } from 'src/app/models/user.model';
 import { AppConst } from 'src/app/shared/constants/app-const';
 import { Utils } from 'src/app/shared/tools/utils';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-recipe',
@@ -42,7 +43,7 @@ export class EditRecipeComponent implements OnInit {
   isLoading: boolean = false;
   isDone: boolean = false;
   recipe!:Recipe;
-  constructor(private managerService: ManagerService, private sharedService: SharedService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {
+  constructor(private managerService: ManagerService, private sharedService: SharedService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -305,6 +306,7 @@ export class EditRecipeComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.isDone = true;
+          this.toastr.success(`Đã cập nhật công thức`);
         }
       },
       error: (error) => {
@@ -312,6 +314,7 @@ export class EditRecipeComponent implements OnInit {
       },
       complete: () => {
         this.isLoading = false;
+        this.toastr.error(`Không thể cập nhật công thức`);
       }
     });
   }

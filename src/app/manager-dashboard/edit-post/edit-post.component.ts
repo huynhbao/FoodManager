@@ -1,41 +1,65 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
-import { Image } from 'src/app/models/image.model';
-import { CreatePost } from 'src/app/models/post.model';
+import { CreatePost, Post } from 'src/app/models/post.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { Image } from 'src/app/models/image.model';
+import { ToastrService } from 'ngx-toastr';
+import { AppConst } from 'src/app/shared/constants/app-const';
+import { User } from 'src/app/models/user.model';
 
 @Component({
-  selector: 'app-create-post',
-  templateUrl: './create-post.component.html',
-  styleUrls: ['./create-post.component.scss']
+  selector: 'app-edit-post',
+  templateUrl: './edit-post.component.html',
+  styleUrls: ['./edit-post.component.scss']
 })
-export class CreatePostComponent implements OnInit {
-
+export class EditPostComponent implements OnInit {
   previews: string[] = [];
+  post!:Post;
   selectedFiles?: FileList;
   hashtagValue: string = "";
   hashtags = [];
   thumbnailNumber: number = 0;
-  createForm: FormGroup;
+  editForm: FormGroup;
   submitted: boolean = false;
   isLoading: boolean = false;
   isDone: boolean = false;
-  constructor(private managerService: ManagerService, private sharedService: SharedService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {
-    this.createForm = this.formBuilder.group({
+  constructor(private managerService: ManagerService, private sharedService: SharedService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, private toastr: ToastrService) {
+    this.editForm = this.formBuilder.group({
       title: ['', Validators.required],
       content: ['', Validators.required],
     });
   }
 
-  get f() { return this.createForm.controls; }
+  get f() { return this.editForm.controls; }
 
-  async createPost() {
+  loadPost(id: string) {
+    this.managerService.getPostById(id).subscribe({
+      next: (post: Post) => {
+        
+        let user: User = {
+          id: post["userId"],
+          fullname: post["name"],
+          avatarUrl: post["userImageUrl"]
+        } 
+        this.post = post;
+        this.post.user = user;
+        console.log(this.post);
+      },
+      error: (error) => {
+        //this.router.navigate(['manager/manage/post']);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  async editPost() {
     this.submitted = true;
 
-    if (this.createForm.invalid || this.previews.length === 0) {
+    if (this.editForm.invalid || this.previews.length === 0) {
       return;
     }
     this.isLoading = true;
@@ -72,22 +96,25 @@ export class CreatePostComponent implements OnInit {
       
     }
     let post:CreatePost = {
+      id: this.post.id,
       title: this.f['title'].value,
       content: this.f['content'].value,
       hashtag: hashtag,
       postImages: postImages
     }
 
-    this.managerService.createPost(post).subscribe({
+    this.managerService.updatePost(post).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           this.isDone = true;
+          this.toastr.success(`Đã cập nhật bài viết thành công`);
           //this.router.navigate(['../'], { relativeTo: this.route });
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.success(`Không thể cập nhật bài viết`);
       },
       complete: () => {
         
@@ -123,6 +150,12 @@ export class CreatePostComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let id = this.route.snapshot.params['id'];
+    if (id) {
+      this.loadPost(id);
+    }  else {
+      this.router.navigate(['../'], { relativeTo: this.route });
+    }
   }
 
 }

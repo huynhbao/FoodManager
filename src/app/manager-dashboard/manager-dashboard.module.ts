@@ -24,6 +24,7 @@ import { TagInputModule } from 'ngx-chips';
 import { CreateRecipeComponent } from './create-recipe/create-recipe.component';
 import { ManageRecipeAdministratorComponent } from './manage-recipe-administrator/manage-recipe-administrator.component';
 import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
+import { EditPostComponent } from './edit-post/edit-post.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
     CreateRecipeComponent,
     ManageRecipeAdministratorComponent,
     EditRecipeComponent,
+    EditPostComponent,
   ],
   imports: [
     TagInputModule,

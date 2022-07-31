@@ -69,9 +69,12 @@ export class ManagePostComponent implements OnInit {
             id: post['userId'],
             fullname: post['name'],
             avatarUrl: post['userImageUrl'],
+            role: post['role'],
           };
           post.user = user;
         });
+
+        console.log(this.listPost);
         
       },
       error: (error) => {

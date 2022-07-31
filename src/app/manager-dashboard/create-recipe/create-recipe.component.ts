@@ -14,6 +14,7 @@ import {
   RecipeOrigin,
 } from 'src/app/models/category.model';
 import { RecipeIngredient, RecipeCategory as RecipeCategoryMany, RecipeImage, RecipeMethod as RecipeMethod_R, Recipe, CreateRecipe } from 'src/app/models/recipe.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-recipe',
@@ -42,7 +43,8 @@ export class CreateRecipeComponent implements OnInit {
   constructor(
     private managerService: ManagerService,
     private sharedService: SharedService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService
   ) {
     this.createForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -84,6 +86,7 @@ export class CreateRecipeComponent implements OnInit {
 
   async createRecipe() {
     this.submitted = true;
+    
     if (
       this.createForm.invalid ||
       this.previews.length === 0 ||
@@ -91,7 +94,7 @@ export class CreateRecipeComponent implements OnInit {
       this.categories.length === 0
     ) {
       return;
-    } 
+    }
     this.isLoading = true;
 
     let hashtag = "";
@@ -224,15 +227,18 @@ export class CreateRecipeComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.isDone = true;
+          this.toastr.success(`Đã thêm công thức thành công`);
         }
       },
       error: (error) => {
         console.log(error);
         this.isLoading = false;
+        this.toastr.error(`Không thể thêm công thức`);
       },
       complete: () => {
       }
     });
+    
     
   }
 

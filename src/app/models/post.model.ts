@@ -27,6 +27,7 @@ export interface Post {
 }
 
 export interface CreatePost {
+    id?: string;
     title: string;
     content: string;
     hashtag: string;

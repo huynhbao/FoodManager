@@ -21,6 +21,12 @@ export class ManagerService {
     );
   }
 
+  updatePost(post: CreatePost): Observable<any> {
+    return this.http.post<CreatePost>(
+      `${this.baseUrl}/post/update`, post
+    );
+  }
+
   getPosts(status: number, hashtag: string, page: number): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrl}/post/by-status/as-manager?status=${status}&hashtag=${hashtag}&page=${page}&size=5`

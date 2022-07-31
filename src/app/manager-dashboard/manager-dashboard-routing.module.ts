@@ -8,6 +8,7 @@ import { ReportUserComponent } from '../shared/pages/report-user/report-user.com
 import { CreatePostComponent } from './create-post/create-post.component';
 import { CreateRecipeComponent } from './create-recipe/create-recipe.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { EditPostComponent } from './edit-post/edit-post.component';
 import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
 import { ManagePostComponent } from './manage-post/manage-post.component';
 import { ManageRecipeAdministratorComponent } from './manage-recipe-administrator/manage-recipe-administrator.component';
@@ -35,6 +36,9 @@ const routes: Routes = [
       },
       {
         path: 'post/detail/:id', component: PostDetailComponent
+      },
+      {
+        path: 'post/edit/:id', component: EditPostComponent
       },
       {
         path: 'post/hashtag/:hashtag', component: ManagePostComponent,
