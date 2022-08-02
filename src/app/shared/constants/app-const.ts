@@ -1,6 +1,7 @@
 export enum ErrorMessage {
   WRONG_CODE = 'wrong-code',
-  USER_NOT_FOUND = 'user not found'
+  USER_NOT_FOUND = 'user not found',
+  WRONG_PASSWORD = 'Wrong password',
 }
 
 export enum PostStatus {

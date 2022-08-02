@@ -4,6 +4,10 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
+import { SharedService } from 'src/app/services/shared.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalUpdatePasswordComponent } from '../../components/modal-update-password/modal-update-password.component';
 
 @Component({
   selector: 'app-profile',
@@ -17,8 +21,10 @@ export class ProfileComponent implements OnInit {
   form: FormGroup;
   isDisabled: boolean = true;
   submitted = false;
-  
-  constructor(private authenticationService: AuthenticationService, private adminService: AdminManageService, private formBuilder: FormBuilder) {
+  isNewAvatar: boolean = false;
+  modalRef!: NgbModalRef;
+
+  constructor(private sharedService: SharedService, private authenticationService: AuthenticationService, private modalService: NgbModal, private formBuilder: FormBuilder, private toastr: ToastrService) {
     this.form = this.formBuilder.group({
       fullName: [{value: '', disabled: this.isDisabled}, Validators.required],
       bio: [{value: '', disabled: this.isDisabled}, Validators.required],
@@ -53,39 +59,106 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  /* onSelectFile(event) {
+  onSelectFile(event) {
     if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
+      const reader = new FileReader();
 
       reader.readAsDataURL(event.target.files[0]); // read file as data url
 
-      reader.onload = (event) => { // called once readAsDataURL is completed
-        this.user.avatarUrl = event.target.result || "";
+      reader.onload = (e: any) => { // called once readAsDataURL is completed
+        //console.log(e.target.result);
+        this.isNewAvatar = true;
+        this.user.imageUrl = e.target.result;
+        this.form.enable();
       }
     }
-  } */
+  }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
-    
+    console.log(this.form);
     if (this.form.invalid) {
       return;
     }
 
     this.isLoading = true;
 
+    if (this.isNewAvatar) {
+      await new Promise(resolve => {
+        this.sharedService.uploadImage(this.user.imageUrl!).subscribe({
+          next: (res:any) => {
+            const imgUrl:string = res.secure_url;
+            if (imgUrl) {
+              this.user.imageUrl = imgUrl;
+              resolve("");
+            }
+          },
+          error: (error) => {
+            console.log(error);
+          }
+        });
+      });
+    }
+
     let updateInfo = {
       name: this.f['fullName'].value,
       birthDate: this.f['dob'].value,
       phoneNumber: this.f['phone'].value,
-      imageUrl: "",
+      imageUrl: this.user.imageUrl,
       bio: this.f['bio'].value
     }
+
+    this.sharedService.updateUser(updateInfo).subscribe({
+      next: async (res:any) => {
+        console.log(res);
+        if (res.code == 204) {
+          this.toastr.info(`Không có thay đổi thông tin nào mới`);
+        } else if (res.code == 200) {
+          this.toastr.success(`Đã cập nhật thông tin thành công`);
+          this.form.disable();
+          let userInfo = this.authenticationService.currentUserValue;
+          await new Promise(resolve => {
+            this.sharedService.getProfile().subscribe({
+              next: (user: User) => {
+                userInfo["currentProfile"] = user;
+                this.authenticationService.setCurrentUserValue(userInfo);
+                resolve("");
+              },
+              error: (error) => {
+              },
+              complete: () => {
+              }
+            });
+          });
+          
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        this.toastr.error(`Không thể cập nhật thông tin`, `Đã xảy ra lỗi`);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  changePassword() {
+    this.modalRef = this.modalService.open(ModalUpdatePasswordComponent, {ariaLabelledBy: 'modal-basic-title'});
   }
 
   ngOnInit(): void {
-    const userStorage = this.authenticationService.currentUserValue.currentUser;
-    this.adminService.getUserById(userStorage.nameid).subscribe({
+    //const userStorage = this.authenticationService.currentUserValue.currentProfile;
+    this.user = this.authenticationService.currentUserValue.currentProfile;
+    this.form.setValue({
+      fullName: this.user.name,
+      bio: this.user.bio,
+      phone: this.user.phoneNumber,
+      dob: formatDate(new Date(this.user.birthDate || new Date), 'yyyy-MM-dd', 'en')
+    });
+    this.isLoading = false;
+    this.isGettingData = false;
+    /* this.sharedService.getProfile().subscribe({
       next: (user: User) => {
         this.user = user;
         console.log(this.user);
@@ -102,7 +175,7 @@ export class ProfileComponent implements OnInit {
         this.isLoading = false;
         this.isGettingData = false;
       }
-    });
+    }); */
   }
 
 }

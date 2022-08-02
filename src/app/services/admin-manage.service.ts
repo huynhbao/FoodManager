@@ -47,7 +47,7 @@ export class AdminManageService {
   banUser(id: string, reason: string, expiredDate: string): Observable<any> {
     const banBody = {
       "userId": id,
-      "expiredDate": expiredDate,
+      "expiredDate": expiredDate === "" ? null : expiredDate,
       "reason": reason
     };
     console.log(banBody);

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { map, pipe } from 'rxjs';
 import { Category } from 'src/app/models/category.model';
 import { Ingredient } from 'src/app/models/ingredient.model';
@@ -26,11 +27,13 @@ export class ManageIngredientComponent implements OnInit {
   numSelected: number = 0;
   searchValue: string = '';
   modalRef!: NgbModalRef;
+  isLoading: boolean = false;
 
   constructor(
     private managerService: ManagerService,
     private sharedService: SharedService,
     private modalService: NgbModal,
+    private toastr: ToastrService
   ) {}
 
   public onPageChange(pageNum: number): void {
@@ -59,10 +62,13 @@ export class ManageIngredientComponent implements OnInit {
 
   triggerModal(method: String, ingredient?: Ingredient) {
     // this.categoryForm.reset();
+    
     let content: any = ModalCreateComponent;
     if (method == 'create') {
+      this.isLoading = true;
       content = ModalCreateComponent;
     } else if (method == 'update') {
+      this.isLoading = true;
       content = ModalUpdateComponent;
     } else if (method == 'confirm') {
       content = ModalConfirmComponent;
@@ -94,11 +100,12 @@ export class ManageIngredientComponent implements OnInit {
         this.modalRef.componentInstance.fromParent = [
           {
             id: ingredient?.id,
-            imgUrl: ingredient?.imageUrl || "" 
+            imgUrl: ingredient?.imageUrl || "",
+            thumbnail: true
           },
           {
             key: 'ingredientName',
-            name: 'Ingredient Name',
+            name: 'Tên nguyên liệu',
             type: 'string',
             validator: {
               disabled: false,
@@ -108,7 +115,7 @@ export class ManageIngredientComponent implements OnInit {
           },
           {
             key: 'unit',
-            name: 'Unit',
+            name: 'Đơn vị',
             type: 'string',
             validator: {
               disabled: false,
@@ -118,7 +125,7 @@ export class ManageIngredientComponent implements OnInit {
           },
           {
             key: 'category',
-            name: 'Category Name',
+            name: 'Tên danh mục',
             type: 'boolean',
             value: listValue,
             validator: {
@@ -129,7 +136,7 @@ export class ManageIngredientComponent implements OnInit {
           },
           {
             key: 'imageUrl',
-            name: 'Upload Image',
+            name: 'Ảnh thumbnail',
             type: 'file',
             validator: {
               disabled: false,
@@ -139,12 +146,14 @@ export class ManageIngredientComponent implements OnInit {
           },
         ];
         this.modalRef.componentInstance.submitFunc = method == "create" ? this.submitCreate.bind(this) : this.submitUpdate.bind(this);
+        this.isLoading = false;
       }
     });
     
   }
 
   private submitCreate(form: any, img:string[]) {
+    this.isLoading = true;
     const ingredient: Ingredient = {
       id: '',
       categoryId: form.category.id,
@@ -166,22 +175,31 @@ export class ManageIngredientComponent implements OnInit {
               if (res.code == 200) {
                 this.modalService.dismissAll();
                 this.loadIngredients();
+                this.toastr.success(`Đã tạo nguyên liệu`);
                 //this.modalRef.close();
               }
             },
             error: (error) => {
+              this.toastr.error(`Không thể tạo nguyên liệu này`, `Đã xảy ra lỗi`);
               console.log(error);
             },
+            complete: () => {
+              this.isLoading = false;
+            }
           });
         }
       },
       error: (error) => {
         console.log(error);
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     })
   }
 
   private async submitUpdate(form: any, imgUrl: string) {
+    this.isLoading = true;
     let isNewImg: boolean = false;
     if (form.imageUrl != imgUrl) {
       await Utils.getBase64ImageFromUrl(imgUrl).then(base64 => {
@@ -214,10 +232,12 @@ export class ManageIngredientComponent implements OnInit {
                 if (res.code == 200 || res.code == 204) {
                   this.modalService.dismissAll();
                   this.loadIngredients();
+                  this.toastr.success(`Đã cập nhật nguyên liệu`);
                 }
               },
               error: (error) => {
                 console.log(error);
+                this.toastr.error(`Không thể cập nhật nguyên liệu này`, `Đã xảy ra lỗi`);
               },
             });
           }
@@ -225,6 +245,9 @@ export class ManageIngredientComponent implements OnInit {
         error: (error) => {
           console.log(error);
         },
+        complete: () => {
+          this.isLoading = false;
+        }
       })
     } else {
       this.sharedService.updateIngredientDB(ingredient).subscribe({
@@ -233,32 +256,44 @@ export class ManageIngredientComponent implements OnInit {
           if (res.code == 200 || res.code == 204) {
             this.modalService.dismissAll();
             this.loadIngredients();
+            this.toastr.success(`Đã cập nhật nguyên liệu`);
           }
         },
         error: (error) => {
           console.log(error);
+          this.toastr.error(`Không thể cập nhật nguyên liệu này`, `Đã xảy ra lỗi`);
         },
+        complete: () => {
+          this.isLoading = false;
+        }
       });
     }
     
   }
 
   private submitDelete(id: string) {
+    this.isLoading = true;
     this.sharedService.deleteIngredientDB(id).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
           this.loadIngredients();
+          this.toastr.success(`Đã xóa nguyên liệu`);
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể xóa nguyên liệu này`, `Đã xảy ra lỗi`);
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
   public loadIngredients() {
+    this.isLoading = true;
     this.sharedService
       .getIngredientDb(this.searchValue, this.currentPage)
       .subscribe({
@@ -270,6 +305,9 @@ export class ManageIngredientComponent implements OnInit {
         error: (error) => {
           console.log(error);
         },
+        complete: () => {
+          this.isLoading = false;
+        }
       });
   }
 

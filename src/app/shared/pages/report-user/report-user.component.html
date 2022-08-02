@@ -13,9 +13,9 @@
                         <a class="nav-link" data-toggle="tab" [routerLink]="['../post']">Bài viết</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe']">Công thức</a>
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe']">Công thức (Hệ thống)</a>
                     </li>
-                    <li class="nav-item">
+                    <li *ngIf="getRole() != 'MANAGER'" class="nav-item">
                         <a class="nav-link active" data-toggle="tab" [routerLink]="['../user']">Người dùng</a>
                     </li>
                 </ul>
@@ -27,7 +27,7 @@
                 <div class="card-header border-0" style="border-radius: 0;">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Tổng số báo cáo - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Tổng số báo cáo: {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <a (click)="filterByStatus(2)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 2}" href="javascript:void(0)">
@@ -49,7 +49,7 @@
                                 <div class="input-group-prepend">
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" placeholder="Search" type="text" [ngModel]="searchValue" (ngModelChange)='onSearchChange($event)'/>
+                                <input class="form-control" placeholder="Tìm kiếm" type="text" [ngModel]="searchValue" (ngModelChange)='onSearchChange($event)'/>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                     <span class="text-muted">{{user.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td class="table-actions">
-                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(user.id, user.userId, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Recipe">
+                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(user.id)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Recipe">
                                         <i class="fas fa-check"></i>
                                     </button>
                                     <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="banUser(user, i)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Recipe">
@@ -108,6 +108,9 @@
                             </div>
                         </tfoot>
                     </table>
+                </div>
+                <div *ngIf="collectionSize === 0" class="mt-2 text-center">
+                    <img src="assets/img/thumb/empty_result.png" style="height: 200px;"/>
                 </div>
                 <div class="card-footer py-4">
                     <nav aria-label="...">
@@ -128,22 +131,3 @@
         </div>
     </div>
 </div>
-
-<ng-template #confirmModal let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-title">Xác nhận xóa</h4>
-        <button type="button" class="close" aria-describedby="modal-title" (click)="confirmModalRef.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <p><strong>Bạn có chắc là muốn xóa <span class="text-primary">"{{reportUsers[selectedIndex].userName}}"</span>?</strong></p>
-        <p>Tất cả các thông tin liên quan đến dữ liệu này sẽ bị xóa.
-            <span class="text-danger">Hành động này có thể không được hoàn tác.</span>
-        </p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" (click)="confirmModalRef.dismiss('Cancel click')">Hủy</button>
-        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Ok</button>
-    </div>
-</ng-template>

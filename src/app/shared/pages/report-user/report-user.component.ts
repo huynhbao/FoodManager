@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { ReportUser } from 'src/app/models/report.model';
 import { User } from 'src/app/models/user.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ModalBanUserComponent } from '../../components/modal-ban-user/modal-ban-user.component';
@@ -27,11 +29,14 @@ export class ReportUserComponent implements OnInit {
   selectedIndex: number = 0;
   confirmModalRef!: NgbModalRef;
 
-  constructor(private sharedService: SharedService, private managerService: ManagerService, private modalService: NgbModal) { }
+  constructor(private sharedService: SharedService, private managerService: ManagerService, private modalService: NgbModal, private toastr: ToastrService, private authenticationService: AuthenticationService) { }
 
+  getRole() {
+    return this.authenticationService.currentUserValue.currentUser.role;
+  }
+  
   private loadReports() {
     this.isLoading = true;
-    
     this.sharedService.getReportUser(this.searchValue, this.statusSelected, this.currentPage).subscribe({
       next: (res:any) => {
         this.collectionSize = res.totalItem;
@@ -47,36 +52,18 @@ export class ReportUserComponent implements OnInit {
     });
   }
 
-  setUserByStatus(id: string, status: number) {
-    this.managerService.setRecipeByStatus(id, status).subscribe({
-      next: (res:any) => {
-        this.loadReports();
-        this.confirmModalRef.close();
-      },
-      error: (error) => {
-        console.log(error);
-      },
-      complete: () => {
-        this.isLoading = false;
-      }
-    });
-  }
-
-  setReportStatus(id: string, userId: string, status: number) {
+  setReportStatus(id: string) {
     this.sharedService.acceptReportUser(id).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
-          if (status === 2) {
-            this.setUserByStatus(userId, 0);
-            this.confirmModalRef.close();
-          } else {
-            this.loadReports();
-          }
+          this.loadReports();
+          this.toastr.success(`Đã bỏ qua báo cáo`);
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể thực hiện hành động này`, `Đã xảy ra lỗi`);
       },
       complete: () => {
         this.isLoading = false;
@@ -87,7 +74,7 @@ export class ReportUserComponent implements OnInit {
   banUser(reportUser: ReportUser, index: number) {
     this.selectedIndex = index;
     const user:User = {
-      id: reportUser.id,
+      id: reportUser.reportedUserId,
       name: reportUser.reportedUserName
     }
     this.modalRef = this.modalService.open(ModalBanUserComponent, {ariaLabelledBy: 'modal-basic-title'});
@@ -97,8 +84,20 @@ export class ReportUserComponent implements OnInit {
   }
 
   submitBanUser(reportId: string) {
-    this.setReportStatus(this.reportUsers[this.selectedIndex].id, this.reportUsers[this.selectedIndex].userId, 2);
-    this.loadReports();
+    this.sharedService.acceptReportUser(reportId).subscribe({
+      next: (res:any) => {
+        console.log(res);
+        if (res.code == 200) {
+          this.loadReports();
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
   showUser(userId: string, reportId: string) {
@@ -113,9 +112,9 @@ export class ReportUserComponent implements OnInit {
     this.confirmModalRef = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
   }
 
-  confirmDelete() {
+  /* confirmDelete() {
     this.setReportStatus(this.reportUsers[this.selectedIndex].id, this.reportUsers[this.selectedIndex].userId, 2);
-  }
+  } */
 
   submitFunc() {
     this.loadReports();

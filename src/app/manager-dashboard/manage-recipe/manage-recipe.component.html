@@ -21,12 +21,12 @@
         <div class="col-lg-12 card-wrapper justify-content-center">
             <div class="card shadow">
                 <!-- Card header -->
-                <div class="card-header border-0" style="border-radius: 0;">
+                <div class="card-header" style="border-radius: 0">
                     <div class="row">
-                        <div class="col-6">
-                            <h3 class="mb-0">Tổng số công thức - {{collectionSize}}</h3>
+                        <div class="col-lg-6">
+                            <h3 class="mb-0">Tổng số công thức: {{collectionSize}}</h3>
                         </div>
-                        <div class="col-6 text-right">
+                        <div class="col-lg-6 text-right">
                             <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
                                 <span class="badge badge-dot"><i class="bg-success"></i></span>
                                 <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
@@ -50,10 +50,10 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-1">
+                        <div class="col-lg-2">
                             <button type="button" class="btn btn-outline-fooma btn-block" (click)="collapse.toggle()" (click)="initFilter()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">Bộ lọc</button>
                         </div>
-                        <div class="col-10">
+                        <div class="col-lg-10">
                             <div class="input-group input-group-alternative input-group-merge"
                                 style="border-radius: 0.3rem; border: 1px solid #e5e5e5; background-color: #f7f6f9;">
                                 <div class="input-group-prepend">
@@ -69,7 +69,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row justify-content-center">
-                                            <div class="col-2">
+                                            <div class="col-lg-2">
                                                 <tag-input [(ngModel)]='listCategory' [theme]="'fooma-theme'" [identifyBy]="'recipeCategoryId'"
                                                     [displayBy]="'recipeCategoryName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Danh mục" placeholder="Danh mục" (onSelect)="onTagSelected($event)"
                                                     [ngModelOptions]="{standalone: true}">
@@ -85,7 +85,7 @@
                                                     </tag-input-dropdown>
                                                 </tag-input>
                                             </div>
-                                            <div class="col-2">
+                                            <div class="col-lg-2">
                                                 <tag-input [(ngModel)]='listCountry' [theme]="'fooma-theme'" [identifyBy]="'id'"
                                                     [displayBy]="'originName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Xuất xứ" placeholder="Xuất xứ" (onSelect)="onTagSelected($event)"
                                                     [ngModelOptions]="{standalone: true}">
@@ -101,7 +101,7 @@
                                                     </tag-input-dropdown>
                                                 </tag-input>
                                             </div>
-                                            <div class="col-2">
+                                            <div class="col-lg-2">
                                                 <tag-input [(ngModel)]='listMethod' [theme]="'fooma-theme'" [identifyBy]="'id'"
                                                     [displayBy]="'cookingMethodName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Phương pháp" placeholder="Phương pháp" (onSelect)="onTagSelected($event)"
                                                     [ngModelOptions]="{standalone: true}">
@@ -117,12 +117,12 @@
                                                     </tag-input-dropdown>
                                                 </tag-input>
                                             </div>
-                                            <div class="col-2">
+                                            <div class="col-lg-2">
                                                 <tag-input [(ngModel)]='listTime' [theme]="'fooma-theme'" [maxItems]="1" secondaryPlaceholder="Thời gian (phút)" placeholder="Thời gian (phút)" (onSelect)="onTagSelected($event)"
                                                     [ngModelOptions]="{standalone: true}" [validators]="validators">
                                                 </tag-input>
                                             </div>
-                                            <div class="col-2">
+                                            <!-- <div class="col-2">
                                                 <div ngbDropdown class="d-inline-block w-100">
                                                     <input class="btn btn-outline-fooma btn-block" id="dropdownBasic1" ngbDropdownToggle
                                                         [value]="listHashtag[hastagSelected]" (click)="loadHashtag()" readonly />
@@ -136,7 +136,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="row mt-4">
                                             <div class="col text-right">
@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <!-- Light table -->
-                <div class="table-responsive">
+                <div class="table-responsive-lg">
                     <div *ngIf="numSelected >= 2" class="multi-selected">
                         <h6>{{numSelected}} selected</h6>
                         <div>
@@ -165,45 +165,45 @@
                                 <th style="width: 25%;">Tiêu đề</th>
                                 <th style="width: 12%;">Người đăng</th>
                                 <th style="width: 10%;">Ngày đăng</th>
-                                <th style="width: 12%;">{{statusSelected !== 3 ? 'Hashtag' : 'Lý do từ chối'}}</th>
-                                <th>Phương thức nấu</th>
-                                <th>Danh mục</th>
+                                <th *ngIf="statusSelected === 3" style="width: 12%;">Lý do từ chối</th>
+                                <th class="text-center">Phương thức nấu</th>
+                                <th class="text-center">Danh mục</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let recipe of recipes" [ngClass]="{'selected': recipe.isSelected === true}">
-                                <td class="">
+                                <td (click)="showRecipe(recipe.id)" >
                                     <img src="{{recipe.thumbnail}}" style="height: 60px;"
                                         class="img-thumbnail img-fluid mr-3">
-                                    <a href="javascript:void(0)" (click)="showRecipe(recipe.id)" class="font-weight-bold text-dark">{{recipe.recipeName}}</a>
+                                    <a href="javascript:void(0)" class="font-weight-bold text-dark">{{recipe.recipeName}}</a>
                                 </td>
-                                <td>
+                                <td (click)="showRecipe(recipe.id)" >
                                     <b>{{recipe.user.fullname}}</b>
                                 </td>
-                                <td>
+                                <td (click)="showRecipe(recipe.id)" >
                                     <span class="text-muted">{{recipe.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
-                                <td style="width:1px; white-space:nowrap;">
-                                    <div *ngIf="statusSelected !== 3">
+                                <td (click)="showRecipe(recipe.id)" style="width:1px; white-space:nowrap;" *ngIf="statusSelected === 3">
+                                    <!-- <div *ngIf="statusSelected !== 3">
                                         <div *ngFor="let hashtag of splitDescription(recipe.hashtag)"
                                             class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
                                             <a>#{{hashtag}}</a>
                                         </div>
-                                    </div>
-                                    <b *ngIf="statusSelected === 3">{{recipe.reason}}</b>
+                                    </div> -->
+                                    <b>{{recipe.reason}}</b>
                                 </td>
-                                <td>
+                                <td (click)="showRecipe(recipe.id)" class="text-center">
                                     <b>{{recipe.cookingMethodName}}</b>
                                 </td>
-                                <td>
+                                <td (click)="showRecipe(recipe.id)" class="text-center">
                                     <b>{{recipe.manyToManyRecipeCategories[0].recipeCategoryName}}</b>
                                 </td>
-                                <td class="table-actions">
+                                <td class="table-actions row">
                                     <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-check-double"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="showPopupConfirm(recipe)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                     <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
@@ -221,6 +221,9 @@
                             </div>
                         </tfoot>
                     </table>
+                </div>
+                <div *ngIf="collectionSize === 0" class="mt-2 text-center">
+                    <img src="assets/img/thumb/empty_result.png" style="height: 200px;"/>
                 </div>
                 <div class="card-footer py-4">
                     <nav aria-label="...">

@@ -173,6 +173,8 @@ export class EditRecipeComponent implements OnInit {
       this.previews.length === 0 ||
       this.categories.length === 0
     ) {
+      this.scrollToError();
+      this.toastr.error(`Kiểm tra các thông tin chưa điền đầy đủ`, `Đã xảy ra lỗi`);
       return;
     }
     this.isLoading = true;
@@ -310,17 +312,48 @@ export class EditRecipeComponent implements OnInit {
         }
       },
       error: (error) => {
+        this.toastr.error(`Không thể cập nhật công thức`);
         console.log(error);
       },
       complete: () => {
         this.isLoading = false;
-        this.toastr.error(`Không thể cập nhật công thức`);
+        
       }
     });
   }
 
   print(value) {
     console.log(value)
+  }
+
+  scrollTo(el: Element): void {
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  scrollToError(): void {
+    if (this.form.invalid) {
+      const firstElementWithError = document.querySelector('.ng-invalid[formControlName]')!;
+      console.log(firstElementWithError);
+      this.scrollTo(firstElementWithError);
+      return;
+    }
+
+    if (this.categories.length === 0) {
+      const firstElementWithError = document.querySelector("#categories")!;
+      console.log(firstElementWithError);
+      this.scrollTo(firstElementWithError);
+      return;
+    }
+
+    if (this.previews.length === 0) {
+      const firstElementWithError = document.querySelector("#previews")!;
+      console.log(firstElementWithError);
+      this.scrollTo(firstElementWithError);
+      return;
+    }
+    
   }
 
   selectFilesMethod(event: any, index: number): void {
@@ -364,6 +397,9 @@ export class EditRecipeComponent implements OnInit {
   removeImgPreview(item) {
     var index = this.previews.indexOf(item);
     this.previews.splice(index, 1);
+    if (index == this.thumbnailNumber) {
+      this.thumbnailNumber = 0;
+    }
   }
 
   setThumbnail(index) {

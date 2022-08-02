@@ -31,9 +31,11 @@ export const ROUTES_ADMIN: RouteInfo[] = [
 
 export const ROUTES_MANAGER: RouteInfo[] = [
   // { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
-  { path: '', title: 'Bài viết - Công thức',  icon:'ni-bullet-list-67 text-success', class: '', child: [
-    { path: 'manage', title: 'Quản lý',  icon:'', class: '' },
-    { path: 'recipe-system', title: 'Quản lý công thức (Hệ thống)',  icon:'', class: '' },
+  { path: '', title: 'Bài viết',  icon:'ni-bullet-list-67 text-success', class: '', child: [
+    { path: 'manage', title: 'Quản lý',  icon:'', class: '' }
+  ]},
+  { path: '', title: 'Công thức (Hệ thống)',  icon:'ni-bullet-list-67 text-purple', class: '', child: [
+    { path: 'recipe-system', title: 'Quản lý',  icon:'', class: '' },
   ]},
   { path: '', title: 'Nguyên liệu',  icon:'ni-bullet-list-67 text-info', class: '', child: [
     { path: 'ingredient', title: 'Quản lý',  icon:'', class: '' },

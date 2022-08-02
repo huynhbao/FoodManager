@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import { faClock, faUsers, faFire, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { ToastrModule } from 'ngx-toastr';
+import { StarRatingModule } from 'angular-star-rating';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
       timeOut: 3000,
       positionClass: 'toast-bottom-right',
     }),
+    StarRatingModule.forRoot()
   ],
   declarations: [
     SpinnerComponent,

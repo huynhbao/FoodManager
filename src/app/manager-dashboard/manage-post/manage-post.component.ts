@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbCarouselConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { Image } from 'src/app/models/image.model';
 import { Paging } from 'src/app/models/paging.model';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ModalConfirmComponent } from 'src/app/shared/components/modal-confirm/modal-confirm.component';
 import { ModalInputComponent } from 'src/app/shared/components/modal-input/modal-input.component';
 import { ModalPostComponent } from 'src/app/shared/components/modal-post/modal-post.component';
 
@@ -35,7 +37,7 @@ export class ManagePostComponent implements OnInit {
   //masterSelected: boolean;
   //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
   //https://www.npmjs.com/package/ngx-toastr
-  constructor(private managerService: ManagerService, private route: ActivatedRoute, private sharedService: SharedService, private modalService: NgbModal) {
+  constructor(private managerService: ManagerService, private route: ActivatedRoute, private sharedService: SharedService, private modalService: NgbModal, private toastr: ToastrService) {
   }
 
   private loadPosts() {
@@ -130,6 +132,17 @@ export class ManagePostComponent implements OnInit {
     return hashtag;
   }
 
+  showPopupConfirm(post: Post) {
+    this.modalRef = this.modalService.open(ModalConfirmComponent, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalRef.componentInstance.fromParent = {id: post.id, title: post.title};
+    this.modalRef.componentInstance.submitFunc = this.showPopupConfirmCb.bind(this);
+  }
+
+  showPopupConfirmCb(id:string) {
+    this.setPostByStatus(id, 0);
+    this.modalRef.close();
+  }
+
   showPopup(id: string) {
     this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = id;
@@ -139,6 +152,7 @@ export class ManagePostComponent implements OnInit {
   showPost(postId: string) {
     this.modalRef = this.modalService.open(ModalPostComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = postId;
+    this.modalRef.componentInstance.showAction = true;
   }
 
   setPostByStatus(id: string, status: number, reason?: string) {
@@ -153,11 +167,19 @@ export class ManagePostComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.listPost = this.listPost.filter((x) => x.id !== id);
+          if (status === 0) {
+            this.toastr.success(`Đã xóa bài viết`);
+          } else if (status === 1) {
+            this.toastr.success(`Đã kích hoạt bài viết`);
+          } else if (status === 3) {
+            this.toastr.success(`Đã từ chối bài viết`);
+          }
           this.loadPosts();
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể thực hiện hành động này`, `Đã xảy ra lỗi`);
       },
       complete: () => {
         this.isLoading = false;

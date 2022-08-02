@@ -4,12 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { TagInputComponent } from 'ngx-chips';
 import { TagModel } from 'ngx-chips/core/tag-model';
+import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { RecipeMethod, RecipeOrigin } from 'src/app/models/category.model';
 import { Recipe, RecipeCategory as RecipeCategoryMany } from 'src/app/models/recipe.model';
 import { User } from 'src/app/models/user.model';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ModalConfirmComponent } from 'src/app/shared/components/modal-confirm/modal-confirm.component';
 import { ModalInputComponent } from 'src/app/shared/components/modal-input/modal-input.component';
 import { ModalRecipeComponent } from 'src/app/shared/components/modal-recipe/modal-recipe.component';
 
@@ -44,7 +46,7 @@ export class ManageRecipeComponent implements OnInit {
   selectedTag;
   modalRef!: NgbModalRef;
 
-  constructor(private managerService: ManagerService, private route: ActivatedRoute, public router: Router, private sharedService: SharedService, private modalService: NgbModal) {
+  constructor(private managerService: ManagerService, private route: ActivatedRoute, public router: Router, private sharedService: SharedService, private modalService: NgbModal, private toastr: ToastrService) {
   }
 
   initFilter() {
@@ -272,6 +274,17 @@ export class ManageRecipeComponent implements OnInit {
     });
   }
 
+  showPopupConfirm(recipe: Recipe) {
+    this.modalRef = this.modalService.open(ModalConfirmComponent, { ariaLabelledBy: 'modal-basic-title' });
+    this.modalRef.componentInstance.fromParent = {id: recipe.id, title: recipe.recipeName};
+    this.modalRef.componentInstance.submitFunc = this.showPopupConfirmCb.bind(this);
+  }
+
+  showPopupConfirmCb(id:string) {
+    this.setRecipeByStatus(id, 0);
+    this.modalRef.close();
+  }
+
   showPopup(id: string) {
     this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = id;
@@ -281,6 +294,8 @@ export class ManageRecipeComponent implements OnInit {
   showRecipe(recipeId: string) {
     this.modalRef = this.modalService.open(ModalRecipeComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = recipeId;
+    this.modalRef.componentInstance.showAction = true;
+    this.modalRef.componentInstance.submitFunc = this.loadRecipes.bind(this);
   }
 
   setRecipeByStatus(id: string, status: number, reason?: string) {
@@ -289,16 +304,24 @@ export class ManageRecipeComponent implements OnInit {
     
     if (!recipe) return;
     
-    this.managerService.setRecipeByStatus(id, status).subscribe({
+    this.managerService.setRecipeByStatus(id, status, reason).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           this.recipes = this.recipes.filter((x) => x.id !== id);
+          if (status === 0) {
+            this.toastr.success(`Đã xóa bài viết`);
+          } else if (status === 1) {
+            this.toastr.success(`Đã kích hoạt bài viết`);
+          } else if (status === 3) {
+            this.toastr.success(`Đã từ chối bài viết`);
+          }
           this.loadRecipes();
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể thực hiện hành động này`, `Đã xảy ra lỗi`);
       },
       complete: () => {
         this.isLoading = false;

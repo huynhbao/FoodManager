@@ -31,20 +31,20 @@
             <ul class="navbar-nav">
                 <li *ngFor="let menuItem of menuItems; let i = index" class="{{menuItem.class}} nav-item">
                     <a *ngIf="!menuItem.child" (click)="activeNav(i)" [routerLink]="[menuItem.path]"
-                        class="nav-link {{!menuItem.isCollapsed ? 'active' : ''}}">
+                        class="nav-link {{!menuItem.isCollapsed ? 'active' : ''}}" style="font-size: 1.1rem;">
                         <i class="ni {{menuItem.icon}}"></i>
                         {{menuItem.title}}
                     </a>
                     <a *ngIf="menuItem.child" (click)="activeNav(i)" data-toggle="collapse" role="button"
                         [attr.aria-expanded]="!menuItem.isCollapsed"
-                        class="nav-link {{!menuItem.isCollapsed ? 'active' : ''}}">
+                        class="nav-link {{!menuItem.isCollapsed ? 'active' : ''}}" style="font-size: 1.1rem;">
                         <i class="ni {{menuItem.icon}}"></i>
                         {{menuItem.title}}
                     </a>
                     <div *ngIf="menuItem.child" class="collapse" [ngbCollapse]="menuItem.isCollapsed">
                         <ul class="nav nav-sm flex-column">
                             <li *ngFor="let child of menuItem.child" class="{{child.class}} nav-item">
-                                <a [routerLink]="[child.path]" routerLinkActive="text-dark" class="nav-link pl-4">
+                                <a [routerLink]="[child.path]" routerLinkActive="text-dark" class="nav-link pl-4" style="font-size: 1.0rem;">
                                     <i class="ni {{child.icon}}"></i>
                                     {{child.title}}
                                 </a>

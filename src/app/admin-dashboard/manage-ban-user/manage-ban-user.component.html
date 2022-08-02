@@ -24,7 +24,7 @@
                 <div class="card-header" style="border-radius: 0;">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Tổng số người dùng bị ban - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Tổng số người dùng bị ban: {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <!-- <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <!-- Light table -->
-                <div class="table-responsive">
+                <div class="table-responsive-lg">
                     <div *ngIf="numSelected >= 2" class="multi-selected">
                         <h6>{{numSelected}} selected</h6>
                         <div>
@@ -86,10 +86,10 @@
                     <table class="table table-fit align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th style="width: 25%;">Tên</th>
-                                <th style="width: 12%;">Email</th>
-                                <th style="width: 10%;">Ngày hết hiệu lực ban</th>
-                                <th style="width: 12%;">Lý do ban</th>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>Ngày hết hiệu lực ban</th>
+                                <th>Lý do ban</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -109,7 +109,7 @@
                                 <td style="width:1px; white-space:nowrap;">
                                     <b>{{user.reason}}</b>
                                 </td>
-                                <td class="table-actions">
+                                <td class="row table-actions">
                                     <button [disabled]="isLoading" (click)="setUserStatus(user)"
                                         class="btn btn-link table-action table-action-delete text-green"
                                         data-toggle="tooltip" data-original-title="Ban User">

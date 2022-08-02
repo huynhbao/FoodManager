@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../models/user.model';
 import { map } from 'rxjs/operators';
-import { Utils } from '../shared/tools/utils';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 
@@ -28,6 +26,11 @@ export class AuthenticationService {
     return JSON.parse(this.currentUserSubject.value);
   }
 
+  public setCurrentUserValue(userInfo) {
+    localStorage.setItem('currentUser', JSON.stringify(userInfo));
+    this.currentUserSubject.next(JSON.stringify(userInfo));
+  }
+
   login(username: string, password: string) {
     return this.http
       .post<any>(`${this.baseUrl}/auth/login-system`, {
@@ -37,14 +40,16 @@ export class AuthenticationService {
       .pipe(
         map((res: any) => {
           if (res) {
-            //const tokenInfo = JSON.stringify(Utils.getDecodedAccessToken(res.token));
-            let currentUser = {
+            const currentUser = helper.decodeToken(res.token);
+            
+            
+            let userInfo = {
               token: res.token,
-              currentUser: helper.decodeToken(res.token)
+              currentUser: currentUser
             }
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            this.currentUserSubject.next(JSON.stringify(currentUser));
-            return currentUser;
+            localStorage.setItem('currentUser', JSON.stringify(userInfo));
+            this.currentUserSubject.next(JSON.stringify(userInfo));
+            return userInfo;
           } else {
             throw new Error();
           }

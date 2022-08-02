@@ -49,7 +49,6 @@ const routes: Routes = [
       {
         path: 'recipe/detail/:id', component: RecipeDetailComponent
       }
-      
     ]
   },
   { path: 'report',
@@ -64,9 +63,36 @@ const routes: Routes = [
       },
       {
         path: 'recipe', component: ReportRecipeComponent,
+      }
+    ]
+  },
+  /* { path: 'post',
+    children: [
+      {
+        path:'',
+        component: ManagePostComponent,
+        pathMatch: 'full' 
       },
       {
-        path: 'user', component: ReportUserComponent,
+        path: 'create', component: CreatePostComponent
+      },
+      {
+        path: 'detail/:id', component: PostDetailComponent
+      },
+      {
+        path: 'edit/:id', component: EditPostComponent
+      },
+    ]
+  }, */
+  { path: 'recipe', component: ManageRecipeComponent,
+    children: [
+      {
+        path:'',
+        redirectTo: 'recipe',
+        pathMatch: 'full' 
+      },
+      {
+        path: 'detail/:id', component: RecipeDetailComponent
       }
     ]
   },

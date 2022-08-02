@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { ProfileComponent } from '../shared/pages/profile/profile.component';
 import { ReportPostComponent } from '../shared/pages/report-post/report-post.component';
 import { ReportRecipeComponent } from '../shared/pages/report-recipe/report-recipe.component';
 import { ReportUserComponent } from '../shared/pages/report-user/report-user.component';
@@ -16,6 +17,7 @@ export const AdminDashboardRoutes: Routes = [
   { path: 'origin', component: ManageOriginComponent},
   { path: 'method', component: ManageMethodComponent},
   { path: 'recipe-category', component: ManageRecipeCategoryComponent},
+  { path: 'profile', component: ProfileComponent},
   { path: 'user',
     children: [
       {

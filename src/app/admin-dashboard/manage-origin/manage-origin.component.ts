@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { RecipeOrigin } from 'src/app/models/category.model';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -23,7 +24,9 @@ export class ManageOriginComponent implements OnInit {
   numSelected: number = 0;
   searchValue: string = '';
   modalRef!: NgbModalRef;
-  constructor(private adminService: AdminManageService, private modalService: NgbModal) { }
+  isLoading: boolean = false;
+
+  constructor(private adminService: AdminManageService, private modalService: NgbModal, private toastr: ToastrService) { }
 
   public onPageChange(pageNum: number): void {
     this.loadOrigins();
@@ -72,11 +75,12 @@ export class ManageOriginComponent implements OnInit {
     
     this.modalRef.componentInstance.fromParent = [
       {
-        id: origin?.id
+        id: origin?.id,
+        thumbnail: false
       },
       {
         key: 'originName',
-        name: 'Origin Name',
+        name: 'tên xuất xứ',
         type: 'string',
         validator: {
           disabled: false,
@@ -89,6 +93,7 @@ export class ManageOriginComponent implements OnInit {
   }
 
   private submitCreate(form: any) {
+    this.isLoading = true;
     const origin: RecipeOrigin = {
       id: "",
       originName: form.originName
@@ -99,16 +104,22 @@ export class ManageOriginComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
+          this.toastr.success(`Đã tạo mục xuất xứ`);
           this.loadOrigins();
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể tạo mục xuất xứ này`, `Đã xảy ra lỗi`);
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
   private async submitUpdate(form: any) {
+    this.isLoading = true;
     const origin: RecipeOrigin = {
       id: form.id,
       originName: form.originName
@@ -120,30 +131,42 @@ export class ManageOriginComponent implements OnInit {
         if (res.code == 200) {
           this.modalService.dismissAll();
           this.loadOrigins();
+          this.toastr.success(`Đã cập nhật mục xuất xứ`);
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể cập nhật mục xuất xứ này`, `Đã xảy ra lỗi`);
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
   private submitDelete(id: string) {
+    this.isLoading = true;
     this.adminService.deleteOrigin(id).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
           this.loadOrigins();
+          this.toastr.success(`Đã xóa mục xuất xứ`);
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể xóa mục xuất xứ này`, `Đã xảy ra lỗi`);
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
   public loadOrigins() {
+    this.isLoading = true;
     this.adminService
       .getOrigins(this.searchValue, this.currentPage)
       .subscribe({
@@ -155,6 +178,9 @@ export class ManageOriginComponent implements OnInit {
         error: (error) => {
           console.log(error);
         },
+        complete: () => {
+          this.isLoading = false;
+        }
       });
   }
 

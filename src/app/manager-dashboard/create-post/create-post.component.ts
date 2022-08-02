@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs/internal/Observable';
 import { Image } from 'src/app/models/image.model';
 import { CreatePost } from 'src/app/models/post.model';
@@ -23,7 +24,7 @@ export class CreatePostComponent implements OnInit {
   submitted: boolean = false;
   isLoading: boolean = false;
   isDone: boolean = false;
-  constructor(private managerService: ManagerService, private sharedService: SharedService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) {
+  constructor(private managerService: ManagerService, private sharedService: SharedService, private formBuilder: FormBuilder, private route: ActivatedRoute, private toastr: ToastrService) {
     this.createForm = this.formBuilder.group({
       title: ['', Validators.required],
       content: ['', Validators.required],
@@ -36,6 +37,7 @@ export class CreatePostComponent implements OnInit {
     this.submitted = true;
 
     if (this.createForm.invalid || this.previews.length === 0) {
+      this.scrollToError();
       return;
     }
     this.isLoading = true;
@@ -83,16 +85,29 @@ export class CreatePostComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.isDone = true;
-          //this.router.navigate(['../'], { relativeTo: this.route });
+          this.toastr.success(`Đã tạo bài viết thành công`);
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể tạo bài viết`, `Đã xảy ra lỗi`);
       },
       complete: () => {
-        
+        this.isDone = false;
+        this.isLoading = false;
       }
     });
+  }
+
+  scrollTo(el: Element): void {
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  scrollToError(): void {
+    const firstElementWithError = document.querySelector('.ng-invalid[formControlName]')!;
+    this.scrollTo(firstElementWithError);
   }
 
   selectFiles(event: any): void {

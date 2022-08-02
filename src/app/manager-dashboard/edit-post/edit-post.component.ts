@@ -8,6 +8,7 @@ import { Image } from 'src/app/models/image.model';
 import { ToastrService } from 'ngx-toastr';
 import { AppConst } from 'src/app/shared/constants/app-const';
 import { User } from 'src/app/models/user.model';
+import { Utils } from 'src/app/shared/tools/utils';
 
 @Component({
   selector: 'app-edit-post',
@@ -34,10 +35,23 @@ export class EditPostComponent implements OnInit {
 
   get f() { return this.editForm.controls; }
 
+  mapToForm() {
+    this.editForm.setValue({
+      title: this.post.title,
+      content: this.post.content
+    });
+
+    for (let i = 0; i < this.post.postImages.length; i++) {
+      const element = this.post.postImages[i];
+      this.previews.push(element.imageUrl);
+      this.thumbnailNumber = element.isThumbnail ? i : 0
+    }
+    
+  }
+
   loadPost(id: string) {
     this.managerService.getPostById(id).subscribe({
       next: (post: Post) => {
-        
         let user: User = {
           id: post["userId"],
           fullname: post["name"],
@@ -46,6 +60,7 @@ export class EditPostComponent implements OnInit {
         this.post = post;
         this.post.user = user;
         console.log(this.post);
+        this.mapToForm();
       },
       error: (error) => {
         //this.router.navigate(['manager/manage/post']);
@@ -60,41 +75,42 @@ export class EditPostComponent implements OnInit {
     this.submitted = true;
 
     if (this.editForm.invalid || this.previews.length === 0) {
+      this.scrollToError();
       return;
     }
     this.isLoading = true;
     
-    const hashtag = "#" + this.hashtags.map(e => e["value"]).join(" #");
+    const hashtag = "";
     let postImages:Image[] = []; 
     for (let i = 0; i < this.previews.length; i++) {
-      
-      await new Promise(resolve => {
-        const img = this.previews[i];
-        let postImage: Image = {
-          orderNumber: i,
-          imageUrl: "",
-          isThumbnail: i == this.thumbnailNumber,
-          status: 1
-        }
+      const img = this.previews[i];
+      let postImage: Image = {
+        orderNumber: i,
+        imageUrl: img,
+        isThumbnail: i == this.thumbnailNumber,
+        status: 1
+      }
 
-        this.sharedService.uploadImage(img).subscribe({
-          next: (res:any) => {
-            const imgUrl:string = res.secure_url;
-            if (imgUrl) {
-              postImage.imageUrl = imgUrl
-              postImages.push(postImage);
-              resolve("");
+      if (!Utils.isURL(img)) {
+        await new Promise(resolve => {
+          this.sharedService.uploadImage(img).subscribe({
+            next: (res:any) => {
+              const imgUrl:string = res.secure_url;
+              if (imgUrl) {
+                postImage.imageUrl = imgUrl;
+                resolve("");
+              }
+            },
+            error: (error) => {
+              console.log(error);
             }
-          },
-          error: (error) => {
-            console.log(error);
-          }
+          });
+
         });
-
-
-      });
-      
+      }
+      postImages.push(postImage);
     }
+    
     let post:CreatePost = {
       id: this.post.id,
       title: this.f['title'].value,
@@ -102,6 +118,8 @@ export class EditPostComponent implements OnInit {
       hashtag: hashtag,
       postImages: postImages
     }
+
+    console.log(post);
 
     this.managerService.updatePost(post).subscribe({
       next: (res:any) => {
@@ -114,12 +132,25 @@ export class EditPostComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-        this.toastr.success(`Không thể cập nhật bài viết`);
+        this.toastr.error(`Không thể cập nhật bài viết`);
+        this.isDone = false;
+        this.isLoading = false;
       },
       complete: () => {
-        
+        this.isLoading = false;
       }
     });
+  }
+
+  scrollTo(el: Element): void {
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  scrollToError(): void {
+    const firstElementWithError = document.querySelector('.ng-invalid[formControlName]')!;
+    this.scrollTo(firstElementWithError);
   }
 
   selectFiles(event: any): void {
@@ -143,6 +174,9 @@ export class EditPostComponent implements OnInit {
   removeImgPreview(item) {
     var index = this.previews.indexOf(item);
     this.previews.splice(index, 1);
+    if (index == this.thumbnailNumber) {
+      this.thumbnailNumber = 0;
+    }
   }
 
   setThumbnail(index) {

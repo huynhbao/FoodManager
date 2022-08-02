@@ -12,9 +12,11 @@ import { AdminManageService } from 'src/app/services/admin-manage.service';
 export class ModalUnbanUserComponent implements OnInit {
   @Input() user!: User;
   @Input() submitFunc!: Function;
+  isLoading: boolean = false;
   constructor(public activeModal: NgbActiveModal, private adminService: AdminManageService, private toastr: ToastrService) { }
 
   onSubmit() {
+    this.isLoading = true;
     this.adminService.unbanUser(this.user.userId || "").subscribe({
       next: (res: any) => {
         console.log(res);
@@ -28,6 +30,7 @@ export class ModalUnbanUserComponent implements OnInit {
         console.log(error);
       },
       complete: () => {
+        this.isLoading = false;
       }
     });
   }

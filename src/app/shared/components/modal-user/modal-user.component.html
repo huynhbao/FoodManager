@@ -4,8 +4,18 @@
         <span aria-hidden="true">×</span>
     </button>
 </div>
+<app-spinner [enabled]="isGettingData"></app-spinner>
 <div class="modal-body">
-    <app-spinner [enabled]="isGettingData"></app-spinner>
+    <div *ngIf="!isLoading && user && reportId" class="card">
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-success btn-block" [disabled]="isLoading" (click)="acceptReport()"><i class="fas fa-check"></i> Bỏ qua</button>
+            </div>
+            <div class="col-6">
+                <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup()"><i class="fas fa-user-slash"></i> Ban người dùng này</button>
+            </div>
+        </div>
+    </div>
     <form *ngIf="!isGettingData" [formGroup]="form">
         <div class="pl-lg-4">
             <div class="row align-items-center">
@@ -16,7 +26,7 @@
                     <h2 class="mb-2">{{user.email}}</h2>
                     <h5 class="text-muted">ID: <b>{{user.id}}</b></h5>
                     <h5 class="text-muted">Quyền: <b>{{user.role | titlecase}}</b></h5>
-                    <h5 class="text-muted">Join date: <b>{{user.createDate | date: 'dd/MM/yyyy'}}</b></h5>
+                    <h5 class="text-muted">Ngày tham gia: <b>{{user.createDate | date: 'dd/MM/yyyy'}}</b></h5>
                     <h5 class="text-muted">Tổng số bài viết: <b>{{user.totalPost}}</b></h5>
                     <h5 class="text-muted">Tổng số công thức: <b>{{user.totalRecipe}}</b></h5>
                 </div>

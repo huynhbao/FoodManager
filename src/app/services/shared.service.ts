@@ -74,6 +74,23 @@ export class SharedService {
     return this.http.put<any>(`${this.baseUrl}/report/user/accept/${id}`, {});
   }
 
+  //user
+  getProfile(): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/user/profile`);
+  }
+
+  updateUser(user: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/user/update-user`, user);
+  }
+
+  updatePassword(oldPassword: string, newPassword: string): Observable<any> {
+    const body = {
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    }
+    return this.http.put<any>(`${this.baseUrl}/user/update-password`, body);
+  }
+
   uploadImage(file: string): Observable<any> {
     let data = {
       "file": file,

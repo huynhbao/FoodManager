@@ -22,6 +22,7 @@ export class ManageCategoryComponent implements OnInit {
   selectedStatus: string = this.listStatus[0];
   selectedCategory?: Category;
   searchValue: string = '';
+  isLoading: boolean = false;
   constructor(private formBuilder: FormBuilder, private modalService: NgbModal, private adminManageService: AdminManageService) {
   }
 
@@ -30,6 +31,7 @@ export class ManageCategoryComponent implements OnInit {
   }
 
   private loadCategories() {
+    this.isLoading = true;
     this.adminManageService.getCategories(this.searchValue, this.currentPage).subscribe({
       next: (res: any) => {
         this.collectionSize = res.totalItem;
@@ -38,6 +40,9 @@ export class ManageCategoryComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ReportPost } from 'src/app/models/report.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ModalPostComponent } from '../../components/modal-post/modal-post.component';
@@ -25,8 +26,12 @@ export class ReportPostComponent implements OnInit {
   selectedIndex: number = 0;
   confirmModalRef!: NgbModalRef;
 
-  constructor(private sharedService: SharedService, private managerService: ManagerService, private modalService: NgbModal) { }
+  constructor(private sharedService: SharedService, private managerService: ManagerService, private modalService: NgbModal, private authenticationService: AuthenticationService) { }
 
+  getRole() {
+    return this.authenticationService.currentUserValue.currentUser.role;
+  }
+  
   private loadReports() {
     this.isLoading = true;
     

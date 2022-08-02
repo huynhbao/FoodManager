@@ -9,6 +9,7 @@
         </div>
     </div>
 </div>
+<app-spinner [enabled]="isLoading"></app-spinner>
 <div class="container-fluid mt--6">
     <div class="row justify-content-center">
         <div class="col-lg-8 card-wrapper">
@@ -19,28 +20,31 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label class="form-control-label" for="input-title">Title</label>
+                            <label class="form-control-label" for="input-title">Tiêu đề</label>
                             <input id="input-title" class="form-control form-control-alternative"
-                                placeholder="Input title" formControlName="title" type="text">
+                                placeholder="Nhập tiêu đề" formControlName="title" type="text">
                             <div *ngIf="submitted && f['title'].errors" class="invalid-feedback">
                                 <div *ngIf="f['title'].errors!['required']">Tiêu đề không được để trống</div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-control-label" for="input-content">Content</label>
+                            <label class="form-control-label" for="input-content">Nội dung</label>
                             <textarea class="form-control form-control-alternative" id="input-content"
-                                formControlName="content" placeholder="Input content"></textarea>
+                                formControlName="content" placeholder="Nhập nội dung" rows="10"></textarea>
                             <div *ngIf="submitted && f['content'].errors" class="invalid-feedback">
                                 <div *ngIf="f['content'].errors!['required']">Nội dung không được để trống</div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="form-control-label" for="input-hashtag">Hashtag</label>
                             <tag-input [(ngModel)]='hashtags' [theme]="'fooma-theme'" [ngModelOptions]="{standalone: true}">
                             </tag-input>
-                        </div>
+                        </div> -->
                         <div class="form-group">
-                            <label class="form-control-label" for="input-hashtag">Tải hình ảnh</label><br>
+                            <label class="form-control-label" for="input-hashtag">Ảnh thumbnail</label><br>
+                            <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
+                                Hình ảnh không được để trống
+                            </div>
                             <div >
                                 <button type="button" class="btn-upload" (click)="fileInput.click()">
                                     <span><i class="fas fa-upload"></i>  Tải lên</span>
@@ -52,9 +56,7 @@
                                     <a (click)="setThumbnail(i)" class="thumbnail-button"><i class="fas fa-bookmark"></i></a>
                                 </span>
                             </div>
-                            <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
-                                Hình ảnh không được để trống
-                            </div>
+                            
                         </div>
                         <div class="form-group">
                             
@@ -62,8 +64,8 @@
                     </div>
                     <div class="card-footer">
                         <div class="row">
-                            <div class="col-md-12 text-right">
-                                <button *ngIf="!isDone" type="submit" [disabled]="isLoading" class="btn btn-fooma">Tạo</button>
+                            <div class="col-md-12 text-center">
+                                <button *ngIf="!isDone" type="submit" [disabled]="isLoading" class="btn btn-block btn-fooma mb-3">Tạo</button>
                                 <div *ngIf="isDone" class="mt-2">
                                     <h2>Đã tạo bài viết thành công <a class="text-fooma" [routerLink]="['../']">Quay lại</a></h2>
                                 </div>

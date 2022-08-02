@@ -20,8 +20,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     location: Location,
     private router: Router,
-    private authenticationService: AuthenticationService,
-    private adminManageService: AdminManageService
+    private authenticationService: AuthenticationService
   ) {
     this.location = location;
   }

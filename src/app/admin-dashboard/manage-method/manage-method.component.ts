@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { RecipeMethod } from 'src/app/models/category.model';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
 import { ModalConfirmComponent } from 'src/app/shared/components/modal-confirm/modal-confirm.component';
@@ -22,8 +23,9 @@ export class ManageMethodComponent implements OnInit {
   numSelected: number = 0;
   searchValue: string = '';
   modalRef!: NgbModalRef;
+  isLoading: boolean = false;
 
-  constructor(private adminService: AdminManageService, private modalService: NgbModal) { }
+  constructor(private adminService: AdminManageService, private modalService: NgbModal, private toastr: ToastrService) { }
 
   onPageChange(pageNum: number): void {
     this.loadMethods();
@@ -52,11 +54,12 @@ export class ManageMethodComponent implements OnInit {
     
     this.modalRef.componentInstance.fromParent = [
       {
-        id: recipeMethod?.id
+        id: recipeMethod?.id,
+        thumbnail: false
       },
       {
         key: 'cookingMethodName',
-        name: 'Cooking Method Name',
+        name: 'tên phương pháp',
         type: 'string',
         validator: {
           disabled: false,
@@ -69,6 +72,7 @@ export class ManageMethodComponent implements OnInit {
   }
 
   private submitCreate(form: any) {
+    this.isLoading = true;
     const method: RecipeMethod = {
       id: "",
       cookingMethodName: form.cookingMethodName
@@ -79,16 +83,22 @@ export class ManageMethodComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
+          this.toastr.success(`Đã tạo phương pháp`);
           this.loadMethods();
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể tạo phương pháp này`, `Đã xảy ra lỗi`);
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
   private async submitUpdate(form: any) {
+    this.isLoading = true;
     const method: RecipeMethod = {
       id: form.id,
       cookingMethodName: form.cookingMethodName
@@ -100,30 +110,42 @@ export class ManageMethodComponent implements OnInit {
         if (res.code == 200) {
           this.modalService.dismissAll();
           this.loadMethods();
+          this.toastr.success(`Đã cập nhật phương pháp`);
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể cập nhật phương pháp này`, `Đã xảy ra lỗi`);
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
   private submitDelete(id: string) {
+    this.isLoading = true;
     this.adminService.deleteMethod(id).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           this.modalService.dismissAll();
           this.loadMethods();
+          this.toastr.success(`Đã xóa phương pháp`);
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Không thể xóa phương pháp này`, `Đã xảy ra lỗi`);
       },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
   loadMethods() {
+    this.isLoading = true;
     this.adminService
       .getMethods(this.searchValue, this.currentPage)
       .subscribe({
@@ -135,6 +157,9 @@ export class ManageMethodComponent implements OnInit {
         error: (error) => {
           console.log(error);
         },
+        complete: () => {
+          this.isLoading = false;
+        }
       });
   }
 

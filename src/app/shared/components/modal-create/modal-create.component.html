@@ -13,7 +13,7 @@
 </ng-template>
 <ng-template #templateInput let-link="link" let-form="form">
     <label class="form-control-label" for="input-address">{{link.name}}</label>
-    <input id="input-address" class="form-control form-control-alternative" placeholder="Input {{link.name}}"
+    <input id="input-address" class="form-control form-control-alternative" placeholder="Nhập {{link.name}}"
         [formControl]="form.get(link.key)" type="text">
 </ng-template>
 
@@ -46,14 +46,14 @@
                                 </div>
                             </div>
                             <div *ngIf="item.type === 'string'" class="form-group">
-                                <label class="form-control-label" for="input-address">{{item.name}}</label>
-                                <input id="input-address" class="form-control form-control-alternative" placeholder="Input {{item.name}}" [formControlName]="item.key" type="text">
+                                <label class="form-control-label" for="input-address">{{item.name | titlecase}}</label>
+                                <input id="input-address" class="form-control form-control-alternative" placeholder="Nhập {{item.name}}" [formControlName]="item.key" type="text">
                                 <div *ngIf="submitted && f[item.key].errors" class="invalid-feedback">
                                     <div *ngIf="f[item.key].errors!['required']">{{item.name}} không được để trống</div>
                                 </div>
                             </div>
                             <div *ngIf="item.type === 'file'" class="form-group">
-                                <label class="form-control-label" for="input-address">{{item.name}}</label><br>
+                                <label class="form-control-label" for="input-address">{{item.name | titlecase}}</label><br>
                                 <button type="button" class="btn btn-info" (click)="fileInput.click()">
                                     <span><i class="fas fa-upload"></i>  Tải lên</span>
                                     <input #fileInput type="file" accept="image/*" (change)="selectFiles($event)" style="display:none;"/>

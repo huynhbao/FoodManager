@@ -15,13 +15,13 @@ export class ModalBanUserComponent implements OnInit {
   @Input() user!: User;
   @Input() reportId!: string;
   @Input() submitFunc!: Function;
-
+  isLoading: boolean = false;
   reason: string = "";
   banInfo = [
-    {
+    /* {
       time: 24, //hour
       display: "1 ngày"
-    },
+    }, */
     {
       time: 24 * 3,
       display: "3 ngày"
@@ -38,6 +38,10 @@ export class ModalBanUserComponent implements OnInit {
       time: 24 * 30,
       display: "30 ngày"
     },
+    {
+      time: 0,
+      display: "Vĩnh viễn"
+    },
   ];
   
   selectedBanDay: number = 0;
@@ -48,7 +52,11 @@ export class ModalBanUserComponent implements OnInit {
     const datePipe = new DatePipe('en-US');
     const banHour:number = this.banInfo[this.selectedBanDay].time;
     const expiredDate = new Date().addHours(banHour);
-    const formattedDate = datePipe.transform(expiredDate, 'yyyy-MM-dd') || "";
+    let formattedDate = datePipe.transform(expiredDate, 'yyyy-MM-dd') || "";
+    if (banHour === 0) {
+      formattedDate = "";
+    }
+    this.isLoading = true;
     this.adminService.banUser(this.user.id, this.reason.trim(), formattedDate).subscribe({
       next: (res: any) => {
         if (this.submitFunc) {
@@ -61,6 +69,7 @@ export class ModalBanUserComponent implements OnInit {
         console.log(error);
       },
       complete: () => {
+        this.isLoading = false;
       }
     });
   }

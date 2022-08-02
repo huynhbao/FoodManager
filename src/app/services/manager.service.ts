@@ -22,7 +22,7 @@ export class ManagerService {
   }
 
   updatePost(post: CreatePost): Observable<any> {
-    return this.http.post<CreatePost>(
+    return this.http.put<CreatePost>(
       `${this.baseUrl}/post/update`, post
     );
   }

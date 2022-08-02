@@ -9,6 +9,7 @@
         </div>
     </div>
 </div>
+<app-spinner [enabled]="isLoading"></app-spinner>
 <div class="container-fluid mt--6">
     <div class="row justify-content-center">
         <div class="col-lg-8 card-wrapper">
@@ -18,7 +19,7 @@
             <form [formGroup]="form" (ngSubmit)="updateRecipe()">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Update Recipe</h2>
+                        <h2>Cập nhật công thức</h2>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
@@ -73,56 +74,61 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-control-label" for="input-hashtag">Xuất xứ</label>
-                            <tag-input [(ngModel)]='origin' [theme]="'fooma-theme'" [identifyBy]="'id'"
-                                [displayBy]="'originName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Xuất xứ" placeholder="Xuất xứ" (onSelect)="onTagSelected($event)"
-                                [ngModelOptions]="{standalone: true}">
-                                <tag-input-dropdown
-                                    [autocompleteObservable]="requestAutocompleteItemsOrigin$"
-                                    [displayBy]="'originName'"
-                                    [identifyBy]="'id'"
-                                    [showDropdownIfEmpty]="false"
-                                    [minimumTextLength]="0"
-                                    [focusFirstElement]="true"
-                                >
-                                </tag-input-dropdown>
-                            </tag-input>
-                            <div *ngIf="submitted && origin.length === 0" class="invalid-feedback">
-                                Xuất xứ không được để trống
+                        <div class="form-row">
+                            <div class="form-group col-lg-6">
+                                <label class="form-control-label" for="input-hashtag">Xuất xứ</label>
+                                <tag-input [(ngModel)]='origin' [theme]="'fooma-theme'" [identifyBy]="'id'"
+                                    [displayBy]="'originName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Xuất xứ" placeholder="Xuất xứ" (onSelect)="onTagSelected($event)"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <tag-input-dropdown
+                                        [autocompleteObservable]="requestAutocompleteItemsOrigin$"
+                                        [displayBy]="'originName'"
+                                        [identifyBy]="'id'"
+                                        [showDropdownIfEmpty]="true"
+                                        [minimumTextLength]="0"
+                                        [focusFirstElement]="true"
+                                        [keepOpen]="false"
+                                    >
+                                    </tag-input-dropdown>
+                                </tag-input>
+                                <div *ngIf="submitted && origin.length === 0" class="invalid-feedback">
+                                    Xuất xứ không được để trống
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-control-label" for="input-hashtag">Phương pháp</label>
-                            <tag-input [(ngModel)]='method' [theme]="'fooma-theme'" [identifyBy]="'id'"
-                                [displayBy]="'cookingMethodName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Phương pháp" placeholder="Phương pháp" (onSelect)="onTagSelected($event)"
-                                [ngModelOptions]="{standalone: true}">
-                                <tag-input-dropdown
-                                    [autocompleteObservable]="requestAutocompleteItemsMethod$"
-                                    [displayBy]="'cookingMethodName'"
-                                    [identifyBy]="'id'"
-                                    [showDropdownIfEmpty]="false"
-                                    [minimumTextLength]="0"
-                                    [focusFirstElement]="true"
-                                >
-                                </tag-input-dropdown>
-                            </tag-input>
-                            <div *ngIf="submitted && origin.length === 0" class="invalid-feedback">
-                                Phương pháp không được để trống
+                            <div class="form-group col-lg-6">
+                                <label class="form-control-label" for="input-hashtag">Phương pháp</label>
+                                <tag-input [(ngModel)]='method' [theme]="'fooma-theme'" [identifyBy]="'id'"
+                                    [displayBy]="'cookingMethodName'" [maxItems]="1" [onlyFromAutocomplete]="true" secondaryPlaceholder="Phương pháp" placeholder="Phương pháp" (onSelect)="onTagSelected($event)"
+                                    [ngModelOptions]="{standalone: true}">
+                                    <tag-input-dropdown
+                                        [autocompleteObservable]="requestAutocompleteItemsMethod$"
+                                        [displayBy]="'cookingMethodName'"
+                                        [identifyBy]="'id'"
+                                        [showDropdownIfEmpty]="true"
+                                        [minimumTextLength]="0"
+                                        [focusFirstElement]="true"
+                                        [keepOpen]="false"
+                                    >
+                                    </tag-input-dropdown>
+                                </tag-input>
+                                <div *ngIf="submitted && origin.length === 0" class="invalid-feedback">
+                                    Phương pháp không được để trống
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="form-control-label" for="input-hashtag">Danh mục</label>
                             <tag-input [(ngModel)]='categories' [theme]="'fooma-theme'" [identifyBy]="'recipeCategoryId'"
                                 [displayBy]="'recipeCategoryName'" [onlyFromAutocomplete]="true" secondaryPlaceholder="Danh mục" placeholder="Danh mục" (onSelect)="onTagSelected($event)"
-                                [ngModelOptions]="{standalone: true}">
+                                [ngModelOptions]="{standalone: true}" id="categories">
                                 <tag-input-dropdown
                                     [autocompleteObservable]="requestAutocompleteItemsCategory$"
                                     [displayBy]="'recipeCategoryName'"
                                     [identifyBy]="'id'"
-                                    [showDropdownIfEmpty]="false"
+                                    [showDropdownIfEmpty]="true"
                                     [minimumTextLength]="0"
                                     [focusFirstElement]="true"
+                                    [keepOpen]="false"
                                 >
                                 </tag-input-dropdown>
                             </tag-input>
@@ -130,17 +136,14 @@
                                 Danh mục không được để trống
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label class="form-control-label" for="input-hashtag">Hashtag</label>
                             <tag-input placeholder="Add Hashtag" secondaryPlaceholder="Thêm Hashtag" [(ngModel)]='hashtags' [theme]="'fooma-theme'"
                                 [ngModelOptions]="{standalone: true}">
                             </tag-input>
-                            <!-- <div *ngIf="submitted && hashtags.length === 0" class="invalid-feedback">
-                                Hashtag is required
-                            </div> -->
-                        </div>
+                        </div> -->
                         <div class="form-group">
-                            <label class="form-control-label" for="input-hashtag">Upload ảnh</label><br>
+                            <label class="form-control-label" for="input-hashtag" id="previews">Upload ảnh</label><br>
                             <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
                                 Hình ảnh không được để trống
                             </div>
@@ -193,7 +196,10 @@
                                         [autocompleteObservable]="requestAutocompleteItemsIngredient$"
                                         [displayBy]="'ingredientName'"
                                         [identifyBy]="'id'"
-                                        [showDropdownIfEmpty]="false"
+                                        [showDropdownIfEmpty]="true"
+                                        [minimumTextLength]="0"
+                                        [focusFirstElement]="true"
+                                        [keepOpen]="false"
                                     >
                                     </tag-input-dropdown>
                                 </tag-input>
@@ -292,9 +298,9 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <button type="submit" [disabled]="isLoading" class="btn btn-block btn-fooma mb-4">Cập nhật</button>
+                        <button *ngIf="!isDone" type="submit" [disabled]="isLoading" class="btn btn-block btn-fooma mb-4">Cập nhật</button>
                         <div *ngIf="isDone" class="mt-2">
-                            <h2>Đã cập nhật công thức thành công. <a class="text-fooma" [routerLink]="['../../../manage/recipe/detail/', recipe.id]">Xem</a></h2>
+                            <h2>Đã cập nhật công thức thành công. <a class="text-fooma" [routerLink]="['../../']">Quay lại</a></h2>
                         </div>
                     </div>
                 </div>

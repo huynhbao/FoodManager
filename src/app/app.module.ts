@@ -35,6 +35,7 @@ import { ProfileComponent } from './shared/pages/profile/profile.component';
 import { ModalInputComponent } from './shared/components/modal-input/modal-input.component';
 import { ModalBanUserComponent } from './shared/components/modal-ban-user/modal-ban-user.component';
 import { ModalUnbanUserComponent } from './shared/components/modal-unban-user/modal-unban-user.component';
+import { ModalUpdatePasswordComponent } from './shared/components/modal-update-password/modal-update-password.component';
 
 export function tokenGetter() {
   let savedToken = localStorage.getItem("currentUser");
@@ -67,7 +68,8 @@ export function tokenGetter() {
     ProfileComponent,
     ModalInputComponent,
     ModalBanUserComponent,
-    ModalUnbanUserComponent
+    ModalUnbanUserComponent,
+    ModalUpdatePasswordComponent
   ],
   imports: [
     BrowserModule,

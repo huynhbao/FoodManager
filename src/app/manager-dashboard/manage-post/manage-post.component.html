@@ -22,10 +22,10 @@
         <div class="col-lg-12 card-wrapper justify-content-center">
             <div class="card shadow">
                 <!-- Card header -->
-                <div class="card-header border-0" style="border-radius: 0;">
+                <div class="card-header" style="border-radius: 0">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="mb-0">Tổng số bài viết - {{collectionSize}}</h3>
+                            <h3 class="mb-0">Tổng số bài viết: {{collectionSize}}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-2">
+                        <!-- <div class="col-2">
                             <div ngbDropdown class="d-inline-block w-100">
                                 <input class="btn btn-outline-fooma btn-block" id="dropdownBasic1" ngbDropdownToggle
                                     [value]="listHashtag[hastagSelected]" (click)="loadHashtag()" readonly />
@@ -65,20 +65,20 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-10">
+                        </div> -->
+                        <div class="col-lg-12">
                             <div class="input-group input-group-alternative input-group-merge"
                                 style="border-radius: 0.3rem; border: 1px solid #e5e5e5; background-color: #f7f6f9;">
                                 <div class="input-group-prepend">
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" placeholder="Search" type="text" />
+                                <input class="form-control" placeholder="Tìm kiếm" type="text" />
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Light table -->
-                <div class="table-responsive">
+                <div class="table-responsive-lg">
                     <div *ngIf="numSelected >= 2" class="multi-selected">
                         <h6>{{numSelected}} selected</h6>
                         <div>
@@ -92,46 +92,47 @@
                             <tr>
                                 <th style="width: 25%;">Tiêu đề</th>
                                 <th style="width: 12%;">Người đăng</th>
-                                <th style="width: 10%;">Ngày đăng</th>
-                                <th style="width: 12%;">{{statusSelected !== 3 ? 'Hashtag' : 'Lý do từ chối'}}</th>
-                                <th>Tổng số bình luận</th>
-                                <th>Tổng số tương tác</th>
+                                <th style="width: 14%;">Ngày đăng</th>
+                                <th *ngIf="statusSelected === 3" style="width: 12%;">Lý do từ chối</th>
+                                <th class="text-center">Tổng số bình luận</th>
+                                <th class="text-center">Tổng số tương tác</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let post of listPost" [ngClass]="{'selected': post.isSelected === true}">
-                                <td>
-                                    <img src="{{post.postImages[0].imageUrl}}" style="height: 60px;"
-                                        class="img-thumbnail img-fluid mr-3">
-                                    <a href="javascript:void(0)" (click)="showPost(post.id)" class="font-weight-bold text-dark">{{post.title}}</a>
+                                <td (click)="showPost(post.id)">
+                                    <span *ngFor="let image of post.postImages">
+                                        <img *ngIf="image.isThumbnail" src="{{image.imageUrl}}" style="height: 60px;" class="img-thumbnail img-fluid mr-3">
+                                    </span>
+                                    <a href="javascript:void(0)" class="font-weight-bold text-dark">{{post.title}}</a>
                                 </td>
-                                <td>
+                                <td (click)="showPost(post.id)">
                                     <b>{{post.user.fullname}}</b>
                                 </td>
-                                <td>
+                                <td (click)="showPost(post.id)">
                                     <span class="text-muted">{{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
-                                <td style="width:1px; white-space:nowrap;">
-                                    <div *ngIf="statusSelected !== 3">
+                                <td (click)="showPost(post.id)" style="width:1px; white-space:nowrap;" *ngIf="statusSelected === 3">
+                                    <!-- <div *ngIf="statusSelected !== 3">
                                         <div *ngFor="let hashtag of splitDescription(post.hashtag)"
                                             class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
                                             <a>#{{hashtag}}</a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <b *ngIf="statusSelected === 3">{{post.reason}}</b>
                                 </td>
-                                <td>
+                                <td (click)="showPost(post.id)" class="text-center">
                                     <b>{{post.totalComment}}</b>
                                 </td>
-                                <td>
+                                <td (click)="showPost(post.id)" class="text-center">
                                     <b>{{post.totalReact}}</b>
                                 </td>
-                                <td class="table-actions">
+                                <td class="table-actions row">
                                     <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setPostByStatus(post.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-check-double"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="setPostByStatus(post.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="showPopupConfirm(post)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                     <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setPostByStatus(post.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
@@ -140,7 +141,7 @@
                                     <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="showPopup(post.id)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-ban"></i>
                                     </button>
-                                    <button *ngIf="post.user.role === 'MANAGER'" [routerLink]="['./edit', post.id]" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="post.user.role === 'MANAGER'" [routerLink]="['./edit', post.id]" class="btn btn-link table-action table-action-delete text-fooma" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                 </td>
@@ -152,6 +153,9 @@
                             </div>
                         </tfoot>
                     </table>
+                </div>
+                <div *ngIf="collectionSize === 0" class="mt-2 text-center">
+                    <img src="assets/img/thumb/empty_result.png" style="height: 200px;"/>
                 </div>
                 <div class="card-footer py-4">
                     <nav aria-label="...">

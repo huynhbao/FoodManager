@@ -13,48 +13,34 @@
         </div>
     </div>
 </div>
+<app-spinner [enabled]="isLoading"></app-spinner>
 <div class="container-fluid mt--7">
     <div class="row" *ngIf="!isGettingData">
         <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
             <div class="card card-profile shadow">
+                <div class="bg-profile card-img-top">
+                </div>
                 <div class="row justify-content-center">
-                    <div class="col-lg-3 order-lg-2">
-                        <!-- <div class="card-profile-image">
-                            <img [src]="user.imageUrl" class="rounded-circle">
-                            <div class="hover-text">Choose file</div>
-                            <div class="background"></div>
-                        </div> -->
-                        <!-- <label class="hoverable card-profile-image" for="fileInput">
-                            <img [src]="user.imageUrl" class="rounded-circle">
-                            <div class="hover-text text-success">
-                                <i class="fas fa-camera"></i>
-                                <div class="text-profilepic">Change it</div>
-                            </div>
-                            <div class="background"></div>
-                        </label>
-                        <br/>
-                        <input id="fileInput" type='file'> -->
-
+                    <div class="col-lg-4 order-lg-2">
                         <div class="card-profile-image container-profilepic">
                             <img [src]="user.imageUrl" class="rounded-circle">
-                            <label for="fileInput" class="middle-profilepic text-center card-img-overlay d-none flex-column justify-content-center">
-                                <div class="text-profilepic text-success">
+                            <label for="fileInput" class="middle-profilepic text-center d-none flex-column justify-content-center">
+                                <div class="text-profilepic text-fooma">
                                     <i class="fas fa-camera"></i>
-                                    <label class="text-profilepic">Upload</label>
                                 </div>
                             </label>
                         </div>
-                        <input id="fileInput" type='file'>
+                        <input id="fileInput" type="file" accept="image/*" (change)="onSelectFile($event)">
                     </div>
                 </div>
                 <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                     <div class="d-flex justify-content-between">
                     </div>
                 </div>
-                <div class="card-body pt-0 pt-md-4">
+                <div class="card-body pt-0 pt-md-4 mt-lg-5">
                     <div class="row">
                         <div class="col">
-                            <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                            <div class="card-profile-stats d-flex justify-content-center mt-md-5 mt-lg-1">
                                 <div>
                                     <span class="heading">{{user.totalPost}}</span>
                                     <span class="description">Tổng số bài viết</span>
@@ -68,7 +54,7 @@
                     </div>
                     <div class="text-center">
                         <h3>
-                            {{user.name | titlecase}}<span class="font-weight-light">, {{getAge(user.birthDate)}}</span>
+                            {{user.name | titlecase}}<span class="font-weight-light"></span>
                         </h3>
                         <hr class="my-4" />
                         <p>{{user.bio}}</p>
@@ -84,6 +70,7 @@
                             <h3 class="mb-0">Tài khoản của tôi</h3>
                         </div>
                         <div class="col-4 text-right">
+                            <button class="btn btn-sm btn-primary" (click)="changePassword()">Thay đổi mật khẩu</button>
                         </div>
                     </div>
                 </div>
@@ -97,6 +84,9 @@
                                         <label class="form-control-label" for="input-fullname">Họ và tên</label>
                                         <input type="text" id="input-fullname" class="form-control form-control-alternative"
                                             placeholder="Họ và tên" formControlName="fullName">
+                                        <div *ngIf="submitted && f['fullName'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['fullName'].errors['required']">Họ và tên không được để trống</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -106,6 +96,12 @@
                                         <label class="form-control-label" for="input-phone">Số điện thoại</label>
                                         <input type="text" id="input-phone" class="form-control form-control-alternative"
                                             placeholder="0123456789" formControlName="phone">
+                                        <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['phone'].errors['required']">Số điện thoại không được để trống</div>
+                                        </div>
+                                        <div *ngIf="submitted && f['phone'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['phone'].errors['pattern'] || f['phone'].errors['maxlength']">Số điện thoại không đúng định dạng</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -113,6 +109,9 @@
                                         <label class="form-control-label" for="input-dob">Ngày sinh</label>
                                         <input type="date" id="input-dob" class="form-control form-control-alternative"
                                         formControlName="dob" />
+                                        <div *ngIf="submitted && f['dob'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['dob'].errors['required']">Ngày sinh không đúng định dạng</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -123,13 +122,15 @@
                         <div class="pl-lg-4">
                             <div class="form-group">
                                 <label>Bio</label>
-                                <textarea rows="4" class="form-control form-control-alternative"
-                                    placeholder="A few words about you ..." formControlName="bio"></textarea>
+                                <textarea rows="4" class="form-control form-control-alternative" placeholder="Chia sẽ 1 ít thông tin của bạn..." formControlName="bio"></textarea>
+                                <div *ngIf="submitted && f['bio'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['bio'].errors['required']">Bio không được để trống</div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
-                                <button *ngIf="form.enabled" [disabled]="isLoading" type="submit" class="btn btn-block btn-fooma">Save</button>
+                                <button *ngIf="form.enabled" [disabled]="isLoading" type="submit" class="btn btn-block btn-fooma">Lưu thông tin</button>
                             </div>
                         </div>
                     </form>
