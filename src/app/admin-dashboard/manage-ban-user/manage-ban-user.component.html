@@ -10,10 +10,10 @@
             <div class="card mb-0" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" [routerLink]="['../active']">Người dùng</a>
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../active']">Tài khoản</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../ban']">Ban</a>
+                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../ban']">Tài khoản bị khóa</a>
                     </li>
                 </ul>
             </div>
@@ -95,18 +95,17 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let user of listUser" [ngClass]="{'selected': user.isSelected === true}">
-                                <td>
+                                <td (click)="openDetail(userModal, user)">
                                     <img src="{{user.imageUrl}}" class="avatar rounded-circle mr-3">
-                                    <a href="javascript:void()" (click)="openDetail(userModal, user)"
-                                        class="font-weight-bold text-dark">{{user.name}}</a>
+                                    <a href="javascript:void()" class="font-weight-bold text-dark">{{user.name}}</a>
                                 </td>
-                                <td>
+                                <td (click)="openDetail(userModal, user)">
                                     <b>{{user.email}}</b>
                                 </td>
-                                <td>
+                                <td (click)="openDetail(userModal, user)">
                                     <span class="text-muted">{{user.expiredDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
-                                <td style="width:1px; white-space:nowrap;">
+                                <td  (click)="openDetail(userModal, user)" style="width:1px; white-space:nowrap;">
                                     <b>{{user.reason}}</b>
                                 </td>
                                 <td class="row table-actions">
@@ -163,7 +162,7 @@
                     <div class="col-auto">
                         <h2 class="mb-2">{{selectedUser.email}}</h2>
                         <h5 class="text-muted">ID: <b>{{selectedUser.id}}</b></h5>
-                        <h5 class="text-muted">Quyền: <b>{{selectedUser.role | titlecase}}</b></h5>
+                        <h5 class="text-muted">Vai trò: <b>{{selectedUser.role | titlecase}}</b></h5>
                         <h5 class="text-muted">Ngày đăng ký: <b>{{selectedUser.createDate | date: 'dd/MM/yyyy'}}</b></h5>
                         <h5 class="text-muted">Tổng số bài viết: <b>{{selectedUser.totalPost}}</b></h5>
                         <h5 class="text-muted">Tổng số công thức: <b>{{selectedUser.totalRecipe}}</b></h5>

@@ -32,6 +32,7 @@
     "angular-star-rating": "^5.1.0",
     "bootstrap": "^4.6.1",
     "chart.js": "2.9.4",
+    "ngx-bar-rating": "^3.0.0",
     "ngx-chips": "^3.0.0",
     "ngx-toastr": "^14.3.0",
     "rxjs": "~7.5.0",

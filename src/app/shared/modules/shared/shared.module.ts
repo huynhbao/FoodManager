@@ -27,7 +27,7 @@ import { StarRatingModule } from 'angular-star-rating';
   exports: [
     SpinnerComponent,
     TimePipe,
-    FontAwesomeModule,
+    FontAwesomeModule
   ]
 })
 export class SharedModule {

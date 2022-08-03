@@ -51,6 +51,7 @@ export interface Recipe {
   recipeIngredients: RecipeIngredient[];
   recipeMethods: RecipeMethod[];
   recipeImages: RecipeImage[];
+  totalRatingPoint: number;
 }
 
 export interface CreateRecipe {

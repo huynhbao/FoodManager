@@ -5,6 +5,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/models/user.model';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
 import { ModalBanUserComponent } from 'src/app/shared/components/modal-ban-user/modal-ban-user.component';
+import { ModalCreateManagerComponent } from '../modal-create-manager/modal-create-manager.component';
 
 @Component({
   selector: 'app-manage-user',
@@ -75,6 +76,10 @@ export class ManageUserComponent implements OnInit {
     this.loadUsers();
   }
 
+  createManager() {
+    this.modalRef = this.modalService.open(ModalCreateManagerComponent, {ariaLabelledBy: 'modal-basic-title', size: 'md', backdrop: 'static',});
+  }
+
   toggleEdit() {
     const formStatus:boolean = this.form.enabled;
     if (formStatus) {
@@ -94,7 +99,7 @@ export class ManageUserComponent implements OnInit {
       phone: this.selectedUser.phoneNumber,
       dob: formatDate(new Date(this.selectedUser.birthDate || new Date), 'yyyy-MM-dd', 'en'),
     });
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static',}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'}).result.then((result) => {
       //this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

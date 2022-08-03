@@ -73,7 +73,7 @@ export class ManageBanUserComponent implements OnInit {
       phone: this.selectedUser.phoneNumber,
       dob: formatDate(new Date(this.selectedUser.birthDate || new Date), 'yyyy-MM-dd', 'en'),
     });
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal', backdrop: 'static',}).result.then((result) => {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'}).result.then((result) => {
       //this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

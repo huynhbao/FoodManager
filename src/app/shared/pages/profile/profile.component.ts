@@ -76,7 +76,6 @@ export class ProfileComponent implements OnInit {
 
   async onSubmit() {
     this.submitted = true;
-    console.log(this.form);
     if (this.form.invalid) {
       return;
     }

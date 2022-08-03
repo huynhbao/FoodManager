@@ -1,3 +1,4 @@
+import { FormControl } from "@angular/forms";
 import { JwtHelperService } from "@auth0/angular-jwt";
 
 export class Utils {
@@ -34,5 +35,16 @@ export class Utils {
         '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
         '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
         return pattern.test(str);
+    }
+
+    static noWhitespaceValidator(control: FormControl) {
+        const isWhitespace = (control.value || '').trim().length === 0;
+        const isValid = !isWhitespace;
+        return isValid ? null : { 'whitespace': true };
+    }
+
+    static capitalize(s)
+    {
+      return s && s[0].toUpperCase() + s.slice(1);
     }
 }

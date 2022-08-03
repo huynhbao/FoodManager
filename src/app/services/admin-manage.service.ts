@@ -61,6 +61,15 @@ export class AdminManageService {
     return this.http.post<any>(`${this.baseUrl}/user/unban`, banBody);
   }
 
+  registerManager(email: string, name: string): Observable<any> {
+    const body = {
+      email: email,
+      name: name
+    };
+    console.log(body);
+    return this.http.post<any>(`${this.baseUrl}/auth/register-manager`, body);
+  }
+
   //origin
   getOrigins(search: string = "", page: number): Observable<any> {
     return this.http.get<any>(

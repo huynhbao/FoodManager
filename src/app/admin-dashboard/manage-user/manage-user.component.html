@@ -1,6 +1,7 @@
 <div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
+            <a (click)="createManager()" class="btn btn-info mb-4">Tạo tài khoản quản lý</a>
         </div>
     </div>
 </div>
@@ -10,10 +11,10 @@
             <div class="card mb-0" style="border-bottom-left-radius: 0;border-bottom-right-radius: 0;">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../active']">Người dùng</a>
+                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../active']">Tài khoản</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" [routerLink]="['../ban']">Ban</a>
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../ban']">Tài khoản bị khóa</a>
                     </li>
                 </ul>
             </div>
@@ -73,7 +74,7 @@
                                 <th style="width: 25%;">Tên</th>
                                 <th style="width: 12%;">Email</th>
                                 <th style="width: 10%;">Ngày đăng ký</th>
-                                <th style="width: 12%;">Quyền</th>
+                                <th style="width: 12%;">Vai trò</th>
                                 <th>Tổng số bài viết</th>
                                 <th>Tổng số công thức</th>
                                 <th>Hành động</th>
@@ -81,26 +82,25 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let user of listUser" [ngClass]="{'selected': user.isSelected === true}">
-                                <td>
+                                <td (click)="openDetail(userModal, user)">
                                     <img src="{{user.imageUrl}}" class="avatar rounded-circle mr-3">
-                                    <a href="javascript:void()" (click)="openDetail(userModal, user)"
-                                        class="font-weight-bold text-dark">{{user.name}}</a>
+                                    <a href="javascript:void()" class="font-weight-bold text-dark">{{user.name}}</a>
                                 </td>
-                                <td>
+                                <td (click)="openDetail(userModal, user)">
                                     <b>{{user.email}}</b>
                                 </td>
-                                <td>
+                                <td (click)="openDetail(userModal, user)">
                                     <span class="text-muted">{{user.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
-                                <td style="width:1px; white-space:nowrap;">
+                                <td (click)="openDetail(userModal, user)" style="width:1px; white-space:nowrap;">
                                     <div class="text-muted rounded px-2 bg-pending my-1" style="width: fit-content;">
                                         <a>{{user.role | titlecase}}</a>
                                     </div>
                                 </td>
-                                <td>
+                                <td (click)="openDetail(userModal, user)">
                                     <b>{{user.totalPost}}</b>
                                 </td>
-                                <td>
+                                <td (click)="openDetail(userModal, user)">
                                     <b>{{user.totalRecipe}}</b>
                                 </td>
                                 <td class="table-actions">
@@ -109,19 +109,6 @@
                                         data-toggle="tooltip" data-original-title="Ban User">
                                         <i class="fas fa-user-slash"></i>
                                     </button>
-                                    <!-- 
-                                    <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setPostByStatus(user.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
-                                        <i class="fas fa-check-double"></i>
-                                    </button>
-                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="setPostByStatus(user.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setPostByStatus(user.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setPostByStatus(user.id, 3)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
-                                        <i class="fas fa-ban"></i>
-                                    </button> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -170,7 +157,7 @@
                     <div class="col-auto">
                         <h2 class="mb-2">{{selectedUser.email}}</h2>
                         <h5 class="text-muted">ID: <b>{{selectedUser.id}}</b></h5>
-                        <h5 class="text-muted">Quyền: <b>{{selectedUser.role | titlecase}}</b></h5>
+                        <h5 class="text-muted">Vai trò: <b>{{selectedUser.role | titlecase}}</b></h5>
                         <h5 class="text-muted">Ngày đăng ký: <b>{{selectedUser.createDate | date: 'dd/MM/yyyy'}}</b></h5>
                         <h5 class="text-muted">Tổng số bài viết: <b>{{selectedUser.totalPost}}</b></h5>
                         <h5 class="text-muted">Tổng số công thức: <b>{{selectedUser.totalRecipe}}</b></h5>

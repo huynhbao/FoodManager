@@ -6,6 +6,7 @@ import { Image } from 'src/app/models/image.model';
 import { Paging } from 'src/app/models/paging.model';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ModalConfirmComponent } from 'src/app/shared/components/modal-confirm/modal-confirm.component';
@@ -37,7 +38,11 @@ export class ManagePostComponent implements OnInit {
   //masterSelected: boolean;
   //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
   //https://www.npmjs.com/package/ngx-toastr
-  constructor(private managerService: ManagerService, private route: ActivatedRoute, private sharedService: SharedService, private modalService: NgbModal, private toastr: ToastrService) {
+  constructor(private managerService: ManagerService, private route: ActivatedRoute, private sharedService: SharedService, private modalService: NgbModal, private toastr: ToastrService, private authenticationService: AuthenticationService) {
+  }
+
+  getUser() {
+    return this.authenticationService.currentUserValue;
   }
 
   private loadPosts() {

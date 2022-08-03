@@ -14,6 +14,7 @@ import { ManageOriginComponent } from './manage-origin/manage-origin.component';
 import { ManageMethodComponent } from './manage-method/manage-method.component';
 import { ManageRecipeCategoryComponent } from './manage-recipe-category/manage-recipe-category.component';
 import { ManageBanUserComponent } from './manage-ban-user/manage-ban-user.component';
+import { ModalCreateManagerComponent } from './modal-create-manager/modal-create-manager.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ManageBanUserComponent } from './manage-ban-user/manage-ban-user.compon
     ManageOriginComponent,
     ManageMethodComponent,
     ManageRecipeCategoryComponent,
-    ManageBanUserComponent
+    ManageBanUserComponent,
+    ModalCreateManagerComponent
   ],
   imports: [
     CommonModule,
