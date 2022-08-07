@@ -94,6 +94,7 @@ export class ManagerService {
   }
 
   setRecipeByStatus(id: string, status: number, reason: string = "") {
+    console.log(id, status, reason);
     return this.http.put<any>(
       `${this.baseUrl}/recipe/status/${id}`, {status: status, reason: reason}
     );

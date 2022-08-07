@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Post } from 'src/app/models/post.model';
 import { User } from 'src/app/models/user.model';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ModalConfirmComponent } from '../modal-confirm/modal-confirm.component';
@@ -24,13 +26,17 @@ export class ModalPostComponent implements OnInit {
   modalRef!: NgbModalRef;
   confirmModalRef!: NgbModalRef;
   
-  constructor(private sharedService: SharedService, private managerService: ManagerService, public activeModal: NgbActiveModal, private modalService: NgbModal, private toastr: ToastrService) { }
+  constructor(private sharedService: SharedService, private managerService: ManagerService, public activeModal: NgbActiveModal, private modalService: NgbModal, private toastr: ToastrService, private authenticationService: AuthenticationService, private route: ActivatedRoute, private router: Router) { }
 
   splitDescription(value: string) {
     value = value.replace(/\s/g, '');
     let hashtag = value.split('#').slice(1);
     
     return hashtag;
+  }
+
+  getUser() {
+    return this.authenticationService.currentUserValue;
   }
 
   acceptReport() {
@@ -53,7 +59,7 @@ export class ModalPostComponent implements OnInit {
   }
 
   showPopupDenied() {
-    this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+    this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'md'});
     this.modalRef.componentInstance.id = this.post.id;
     this.modalRef.componentInstance.submitFunc = this.showPopupDeniedCb.bind(this);
   }
@@ -137,6 +143,11 @@ export class ModalPostComponent implements OnInit {
   showPopup(content) {
     this.confirmModalRef = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
   }
+
+  editPost(id: string) {
+    this.activeModal.close();
+    this.router.navigate(["../../manager/manage/post/edit", id], { relativeTo: this.route });
+  }
   
   ngOnInit(): void {
     if (this.id) {
@@ -146,7 +157,8 @@ export class ModalPostComponent implements OnInit {
           let user: User = {
             id: post["userId"],
             fullname: post["name"],
-            avatarUrl: post["userImageUrl"]
+            avatarUrl: post["userImageUrl"],
+            role: post["role"],
           } 
           this.post = post;
           this.post.user = user;

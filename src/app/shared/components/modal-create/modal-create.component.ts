@@ -11,6 +11,7 @@ import { SharedService } from 'src/app/services/shared.service';
 export class ModalCreateComponent implements OnInit {
   @Input() fromParent: any;
   @Input() submitFunc!: Function;
+  @Input() createFromRecipeCb!: Function;
   form: FormGroup;
   submitted: boolean = false;
   previews: string[] = [];
@@ -64,6 +65,12 @@ export class ModalCreateComponent implements OnInit {
       const control = this.form.get(field);
       form[field] = control?.value
     }
-    this.submitFunc(form, this.previews);
+    if (this.submitFunc) {
+      this.submitFunc(form, this.previews);
+    }
+
+    if (this.createFromRecipeCb) {
+      this.createFromRecipeCb(form, this.previews, this.fromParent[0].indexRecipe);
+    }
   }
 }

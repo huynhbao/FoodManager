@@ -24,10 +24,10 @@
                 <!-- Card header -->
                 <div class="card-header" style="border-radius: 0">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-lg-4">
                             <h3 class="mb-0">Tổng số bài viết: {{collectionSize}}</h3>
                         </div>
-                        <div class="col-6 text-right">
+                        <div class="col-lg-8 text-right">
                             <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
                                 <span class="badge badge-dot"><i class="bg-success"></i></span>
                                 <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
@@ -93,9 +93,10 @@
                                 <th style="width: 25%;">Tiêu đề</th>
                                 <th style="width: 12%;">Người đăng</th>
                                 <th style="width: 14%;">Ngày đăng</th>
-                                <th *ngIf="statusSelected === 3" style="width: 12%;">Lý do từ chối</th>
                                 <th class="text-center">Tổng số bình luận</th>
                                 <th class="text-center">Tổng số tương tác</th>
+                                <th *ngIf="statusSelected === 3" style="width: 12%;">Lý do từ chối</th>
+                                <th *ngIf="statusSelected === 0" style="width: 12%;">Lý do xóa</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -113,6 +114,12 @@
                                 <td (click)="showPost(post.id)">
                                     <span class="text-muted">{{post.publishedDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
+                                <td (click)="showPost(post.id)" class="text-center">
+                                    <b>{{post.totalComment}}</b>
+                                </td>
+                                <td (click)="showPost(post.id)" class="text-center">
+                                    <b>{{post.totalReact}}</b>
+                                </td>
                                 <td (click)="showPost(post.id)" style="width:1px; white-space:nowrap;" *ngIf="statusSelected === 3">
                                     <!-- <div *ngIf="statusSelected !== 3">
                                         <div *ngFor="let hashtag of splitDescription(post.hashtag)"
@@ -122,23 +129,20 @@
                                     </div> -->
                                     <b *ngIf="statusSelected === 3">{{post.reason}}</b>
                                 </td>
-                                <td (click)="showPost(post.id)" class="text-center">
-                                    <b>{{post.totalComment}}</b>
-                                </td>
-                                <td (click)="showPost(post.id)" class="text-center">
-                                    <b>{{post.totalReact}}</b>
+                                <td (click)="showPost(post.id)" *ngIf="statusSelected === 0">
+                                    <b>{{post.reason}}</b>
                                 </td>
                                 <td class="table-actions row">
                                     <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setPostByStatus(post.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-check-double"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="showPopupConfirm(post)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="showPopup(post.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                     <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setPostByStatus(post.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-check"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="showPopup(post.id)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="showPopup(post.id, 3)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-ban"></i>
                                     </button>
                                     <button *ngIf="post.user.role === 'MANAGER' && post.user.id == getUser().currentProfile.id" [routerLink]="['./edit', post.id]" class="btn btn-link table-action table-action-delete text-fooma" data-toggle="tooltip" data-original-title="Delete Post">

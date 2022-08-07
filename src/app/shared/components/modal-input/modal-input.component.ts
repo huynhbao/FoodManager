@@ -9,12 +9,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ModalInputComponent implements OnInit {
 
   @Input() id: any;
+  @Input() status: any;
   @Input() submitFunc!: Function;
   reasonModel: string = "";
   constructor(public activeModal: NgbActiveModal) { }
 
   onSubmit() {
-    this.submitFunc(this.id, this.reasonModel);
+    this.submitFunc(this.id, this.reasonModel, this.status);
   }
 
   ngOnInit(): void {

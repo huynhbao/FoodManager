@@ -59,7 +59,7 @@
                                     <input #fileInput type="file" accept="image/*" (change)="selectFiles($event)" style="display:none;"/>
                                 </button>
                                 <div *ngIf="submitted && previews.length === 0" class="invalid-feedback">
-                                    {{item.name}} is required
+                                    {{item.name}} không được để trống
                                 </div>
                                 <div class="gallery-item d-flex justify-content-center mt-4" *ngFor="let preview of previews; let i = index">
                                     <img [src]="preview" alt="gallery thumbnail" class="gallery-img preview"/>

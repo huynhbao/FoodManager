@@ -48,7 +48,7 @@
                                 <th>Ngày tạo</th>
                                 <th>Danh mục</th>
                                 <th>Đơn vị</th>
-                                <th>Trạng thái</th>
+                                <!-- <th>Trạng thái</th> -->
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -73,13 +73,13 @@
                                 <td>
                                     <span>{{ingredient.unit}}</span>
                                 </td>
-                                <td style="width:1px; white-space:nowrap;">
+                                <!-- <td style="width:1px; white-space:nowrap;">
                                     <div [ngClass]="ingredient.status == 1 ? 'bg-active' : 'bg-disable'" class="rounded px-2">
                                         <span class="badge badge-dot"><i
                                             [ngClass]="ingredient.status == 1 ? 'bg-success' : 'bg-warning'"></i>
                                         {{ingredient.status == 1 ? 'Kích hoạt' : 'Không kích hoạt'}}</span>
                                     </div>
-                                </td>
+                                </td> -->
                                 <td class="table-actions row">
                                     <button class="btn btn-link table-action table-action-delete text-fooma" (click)="triggerModal('update', ingredient)">
                                         <i class="fas fa-edit"></i>

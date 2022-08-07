@@ -176,6 +176,17 @@ export class ManageRecipeAdministratorComponent implements OnInit {
   showRecipe(recipeId: string) {
     this.modalRef = this.modalService.open(ModalRecipeComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = recipeId;
+    this.modalRef.componentInstance.showActionSystem = true;
+    const id = this.route.snapshot.params['id'];
+    this.modalRef.result.then((result) => {
+      if (id) {
+        this.router.navigate(["../"], { relativeTo: this.route });
+      }
+    }, (reason) => {
+      if (id) {
+        this.router.navigate(["../"], { relativeTo: this.route });
+      }
+    });
   }
 
   private loadRecipes() {
@@ -304,11 +315,10 @@ export class ManageRecipeAdministratorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let hashtagParam = this.route.snapshot.params['hashtag'];
-    if (hashtagParam) {
-      this.loadHashtag("#" + hashtagParam);
-    } else {
-      this.loadRecipes();
+    this.loadRecipes();
+    const id = this.route.snapshot.params['id'];
+    if (id) {
+      this.showRecipe(id);
     }
   }
 

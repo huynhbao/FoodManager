@@ -16,8 +16,8 @@ import {
 import { RecipeIngredient, RecipeCategory as RecipeCategoryMany, RecipeImage, RecipeMethod as RecipeMethod_R, Recipe, CreateRecipe } from 'src/app/models/recipe.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ModalCreateComponent } from 'src/app/shared/components/modal-create/modal-create.component';
 import { Ingredient } from 'src/app/models/ingredient.model';
+import { ModalCreateComponent } from 'src/app/shared/components/modal-create/modal-create.component';
 
 @Component({
   selector: 'app-create-recipe',
@@ -45,7 +45,6 @@ export class CreateRecipeComponent implements OnInit {
   isDone: boolean = false;
   validatorsEmpty = [Validators.required];
   modalRef!: NgbModalRef;
-  listValue: { id: string; value: string }[] = [];
   
   constructor(
     private managerService: ManagerService,
@@ -53,6 +52,8 @@ export class CreateRecipeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private modalService: NgbModal,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.createForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -99,10 +100,15 @@ export class CreateRecipeComponent implements OnInit {
       this.previews.length === 0 ||
       this.origin.length === 0 ||
       this.method.length === 0 ||
-      this.categories.length === 0 ||
-      this.ingredients.length === 0
+      this.categories.length === 0
     ) {
       this.scrollToError();
+      console.log(this.createForm.invalid,
+        this.previews.length === 0,
+        this.origin.length === 0,
+        this.method.length === 0,
+        this.categories.length === 0,
+        this.ingredients.length === 0);
       this.toastr.error(`Kiểm tra các thông tin chưa điền đầy đủ`, `Đã xảy ra lỗi`);
       return;
     }
@@ -237,9 +243,10 @@ export class CreateRecipeComponent implements OnInit {
     this.managerService.createRecipe(recipe).subscribe({
       next: (res:any) => {
         console.log(res);
-        if (res.code == 200) {
+        if (res.id) {
           this.isDone = true;
           this.toastr.success(`Đã thêm công thức thành công`);
+          this.router.navigate(["../", res.id], { relativeTo: this.route });
         }
       },
       error: (error) => {
@@ -248,6 +255,7 @@ export class CreateRecipeComponent implements OnInit {
         this.toastr.error(`Không thể thêm công thức`, `Đã xảy ra lỗi`);
       },
       complete: () => {
+        this.isLoading = false;
       }
     });
     
@@ -386,101 +394,130 @@ export class CreateRecipeComponent implements OnInit {
   onAdding(tag: TagModel): Observable<TagModel> {
     if (tag["ingredientDbid"] === 1) {
       this.newIngredient = tag["ingredientName"];
-      /* new Promise((resolve, reject) => {
-        console.log(this.modalService);
-        this.modalRef = this.modalService.open(ModalCreateComponent, {
-          ariaLabelledBy: 'modal-basic-title',
-          size: 'lg',
-          windowClass: 'appcustom-modal',
-          backdrop: 'static',
-        });
-        resolve("")
-      });
-      this.modalService.open(ModalCreateComponent, {
-        ariaLabelledBy: 'modal-basic-title',
-        size: 'lg',
-        windowClass: 'appcustom-modal',
-        backdrop: 'static',
-      });
-      of(this.modalRef);
-      console.log(1);
-      this.modalRef.componentInstance.fromParent = [
-        {
-          id: "",
-          imgUrl: "",
-          thumbnail: true
-        },
-        {
-          key: 'ingredientName',
-          name: 'Tên nguyên liệu',
-          type: 'string',
-          validator: {
-            disabled: false,
-            defaultValue: "",
-            valid: Validators.required,
-          },
-        },
-        {
-          key: 'unit',
-          name: 'Đơn vị',
-          type: 'string',
-          validator: {
-            disabled: false,
-            defaultValue: "",
-            valid: Validators.required,
-          },
-        },
-        {
-          key: 'category',
-          name: 'Tên danh mục',
-          type: 'boolean',
-          value: this.listValue,
-          validator: {
-            disabled: false,
-            defaultValue: this.listValue[0],
-            valid: Validators.required,
-          },
-        },
-        {
-          key: 'imageUrl',
-          name: 'Ảnh thumbnail',
-          type: 'file',
-          validator: {
-            disabled: false,
-            defaultValue: "",
-            valid: "",
-          },
-        },
-      ];
-      this.modalRef.componentInstance.submitFunc = this.createIngredientCb.bind(this); */
     }
     return of(tag);
   }
 
   onAdd(ingredient, index: number) {
     this.formIngredient.controls[index]['controls']['unit'].patchValue(ingredient.unit);
+    
+    if (ingredient.ingredientDbid === 1) {
+      const listValue: { id: string; value: string }[] = [];
+
+      this.sharedService.getCategories().subscribe({
+        next: (categorys: Category[]) => {
+          categorys.forEach((category) => {
+            listValue.push({ id: category.id, value: category.categoryName });
+          });
+          listValue.sort((a, b) => a.value.localeCompare(b.value));
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+          this.modalRef = this.modalService.open(ModalCreateComponent, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'lg',
+            windowClass: 'appcustom-modal',
+            backdrop: 'static',
+          });
+          
+          this.modalRef.result.then((result) => {
+            if (result != "CREATE_SUCCESS") {
+              this.formIngredient.controls[index].patchValue({
+                ingredientName: "",
+                quantity: "",
+                unit: "",
+                isMain: false
+              })
+            }
+          }, (reason) => {
+            this.formIngredient.controls[index].patchValue({
+              ingredientName: "",
+              quantity: "",
+              unit: "",
+              isMain: false
+            })
+          });
+    
+          this.modalRef.componentInstance.fromParent = [
+            {
+              id: "",
+              imgUrl: "",
+              thumbnail: true,
+              indexRecipe: index,
+            },
+            {
+              key: 'ingredientName',
+              name: 'Tên nguyên liệu',
+              type: 'string',
+              validator: {
+                disabled: false,
+                defaultValue: ingredient.ingredientName.slice(18),
+                valid: Validators.required,
+              },
+            },
+            {
+              key: 'unit',
+              name: 'Đơn vị',
+              type: 'string',
+              validator: {
+                disabled: false,
+                defaultValue: "",
+                valid: Validators.required,
+              },
+            },
+            {
+              key: 'category',
+              name: 'Tên danh mục',
+              type: 'boolean',
+              value: listValue,
+              validator: {
+                disabled: false,
+                defaultValue: listValue[0],
+                valid: Validators.required,
+              },
+            },
+            {
+              key: 'imageUrl',
+              name: 'Ảnh thumbnail',
+              type: 'file',
+              validator: {
+                disabled: false,
+                defaultValue: "",
+                valid: "",
+              },
+            },
+          ];
+          this.modalRef.componentInstance.createFromRecipeCb = this.createIngredientCb.bind(this);
+        }
+      });
+    }
   }
 
   requestAutocompleteItemsIngredient$ = (text: string): Observable<any> => {
     return this.sharedService.getIngredientDb(text).pipe(
       map((data) => {
         let arr2 = data.items;
-        const addOption = {
-          ingredientDbid: 1,
-          ingredientName: "Thêm nguyên liệu: " + text
-        }
-
-        let match:boolean = false;
-        for (let i = 0; i < arr2.length; i++) {
-          const element = arr2[i];
-          if (element.ingredientName == text) {
-            match = true;
-            break;
+        text = text.trim();
+        if (text.length !== 0) {
+          const addOption = {
+            ingredientDbid: 1,
+            ingredientName: "Thêm nguyên liệu: " + text
           }
-        }
 
-        if (!match) {
-          arr2.push(addOption);
+          let match:boolean = false;
+          for (let i = 0; i < arr2.length; i++) {
+            const element = arr2[i];
+            if (element.ingredientName == text) {
+              match = true;
+              break;
+            }
+          }
+
+          if (!match) {
+            arr2.push(addOption);
+          }
         }
         
         return arr2;
@@ -488,7 +525,7 @@ export class CreateRecipeComponent implements OnInit {
     );
   };
 
-  private createIngredientCb(form: any, img:string[]) {
+  private createIngredientCb(form: any, img:string[], index: number) {
     this.isLoading = true;
     const ingredient: Ingredient = {
       id: '',
@@ -508,11 +545,20 @@ export class CreateRecipeComponent implements OnInit {
           this.sharedService.createIngredientDB(ingredient).subscribe({
             next: (res:any) => {
               console.log(res);
-              if (res.code == 200) {
-                this.modalService.dismissAll();
-                //this.loadIngredients();
+              if (res.id) {
                 this.toastr.success(`Đã tạo nguyên liệu`);
-                //this.modalRef.close();
+                this.formIngredient.controls[index].patchValue({
+                  ingredientName: [
+                    {
+                      id: res.id,
+                      ingredientName: form.ingredientName
+                    }
+                  ],
+                  quantity: "",
+                  unit: form.unit,
+                  isMain: false
+                })
+                this.modalRef.close("CREATE_SUCCESS");
               }
             },
             error: (error) => {

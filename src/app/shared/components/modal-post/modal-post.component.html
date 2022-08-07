@@ -1,124 +1,138 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Thông tin bài viết</h4>
+    <a class="navbar-brand pt-0" href="javascript:void(0)">
+        <img src="./assets/img/brand/logo.png" height="20" class="navbar-brand-img" alt="...">
+    </a>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">×</span>
     </button>
 </div>
 <app-spinner [enabled]="isLoading"></app-spinner>
-<div class="modal-body">
-    <div class="col-xl order-xl-1">
-        <div *ngIf="!post" class="card">
-            <div class="card-body text-center">
-                <img src="./assets/img/brand/logo.png" class="navbar-brand-img mb-4" alt="logo" style="width: 230px;">
-                <h3>Bài viết không tồn tại</h3>
-                <a class="" (click)="activeModal.dismiss('Cross click')">Quay lại</a>
-            </div>
-        </div>
-        <div *ngIf="!isLoading && post && reportId" class="card">
-            <div class="row">
-                <div class="col-6">
-                    <button class="btn btn-success btn-block" [disabled]="isLoading" (click)="acceptReport()"><i class="fas fa-check"></i> Bỏ qua</button>
-                </div>
-                <div class="col-6">
-                    <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Bỏ qua và xóa bài viết</button>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="!isLoading && post" class="card">
-            <div class="card-header">
-                <div class="row align-items-center">
-                    <div class="col-8">
-                        <div class="row">
-                            <div class="col-auto text-center">
-                            </div>
-                            <div class="col-auto">
-                                <img alt="avatar" [src]="post?.user?.avatarUrl" class="avatar rounded-circle">
-                            </div>
-                            <div class="col-auto">
-                                <h3 class="card-title font-weight-bold mb-0">{{post?.user?.fullname}}</h3>
-                                <span class="h5 mb-0 font-weight-light">Đã đăng {{ post?.publishedDate | time}} ({{post?.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
-                            </div>
-                            
+<div class="modal-body" style=" background-color: #ff00000d; ">
+    <div class="row" *ngIf="post">
+        <div class="col-xl-2 order-xl-2">
+            <div class="row card pb-3" style="position: fixed; width: 260px;">
+                <div class="container-fluid" style="position: relative">
+                    <h3 class="my-3 ml-2">Hành động</h3>
+                    <div *ngIf="!isLoading && post && showAction" class="my-2">
+                        <div class="my-2" *ngIf="post?.status === 2">
+                            <button [disabled]="isLoading" (click)="setPostByStatus(1)" class="btn btn-success btn-block">
+                                <i class="fas fa-check"></i> Duyệt bài
+                            </button>
+                        </div>
+                        <div class="my-2" *ngIf="post?.status === 1 || post?.status === 3">
+                            <button [disabled]="isLoading" (click)="showPopup(confirmModal)" class="btn btn-danger btn-block">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                        </div>
+                        <div class="my-2" *ngIf="post?.status === 2">
+                            <button [disabled]="isLoading" (click)="showPopupDenied()" class="btn btn-danger btn-block">
+                                <i class="fas fa-ban"></i> Từ chối
+                            </button>
+                        </div>
+                        <div class="my-2" *ngIf="post?.status === 0 || post?.status === 3">
+                            <button [disabled]="isLoading" (click)="setPostByStatus(1)" class="btn btn-success btn-block">
+                                <i class="fas fa-check-double"></i> Kích hoạt
+                            </button>
+                        </div>
+                        <div class="my-2" *ngIf="post?.status !== 0 && post.user.role === 'MANAGER' && post.user.id == getUser().currentProfile.id">
+                            <button [disabled]="isLoading" (click)="editPost(post.id)" class="btn btn-fooma btn-block">
+                                <i class="fas fa-edit"></i> Chỉnh sửa
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <h4 class="card-title mb-1">{{post?.title}}</h4>
-                <p class="card-text">{{post?.content}}</p>
-                <ngb-carousel *ngIf="post?.postImages">
-                    <ng-template ngbSlide *ngFor="let image of post?.postImages">
-                        <div class="picsum-img-wrapper d-flex justify-content-center">
-                          <img [src]="image.imageUrl" alt="Random slide" style="height: 600px; border-radius: 8px;">
-                        </div>
-                    </ng-template>
-                </ngb-carousel>
-                <br>
-                <a href="javascript:void(0)" [routerLink]="['../../post/hashtag/', hashtag]" *ngFor="let hashtag of splitDescription(post.hashtag)" class="text-muted rounded mr-2 px-2 bg-pending my-1" style="width: fit-content;">
-                    #{{hashtag}}
-                </a>
+        </div>
+        <div class="col-xl order-xl-1">
+            <div *ngIf="!post" class="card">
+                <div class="card-body text-center">
+                    <img src="./assets/img/brand/logo.png" class="navbar-brand-img mb-4" alt="logo" style="width: 230px;">
+                    <h3>Bài viết không tồn tại</h3>
+                    <a class="" (click)="activeModal.dismiss('Cross click')">Quay lại</a>
+                </div>
             </div>
-            <div class="card-footer">
+            <div *ngIf="!isLoading && post && reportId" class="card">
                 <div class="row">
                     <div class="col-6">
-                        <div class="d-inline-flex align-items-center text-fooma">
-                            <i class="ni ni-favourite-28"></i>
-                            <span class="ml-2 text-dark">{{post?.totalReact}}</span>
-                        </div>
+                        <button class="btn btn-success btn-block" [disabled]="isLoading" (click)="acceptReport()"><i class="fas fa-check"></i> Bỏ qua</button>
                     </div>
-                    <div class="col-6 text-right">
-                        <span>
-                            {{post?.totalComment}} bình luận
-                        </span>
+                    <div class="col-6">
+                        <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Bỏ qua và xóa bài viết</button>
                     </div>
                 </div>
-                <hr class="mt-3">
-                <div class="row mb-4 justify-content-center" *ngFor="let comment of post?.postComments">
-                    <div class="col-lg-1 justify-content-center text-center">
-                        <img class="avatar rounded-circle text-center" [src]="comment.userImageUrl" alt="avatar commentor">
-                    </div>
-                    <div class="col-lg-11">
-                        <div class="px-3 py-2 w-100 rounded" style="background-color: #f6f6f6">
+            </div>
+            <div *ngIf="!isLoading && post" class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
                             <div class="row">
-                                <div class="col-6">
-                                    <h4 class="mb-0">{{comment.name}}</h4>
+                                <div class="col-auto text-center">
                                 </div>
-                                <div class="col-6 text-right">
-                                    <span>
-                                        {{comment.createDate | date: 'HH:mm dd/MM/yyyy'}}
-                                    </span>
+                                <div class="col-auto">
+                                    <img alt="avatar" [src]="post?.user?.avatarUrl" class="avatar rounded-circle">
                                 </div>
+                                <div class="col-auto">
+                                    <h3 class="card-title font-weight-bold mb-0">{{post?.user?.fullname}}</h3>
+                                    <span class="h5 mb-0 font-weight-light">Đã đăng {{ post?.publishedDate | time}} ({{post?.publishedDate | date: 'HH:mm dd/MM/yyyy'}})</span>
+                                </div>
+                                
                             </div>
-                            <p class="mb-0">
-                                {{comment.content}}
-                            </p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div *ngIf="!isLoading && post && showAction" class="my-2">
-        <div class="row justify-content-center">
-            <div class="col-lg-3" *ngIf="post?.status === 2">
-                <button [disabled]="isLoading" (click)="setPostByStatus(1)" class="btn btn-success btn-block">
-                    <i class="fas fa-check"></i> Duyệt bài
-                </button>
-            </div>
-            <div class="col-lg-3" *ngIf="post?.status === 1 || post?.status === 3">
-                <button [disabled]="isLoading" (click)="showPopup(confirmModal)" class="btn btn-danger btn-block">
-                    <i class="fas fa-trash"></i> Xóa
-                </button>
-            </div>
-            <div class="col-lg-3" *ngIf="post?.status === 2">
-                <button [disabled]="isLoading" (click)="showPopupDenied()" class="btn btn-danger btn-block">
-                    <i class="fas fa-ban"></i> Từ chối
-                </button>
-            </div>
-            <div class="col-lg-3" *ngIf="post?.status === 0 || post?.status === 3">
-                <button [disabled]="isLoading" (click)="setPostByStatus(1)" class="btn btn-success btn-block">
-                    <i class="fas fa-check-double"></i> Kích hoạt
-                </button>
+                <div class="card-body">
+                    <h4 class="card-title mb-1">{{post?.title}}</h4>
+                    <p class="card-text">{{post?.content}}</p>
+                    <ngb-carousel *ngIf="post?.postImages">
+                        <ng-template ngbSlide *ngFor="let image of post?.postImages">
+                            <div class="picsum-img-wrapper d-flex justify-content-center">
+                              <img [src]="image.imageUrl" alt="Random slide" style="height: 600px; border-radius: 8px;">
+                            </div>
+                        </ng-template>
+                    </ngb-carousel>
+                    <br>
+                    <a href="javascript:void(0)" [routerLink]="['../../post/hashtag/', hashtag]" *ngFor="let hashtag of splitDescription(post.hashtag)" class="text-muted rounded mr-2 px-2 bg-pending my-1" style="width: fit-content;">
+                        #{{hashtag}}
+                    </a>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="d-inline-flex align-items-center text-fooma">
+                                <i class="ni ni-favourite-28"></i>
+                                <span class="ml-2 text-dark">{{post?.totalReact}}</span>
+                            </div>
+                        </div>
+                        <div class="col-6 text-right">
+                            <span>
+                                {{post?.totalComment}} bình luận
+                            </span>
+                        </div>
+                    </div>
+                    <hr class="mt-3">
+                    <div class="row mb-4 justify-content-center" *ngFor="let comment of post?.postComments">
+                        <div class="col-lg-1 justify-content-center text-center">
+                            <img class="avatar rounded-circle text-center" [src]="comment.userImageUrl" alt="avatar commentor">
+                        </div>
+                        <div class="col-lg-11">
+                            <div class="px-3 py-2 w-100 rounded" style="background-color: #f6f6f6">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4 class="mb-0">{{comment.name}}</h4>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <span>
+                                            {{comment.createDate | date: 'HH:mm dd/MM/yyyy'}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <p class="mb-0">
+                                    {{comment.content}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

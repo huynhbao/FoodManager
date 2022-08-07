@@ -15,9 +15,9 @@
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe']">Công thức (Hệ thống)</a>
                     </li>
-                    <li class="nav-item" *ngIf="getRole() != 'MANAGER'">
+                    <!-- <li class="nav-item" *ngIf="getRole() != 'MANAGER_TEMP'">
                         <a class="nav-link" data-toggle="tab" [routerLink]="['../user']">Người dùng</a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <!-- Light table -->
-                <div class="table-responsive">
+                <div class="table-responsive-lg">
                     <div *ngIf="numSelected >= 2" class="multi-selected">
                         <h6>{{numSelected}} selected</h6>
                         <div>
@@ -72,32 +72,32 @@
                                 <th>Tiêu đề</th>
                                 <th>Nội dung</th>
                                 <th>Ngày báo cáo</th>
-                                <th>Hành động</th>
+                                <th class="text-center">Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let post of reportPosts; let i = index" [ngClass]="{'selected': post.isSelected === true}">
-                                <td class="">
+                                <td (click)="showPost(post.postId, post.id)">
                                     <b>{{post.userName}}</b>
                                 </td>
-                                <td>
-                                    <a (click)="showPost(post.postId, post.id)" class="font-weight-bold text-dark" style="cursor: pointer;">{{post.postTitle}}</a>
+                                <td (click)="showPost(post.postId, post.id)">
+                                    <a href="javascript:void(0)" class="font-weight-bold text-dark" style="cursor: pointer;">{{post.postTitle}}</a>
                                 </td>
-                                <td>
+                                <td (click)="showPost(post.postId, post.id)">
                                     <span class="text-muted">{{post.title}}</span>
                                 </td>
-                                <td>
+                                <td (click)="showPost(post.postId, post.id)">
                                     <span class="text-muted">{{post.content}}</span>
                                 </td>
-                                <td style="width:1px; white-space:nowrap;">
+                                <td (click)="showPost(post.postId, post.id)" style="width:1px; white-space:nowrap;">
                                     <span class="text-muted">{{post.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
-                                <td class="table-actions">
-                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(post.id, post.postId, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
-                                        <i class="fas fa-check"></i>
+                                <td class="table-actions row text-center">
+                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(post.id, post.postId, 1)" class="btn btn-primary btn-sm table-action table-action-delete">
+                                        <i class="fas fa-check"></i> Bỏ qua
                                     </button>
-                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="showPopup(confirmModal, i)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
-                                        <i class="fas fa-trash"></i>
+                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="showPopup(confirmModal, i)" class="btn btn-danger btn-sm table-action table-action-delete">
+                                        <i class="fas fa-trash"></i> Xóa bài viết
                                     </button>
                                 </td>
                             </tr>

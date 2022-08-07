@@ -45,10 +45,10 @@ export const AdminDashboardRoutes: Routes = [
       },
       {
         path: 'recipe', component: ReportRecipeComponent,
-      },
+      }/* ,
       {
         path: 'user', component: ReportUserComponent,
-      }
+      } */
     ]
   },
 ];

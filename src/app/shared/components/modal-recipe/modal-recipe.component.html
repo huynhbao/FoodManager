@@ -1,188 +1,232 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Thông tin công thức</h4>
+    <!-- <h3 class="modal-title" id="modal-basic-title">{{recipe?.recipeName}}</h3> -->
+    <a class="navbar-brand pt-0" href="javascript:void(0)">
+        <img src="./assets/img/brand/logo.png" height="20" class="navbar-brand-img" alt="...">
+    </a>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">×</span>
     </button>
 </div>
 <app-spinner [enabled]="isLoading"></app-spinner>
-<div class="modal-body">
-    <div class="col-lg-12 card-wrapper">
-        <div *ngIf="!isLoading && recipe && reportId" class="card">
+<div class="modal-body" style=" background-color: #ff00000d; ">
+    <div class="row" *ngIf="recipe">
+        <div class="col-xl-2 order-xl-2">
+            <!-- <div *ngIf="!isLoading && recipe && showAction" class="my-2"> -->
+            <div class="row card pb-3" style="position: fixed; width: 260px;">
+                <div class="container-fluid" style="position: relative">
+                    <h3 class="my-3 ml-2">Hành động</h3>
+                    <div *ngIf="!isLoading && recipe && reportId">
+                        <div class="my-2">
+                            <button class="btn btn-primary btn-block" [disabled]="isLoading" (click)="acceptReport()"><i class="fas fa-check"></i> Bỏ qua</button>
+                        </div>
+                        <div class="my-2">
+                            <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Xóa công thức</button>
+                        </div>
+                    </div>
+                    <div *ngIf="!isLoading && recipe && showAction">
+                        <div class="my-2" *ngIf="recipe?.status === 2">
+                            <button [disabled]="isLoading" (click)="setRecipeByStatus(1)" class="btn btn-success btn-block">
+                                <i class="fas fa-check"></i> Duyệt bài
+                            </button>
+                        </div>
+                        <div class="my-2" *ngIf="recipe?.status === 1 || recipe?.status === 3">
+                            <button [disabled]="isLoading" (click)="showPopup(confirmModal)" class="btn btn-danger btn-block">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                        </div>
+                        <div class="my-2" *ngIf="recipe?.status === 2">
+                            <button [disabled]="isLoading" (click)="showPopupDenied()" class="btn btn-danger btn-block">
+                                <i class="fas fa-ban"></i> Từ chối
+                            </button>
+                        </div>
+                        <div class="my-2" *ngIf="recipe?.status === 0 || recipe?.status === 3">
+                            <button [disabled]="isLoading" (click)="setRecipeByStatus(1)" class="btn btn-success btn-block">
+                                <i class="fas fa-check-double"></i> Kích hoạt
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="!isLoading && recipe && showActionSystem">
+                        <div class="my-2" *ngIf="recipe?.status === 1">
+                            <button [disabled]="isLoading" (click)="showPopup(confirmModal)" class="btn btn-danger btn-block">
+                                <i class="fas fa-trash"></i> Xóa
+                            </button>
+                        </div>
+                        <div class="my-2" *ngIf="recipe?.status === 1">
+                            <button [disabled]="isLoading" (click)="editRecipe(recipe.id)" class="btn btn-fooma btn-block">
+                                <i class="fas fa-edit"></i> Chỉnh sửa
+                            </button>
+                        </div>
+                        <div class="my-2" *ngIf="recipe?.status === 0">
+                            <button [disabled]="isLoading" (click)="setRecipeByStatus(1)" class="btn btn-success btn-block">
+                                <i class="fas fa-check-double"></i> Đăng lại
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-10 order-xl-1 card-wrapper">
             <div class="row">
-                <div class="col-lg-6">
-                    <button class="btn btn-success btn-block" [disabled]="isLoading" (click)="acceptReport()"><i class="fas fa-check"></i> Bỏ qua</button>
+                <div class="col-xl-6 order-xl-2 card-wrapper justify-content-center">
+                    <div class="row justify-content-center mt-0 mb-2">
+                        <div class="col-lg-5 py-2 card text-center custom-radius mx-3 my-1">
+                            <div class="row justify-content-center">
+                                <div class="icon-sm icon-shape bg-gradient-red text-white rounded-circle shadow mb-2">
+                                    <i class="far fa-clock"></i>
+                                </div>
+                            </div>
+                            <h4 class="font-weight-bold text-dark mb-1">{{recipe?.preparationTime}} phút</h4>
+                            <h5 class="text-dark text-muted mb-1">
+                                Thời gian chuẩn bị
+                            </h5>
+                        </div>
+                        <div class="col-lg-5 py-2 card text-center custom-radius mx-3 my-1">
+                            <div class="row justify-content-center">
+                                <div class="icon-sm icon-shape bg-gradient-orange text-white rounded-circle shadow mb-2">
+                                    <i class="far fa-clock"></i>
+                                </div>
+                            </div>
+                            <h4 class="font-weight-bold text-dark mb-1">{{recipe?.cookingTime}} phút</h4>
+                            <h5 class="text-dark text-muted mb-1">
+                                Thời gian nấu
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-0 mb-0">
+                        <div class="col-lg-5 py-2 card text-center custom-radius mx-3 my-1">
+                            <div class="row justify-content-center">
+                                <div class="icon-sm icon-shape bg-gradient-green text-white rounded-circle shadow mb-2">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                            </div>
+                            <h4 class="font-weight-bold text-dark mb-1">{{recipe?.calories}} cal</h4>
+                            <h5 class="text-dark text-muted mb-1">
+                                Calories
+                            </h5>
+                        </div>
+                        <div class="col-lg-5 py-2 card text-center custom-radius mx-3 my-1">
+                            <div class="row justify-content-center">
+                                <div class="icon-sm icon-shape bg-gradient-info text-white rounded-circle shadow mb-2">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                            <h4 class="font-weight-bold text-dark mb-1">{{recipe?.serves}} người</h4>
+                            <h5 class="text-dark text-muted mb-1">
+                                Khẩu phần
+                            </h5>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Bỏ qua và xóa công thức</button>
+                <div class="col-xl-6 order-xl-1 card-wrapper">
+                    <div class="card py-3 px-5">
+                        <!-- <h1 class="mx-0 my-2">{{recipe?.recipeName}}</h1> -->
+                        <star-rating [showHalfStars]="'true'" [readOnly]="'true'" [starType]="'svg'" [rating]="recipe.totalRatingPoint"></star-rating>
+                        <div class="mx-0 my-2">Phương pháp nấu <span class="rounded text-dark px-2 mx-1 bg-active badge badge-dot"><b>{{recipe?.cookingMethodName}}</b></span>
+                        </div>
+                        <div class="mx-0 my-2">
+                            Danh mục 
+                            <span [routerLink]="['../../recipe/hashtag/', category.recipeCategoryId]"
+                                 *ngFor="let category of recipe.manyToManyRecipeCategories"
+                                class="rounded text-dark px-2 mx-1 bg-category badge badge-dot"><b>{{category.recipeCategoryName}}</b></span>
+                        </div>
+                        <div class="mx-0 my-2">
+                            Xuất xứ
+                            <span [routerLink]="['../../recipe/hashtag/', recipe?.originId]"
+                                class="rounded text-dark px-2 mx-1 bg-origin badge badge-dot"><b>{{recipe?.originName}}</b></span>
+                        </div>
+                        <div class="mx-0 my-2">
+                            Trạng thái
+                            <span class="rounded text-dark px-2 mx-1 mb-2 badge badge-dot"><i
+                                [ngClass]="recipe?.status == 1 ? 'bg-success' : 'bg-warning'"></i>
+                            {{recipe?.status == 1 ? 'Đã duyệt' : recipe?.status == 2 ? 'Chờ duyệt' : recipe?.status == 3 ? 'Từ chối' : 'Đã xóa'}}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h1 class="mx-3 my-2">{{recipe?.recipeName}}</h1>
-                <div class="mx-3 my-2">Phương pháp nấu <span
-                        class="rounded text-dark px-2 mx-1 bg-active badge badge-dot"><b>{{recipe?.cookingMethodName}}</b></span>
-                </div>
-                <div class="mx-3 my-2">
-                    Danh mục 
-                    <span [routerLink]="['../../recipe/hashtag/', category.recipeCategoryId]"
-                        *ngFor="let category of recipe.manyToManyRecipeCategories"
-                        class="rounded text-dark px-2 mx-1 bg-category badge badge-dot"><b>{{category.recipeCategoryName}}</b></span>
-                </div>
-                <div class="mx-3 my-2">
-                    Xuất xứ
-                    <span [routerLink]="['../../recipe/hashtag/', recipe?.originId]"
-                        class="rounded text-dark px-2 mx-1 bg-origin badge badge-dot"><b>{{recipe?.originName}}</b></span>
-                </div>
-                <div class="mx-3 my-2">
-                    Trạng thái
-                    <span class="rounded text-dark px-2 mx-1 mb-2 badge badge-dot"><i
-                        [ngClass]="recipe?.status == 1 ? 'bg-success' : 'bg-warning'"></i>
-                    {{recipe?.status == 1 ? 'Đã duyệt' : recipe?.status == 2 ? 'Chờ duyệt' : recipe?.status == 3 ? 'Từ chối' : 'Đã xóa'}}</span>
-                </div>
-                <div class="mx-3 my-2">
-                </div>
-                <!-- <div [ngClass]="recipe?.status == 1 ? 'bg-active' : 'bg-pending'" class="rounded px-2">
-                    <span class="badge badge-dot"><i
-                            [ngClass]="recipe?.status == 1 ? 'bg-success' : 'bg-warning'"></i>
-                        {{recipe?.status == 1 ? 'Active' : 'Disabled'}}</span>
-                </div> -->
-                <div class="row justify-content-center">
-                    <div class="col-lg-2 py-2 bg-fooma rounded mx-2">
-                        <h5 class="text-secondary mb-1">
-                            <fa-icon [icon]="['far', 'clock']"></fa-icon> Thời gian chuẩn bị
-                        </h5>
-                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.preparationTime}} phút
-                        </h4>
+            <div class="row justify-content-center">
+                <div class="col card-wrapper">
+                    <div *ngIf="!isLoading && !recipe" class="card">
+                        <div class="card-body text-center">
+                            <img src="./assets/img/brand/logo.png" class="navbar-brand-img mb-4" alt="logo"
+                                style="width: 230px;">
+                            <h3>Công thức này không tồn tại</h3>
+                            <a class="" (click)="activeModal.dismiss('Cross click')">Quay lại</a>
+                        </div>
                     </div>
-                    <div class="col-lg-2 py-2 bg-fooma rounded mx-2">
-                        <h5 class="text-secondary mb-1">
-                            <fa-icon [icon]="['far', 'clock']"></fa-icon> Thời gian nấu
-                        </h5>
-                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.cookingTime}} phút</h4>
-                    </div>
-                    <div class="col-lg-2 py-2 bg-fooma rounded mx-2">
-                        <h5 class="text-secondary mb-1">
-                            <fa-icon [icon]="['fas', 'fire']"></fa-icon> Calories
-                        </h5>
-                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.calories}} cal</h4>
-                    </div>
-                    <div class="col-lg-2 py-2 bg-fooma rounded mx-2">
-                        <h5 class="text-secondary mb-1">
-                            <fa-icon [icon]="['fas', 'users']"></fa-icon> Khẩu phần
-                        </h5>
-                        <h4 class="font-weight-bold text-secondary mb-1">{{recipe?.serves}} người</h4>
+                    <div *ngIf="!isLoading && recipe" class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <div class="row">
+                                        <div class="col-auto text-center">
+                                        </div>
+                                        <div class="col-auto">
+                                            <img alt="avatar" [src]="recipe?.user?.avatarUrl" class="avatar rounded-circle">
+                                        </div>
+                                        <div class="col-auto">
+                                            <h3 class="card-title font-weight-bold mb-1">{{recipe?.user?.fullname}}</h3>
+                                            <h5 class="mb-0">Vai trò: {{recipe?.user?.role | titlecase}}</h5>
+                                            <span class="h5 mb-0 font-weight-light">Đã đăng {{ recipe?.createDate | time }}
+                                                ({{recipe?.createDate | date: 'HH:mm dd/MM/yyyy'}})</span>
+                                        </div>
+        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title mb-1">{{recipe?.recipeName}}</h4>
+                            <p class="card-text">{{recipe?.description}}</p>
+                            <img [src]="recipe?.thumbnail" class="navbar-brand-img mb-4 rounded mx-auto d-block"
+                                alt="logo" style="width: 640px;height: 512px;object-fit: contain;background-size: cover;" />
+                            <br>
+        
+                        </div>
+                        <div class="card-footer">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col card-wrapper">
-            <div *ngIf="!isLoading && !recipe" class="card">
-                <div class="card-body text-center">
-                    <img src="./assets/img/brand/logo.png" class="navbar-brand-img mb-4" alt="logo"
-                        style="width: 230px;">
-                    <h3>Công thức này không tồn tại</h3>
-                    <a class="" (click)="activeModal.dismiss('Cross click')">Quay lại</a>
-                </div>
-            </div>
-            <div *ngIf="!isLoading && recipe" class="card">
-                <div class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col-8">
-                            <div class="row">
-                                <div class="col-auto text-center">
-                                </div>
-                                <div class="col-auto">
-                                    <img alt="avatar" [src]="recipe?.user?.avatarUrl" class="avatar rounded-circle">
-                                </div>
-                                <div class="col-auto">
-                                    <h3 class="card-title font-weight-bold mb-1">{{recipe?.user?.fullname}}</h3>
-                                    <h5 class="mb-0">Vai trò: {{recipe?.user?.role | titlecase}}</h5>
-                                    <span class="h5 mb-0 font-weight-light">Đã đăng {{ recipe?.createDate | time }}
-                                        ({{recipe?.createDate | date: 'HH:mm dd/MM/yyyy'}})</span>
-                                </div>
-
+            <div class="row justify-content-center">
+                <div class="col card-wrapper">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="mb-0">Tổng số nguyên liệu: {{recipe?.recipeIngredients?.length}}</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="rounded bg-disable px-4 py-2 mb-4 shadow" *ngFor="let ingredient of recipe?.recipeIngredients; let i = index">
+                                <h2>{{i + 1}}. {{ingredient.ingredientName | titlecase}}</h2>
+                                <h4>Số lượng: {{ingredient.quantity}} {{ingredient.unit}}</h4>
+                                <h4 *ngIf="ingredient.isMain" class="text-primary">Nguyên liệu chính</h4>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <h4 class="card-title mb-1">{{recipe?.recipeName}}</h4>
-                    <p class="card-text">{{recipe?.description}}</p>
-                    <img [src]="recipe?.thumbnail" class="navbar-brand-img mb-4 rounded mx-auto d-block"
-                        alt="logo" style="width: 600px;" />
-                    <br>
-
-                </div>
-                <div class="card-footer">
-                </div>
             </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col card-wrapper">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="mb-0">Tổng số nguyên liệu: {{recipe?.recipeIngredients?.length}}</h2>
-                </div>
-                <div class="card-body">
-                    <div class="rounded bg-disable px-4 py-2 mb-4 shadow" *ngFor="let ingredient of recipe?.recipeIngredients; let i = index">
-                        <h2>{{i + 1}}. {{ingredient.ingredientName | titlecase}}</h2>
-                        <h4>Số lượng: {{ingredient.quantity}} {{ingredient.unit}}</h4>
-                        <h4 *ngIf="ingredient.isMain" class="text-primary">Nguyên liệu chính</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col card-wrapper">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="mb-0">Phương pháp: {{recipe?.recipeMethods?.length}}</h2>
-                </div>
-                <div class="card-body">
-                    <div class="rounded bg-active px-4 py-2 mb-4 shadow" *ngFor="let method of recipe?.recipeMethods; let i = index">
-                        <h2>Bước {{method.step}}</h2>
-                        <div>
-                            {{method.content}}
+            <div class="row justify-content-center">
+                <div class="col card-wrapper">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="mb-0">Các bước nấu: {{recipe?.recipeMethods?.length}} bước</h2>
                         </div>
-                        <br>
-                        <ngb-carousel>
-                            <ng-template ngbSlide *ngFor="let image of method.recipeMethodImages">
-                                <div class="picsum-img-wrapper d-flex justify-content-center">
-                                  <img [src]="image.imageUrl" alt="Post Image" style="height: 300px; border-radius: 8px;">
+                        <div class="card-body">
+                            <div class="rounded px-4 py-2 mb-4 shadow" *ngFor="let method of recipe?.recipeMethods; let i = index" style="background-color: #fff0f0 !important;">
+                                <h2>Bước {{method.step}}</h2>
+                                <div>
+                                    {{method.content}}
                                 </div>
-                            </ng-template>
-                        </ngb-carousel>
+                                <br>
+                                <ngb-carousel>
+                                    <ng-template ngbSlide *ngFor="let image of method.recipeMethodImages">
+                                        <div class="picsum-img-wrapper d-flex justify-content-center">
+                                          <img [src]="image.imageUrl" alt="Post Image" style="height: 300px; border-radius: 8px;">
+                                        </div>
+                                    </ng-template>
+                                </ngb-carousel>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div *ngIf="!isLoading && recipe && showAction" class="my-2">
-        <div class="row justify-content-center">
-            <div class="col-lg-3" *ngIf="recipe?.status === 2">
-                <button [disabled]="isLoading" (click)="setRecipeByStatus(1)" class="btn btn-success btn-block">
-                    <i class="fas fa-check"></i> Duyệt bài
-                </button>
-            </div>
-            <div class="col-lg-3" *ngIf="recipe?.status === 1 || recipe?.status === 3">
-                <button [disabled]="isLoading" (click)="showPopup(confirmModal)" class="btn btn-danger btn-block">
-                    <i class="fas fa-trash"></i> Xóa
-                </button>
-            </div>
-            <div class="col-lg-3" *ngIf="recipe?.status === 2">
-                <button [disabled]="isLoading" (click)="showPopupDenied()" class="btn btn-danger btn-block">
-                    <i class="fas fa-ban"></i> Từ chối
-                </button>
-            </div>
-            <div class="col-lg-3" *ngIf="recipe?.status === 0 || recipe?.status === 3">
-                <button [disabled]="isLoading" (click)="setRecipeByStatus(1)" class="btn btn-success btn-block">
-                    <i class="fas fa-check-double"></i> Kích hoạt
-                </button>
             </div>
         </div>
     </div>

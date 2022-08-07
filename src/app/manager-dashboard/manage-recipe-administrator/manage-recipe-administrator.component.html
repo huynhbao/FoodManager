@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <!-- Light table -->
-                <div class="table-responsive-xl">
+                <div class="table-responsive-lg">
                     <div *ngIf="numSelected >= 2" class="multi-selected">
                         <h6>{{numSelected}} selected</h6>
                         <div>
@@ -144,7 +144,7 @@
                                 <th style="width: 10%;">Ngày đăng</th>
                                 <th class="text-center">Phương thức nấu</th>
                                 <th class="text-center">Danh mục</th>
-                                <th>Hành động</th>
+                                <th class="text-center">Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -171,12 +171,12 @@
                                 <td (click)="showRecipe(recipe.id)" class="text-center">
                                     <b>{{recipe.manyToManyRecipeCategories[0].recipeCategoryName}}</b>
                                 </td>
-                                <td class="row table-actions">
-                                    <button [disabled]="isLoading" [routerLink]="['./edit', recipe.id]" class="btn btn-link table-action table-action-delete text-fooma" data-toggle="tooltip" data-original-title="Delete Post">
+                                <td class="row table-actions justify-content-center">
+                                    <button *ngIf="statusSelected == 1" [disabled]="isLoading" [routerLink]="['./edit', recipe.id]" class="btn btn-link table-action table-action-delete text-fooma" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
-                                        <i class="fas fa-check-double"></i>
+                                    <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-sm btn-success table-action table-action-delete" data-toggle="tooltip" data-original-title="Delete Post">
+                                        <i class="fas fa-check-double"></i> Đăng lại
                                     </button>
                                     <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="showPopupConfirm(recipe)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>

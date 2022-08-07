@@ -23,10 +23,10 @@
                 <!-- Card header -->
                 <div class="card-header" style="border-radius: 0">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <h3 class="mb-0">Tổng số công thức: {{collectionSize}}</h3>
                         </div>
-                        <div class="col-lg-6 text-right">
+                        <div class="col-lg-8 text-right">
                             <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
                                 <span class="badge badge-dot"><i class="bg-success"></i></span>
                                 <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
@@ -165,9 +165,10 @@
                                 <th style="width: 25%;">Tiêu đề</th>
                                 <th style="width: 12%;">Người đăng</th>
                                 <th style="width: 10%;">Ngày đăng</th>
-                                <th *ngIf="statusSelected === 3" style="width: 12%;">Lý do từ chối</th>
                                 <th class="text-center">Phương thức nấu</th>
                                 <th class="text-center">Danh mục</th>
+                                <th *ngIf="statusSelected === 3" style="width: 12%;">Lý do từ chối</th>
+                                <th *ngIf="statusSelected === 0" style="width: 12%;">Lý do xóa</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -184,6 +185,12 @@
                                 <td (click)="showRecipe(recipe.id)" >
                                     <span class="text-muted">{{recipe.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
+                                <td (click)="showRecipe(recipe.id)" class="text-center">
+                                    <b>{{recipe.cookingMethodName}}</b>
+                                </td>
+                                <td (click)="showRecipe(recipe.id)" class="text-center">
+                                    <b>{{recipe.manyToManyRecipeCategories[0].recipeCategoryName}}</b>
+                                </td>
                                 <td (click)="showRecipe(recipe.id)" style="width:1px; white-space:nowrap;" *ngIf="statusSelected === 3">
                                     <!-- <div *ngIf="statusSelected !== 3">
                                         <div *ngFor="let hashtag of splitDescription(recipe.hashtag)"
@@ -193,23 +200,20 @@
                                     </div> -->
                                     <b>{{recipe.reason}}</b>
                                 </td>
-                                <td (click)="showRecipe(recipe.id)" class="text-center">
-                                    <b>{{recipe.cookingMethodName}}</b>
-                                </td>
-                                <td (click)="showRecipe(recipe.id)" class="text-center">
-                                    <b>{{recipe.manyToManyRecipeCategories[0].recipeCategoryName}}</b>
+                                <td (click)="showRecipe(recipe.id)" *ngIf="statusSelected === 0">
+                                    <b>{{recipe.reason}}</b>
                                 </td>
                                 <td class="table-actions row">
                                     <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-check-double"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="showPopupConfirm(recipe)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="showPopup(recipe.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                     <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-check"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="showPopup(recipe.id)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="showPopup(recipe.id, 3)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-ban"></i>
                                     </button>
                                 </td>

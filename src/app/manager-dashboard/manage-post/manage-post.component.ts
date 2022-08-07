@@ -148,9 +148,10 @@ export class ManagePostComponent implements OnInit {
     this.modalRef.close();
   }
 
-  showPopup(id: string) {
-    this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+  showPopup(id: string, status: number) {
+    this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'md'});
     this.modalRef.componentInstance.id = id;
+    this.modalRef.componentInstance.status = status;
     this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
   }
 
@@ -192,8 +193,8 @@ export class ManagePostComponent implements OnInit {
     });
   }
 
-  submitFunc(id: string, reason: string) {
-    this.setPostByStatus(id, 3, reason);
+  submitFunc(id: string, reason: string, status: number) {
+    this.setPostByStatus(id, status, reason);
     this.modalRef.close();
   }
 

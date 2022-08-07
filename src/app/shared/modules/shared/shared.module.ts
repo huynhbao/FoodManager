@@ -18,7 +18,7 @@ import { StarRatingModule } from 'angular-star-rating';
       timeOut: 3000,
       positionClass: 'toast-bottom-right',
     }),
-    StarRatingModule.forRoot()
+    StarRatingModule.forRoot(),
   ],
   declarations: [
     SpinnerComponent,
@@ -27,7 +27,8 @@ import { StarRatingModule } from 'angular-star-rating';
   exports: [
     SpinnerComponent,
     TimePipe,
-    FontAwesomeModule
+    FontAwesomeModule,
+    StarRatingModule,
   ]
 })
 export class SharedModule {

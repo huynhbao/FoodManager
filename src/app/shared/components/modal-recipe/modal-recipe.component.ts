@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbActiveModal, NgbCarouselConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Recipe } from 'src/app/models/recipe.model';
@@ -17,13 +18,14 @@ export class ModalRecipeComponent implements OnInit {
   @Input() id!: string;
   @Input() reportId!: string;
   @Input() showAction!: boolean;
+  @Input() showActionSystem!: boolean;
   @Input() submitFunc!: Function;
   modalRef!: NgbModalRef;
   confirmModalRef!: NgbModalRef;
   recipe!: Recipe;
   isLoading: boolean = true;
   
-  constructor(private sharedService: SharedService, private managerService: ManagerService, private config: NgbCarouselConfig, public activeModal: NgbActiveModal, private modalService: NgbModal, private toastr: ToastrService) {
+  constructor(private sharedService: SharedService, private managerService: ManagerService, private config: NgbCarouselConfig, public activeModal: NgbActiveModal, private modalService: NgbModal, private toastr: ToastrService, private route: ActivatedRoute, private router: Router) {
     config.interval = 0;
   }
 
@@ -138,6 +140,11 @@ export class ModalRecipeComponent implements OnInit {
 
   showPopup(content) {
     this.confirmModalRef = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+  }
+
+  editRecipe(id) {
+    this.activeModal.close();
+    this.router.navigate(["../../manager/recipe-system/edit", id], { relativeTo: this.route });
   }
 
   ngOnInit(): void {

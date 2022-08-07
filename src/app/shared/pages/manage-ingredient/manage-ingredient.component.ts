@@ -172,7 +172,7 @@ export class ManageIngredientComponent implements OnInit {
           this.sharedService.createIngredientDB(ingredient).subscribe({
             next: (res:any) => {
               console.log(res);
-              if (res.code == 200) {
+              if (res.id) {
                 this.modalService.dismissAll();
                 this.loadIngredients();
                 this.toastr.success(`Đã tạo nguyên liệu`);

@@ -285,9 +285,10 @@ export class ManageRecipeComponent implements OnInit {
     this.modalRef.close();
   }
 
-  showPopup(id: string) {
-    this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+  showPopup(id: string, status: number) {
+    this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'md'});
     this.modalRef.componentInstance.id = id;
+    this.modalRef.componentInstance.status = status;
     this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
   }
 
@@ -329,8 +330,8 @@ export class ManageRecipeComponent implements OnInit {
     });
   }
 
-  submitFunc(id: string, reason: string) {
-    this.setRecipeByStatus(id, 3, reason);
+  submitFunc(id: string, reason: string, status: number) {
+    this.setRecipeByStatus(id, status, reason);
     this.modalRef.close();
   }
 
@@ -366,9 +367,10 @@ export class ManageRecipeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let hashtagParam = this.route.snapshot.params['hashtag'];
-    if (hashtagParam) {
-      this.loadHashtag("#" + hashtagParam);
+    const id = this.route.snapshot.params['id'];
+    console.log(id);
+    if (id) {
+      this.showRecipe(id);
     } else {
       this.loadRecipes();
     }
