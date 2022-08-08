@@ -30,6 +30,27 @@ export class ManageUserComponent implements OnInit {
   //form
   form: FormGroup;
   isDisabled: boolean = true;
+
+  selectedRole:number = 0;
+  rolesOption = [
+    {
+      role: 0,
+      display: "Tất cả"
+    },
+    {
+      role: 1,
+      display: "Quản lý"
+    },
+    {
+      role: 2,
+      display: "Người dùng"
+    },
+    {
+      role: 3,
+      display: "Người dùng Google"
+    },
+  ]
+
   
   constructor(private adminService: AdminManageService, private modalService: NgbModal, private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
@@ -116,9 +137,15 @@ export class ManageUserComponent implements OnInit {
     this.loadUsers();
   }
 
+  changeRole(index: number) {
+    this.selectedRole = index;
+    this.loadUsers();
+  }
+
   loadUsers() {
     this.isLoading = true;
-    this.adminService.getUsers(this.searchValue, this.statusSelected, this.currentPage).subscribe({
+    const role = this.rolesOption[this.selectedRole].role;
+    this.adminService.getUsers(this.searchValue, this.statusSelected, this.currentPage, role).subscribe({
       next: (res: any) => {
         this.collectionSize = res.totalItem;
         let users: User[] = res.items;

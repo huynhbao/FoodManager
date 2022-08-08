@@ -26,9 +26,9 @@ export class AdminManageService {
     );
   }
 
-  getUsers(search: string = "", status: number, page: number): Observable<any> {
+  getUsers(search: string = "", status: number, page: number, role: number): Observable<any> {
     return this.http.get<any>(
-      `${this.baseUrl}/user/users?name=${search}&status=${status}&page=${page}&size=5`
+      `${this.baseUrl}/user/users?name=${search}&status=${status}&page=${page}&size=5&entityName=CreateDate&sortOption=desc&stringRole=${role}`
     );
   }
 

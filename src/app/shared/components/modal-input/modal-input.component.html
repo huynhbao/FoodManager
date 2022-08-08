@@ -5,7 +5,20 @@
     </button>
 </div>
 <div class="modal-body">
-    <textarea type="text" id="input-bio" placeholder="Nhập lý do" class="form-control form-control-alternative" [(ngModel)]="reasonModel"></textarea>
+    <div ngbDropdown class="d-inline-block w-100">
+        <label class="form-control-label" for="dropdownBasic1">Lý do từ chối</label>
+        <input class="btn btn-outline-fooma btn-block" id="dropdownBasic1" ngbDropdownToggle
+            [value]="reasonsOption[selectedReason].display" readonly />
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+            <button type="button" class="dropdown-item"
+                *ngFor="let reason of reasonsOption; let i = index" (click)="selectedReason = i" >
+                {{reason.display}}
+            </button>
+        </div>
+    </div>
+    <br>
+    <br>
+    <textarea *ngIf="reasonsOption[selectedReason].id === 0" type="text" id="input-bio" placeholder="Nhập lý do" class="form-control form-control-alternative" [(ngModel)]="reasonModel"></textarea>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('Cancel click')">Hủy</button>

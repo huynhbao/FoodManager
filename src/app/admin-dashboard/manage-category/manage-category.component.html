@@ -32,33 +32,34 @@
                     </div>
                 </div>
                 <!-- Light table -->
-                <div class="table-responsive">
+                <div class="table-responsive-lg">
                     <table class="table align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th>ID</th>
                                 <th>Tên</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let category of listCategory">
-                                <td>
-                                    <h5>{{category.id}}</h5>
-                                </td>
+                            <tr *ngFor="let category of listCategory; let i = index">
                                 <td class="table-user">
                                     <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <h5>{{category.categoryName | titlecase}}</h5>
+                                        <div class="col-lg-auto ml-3">
+                                            <img [src]="category.imageUrl ? category.imageUrl : 'assets/img/thumb/default_thumbnail.png'" class="rounded-circle img-thumbnail img-fluid mr-3" style="height: 60px;width: 60px;object-fit: cover;object-position: center;">
+                                        </div>
+                                        <div class="col-lg-auto">
+                                            <h5>{{category.categoryName| titlecase}}</h5>
                                         </div>
                                     </div>
                                 </td>
-                                <!-- <td class="table-actions">
-                                    <a class="text-default mr-2" href="javascript:void(0)" (click)="triggerModal('update', recipeCategory)"><i class="fas fa-edit"></i></a>
-                                    <a (click)="triggerModal('confirm', recipeCategory)" class="table-action table-action-delete text-danger" data-toggle="tooltip"
-                                        data-original-title="Delete Post">
+                                <td class="table-actions row">
+                                    <button class="btn btn-link table-action table-action-delete text-fooma" (click)="triggerModal('update', category)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button (click)="triggerModal('confirm', category)" class="btn btn-link table-action table-action-delete text-danger">
                                         <i class="fas fa-trash"></i>
-                                    </a>
-                                </td> -->
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

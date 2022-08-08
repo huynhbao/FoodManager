@@ -97,6 +97,7 @@ export class ManageBanUserComponent implements OnInit {
         this.collectionSize = res.totalItem;
         let users: User[] = res.items;
         this.listUser = users;
+        console.log(this.listUser);
       },
       error: (error) => {
         console.log(error);

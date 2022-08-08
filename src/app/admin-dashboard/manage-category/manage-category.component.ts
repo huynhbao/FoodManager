@@ -94,7 +94,7 @@ export class ManageCategoryComponent implements OnInit {
           valid: Validators.required
         }
       },
-      {
+      /* {
         key: "status",
         name: "Status",
         type: "boolean",
@@ -104,7 +104,7 @@ export class ManageCategoryComponent implements OnInit {
           defaultValue: dto.status !== undefined ? (dto.status == 1 ? "Enable" : "Disable") : "Enable",
           valid: Validators.required
         }
-      },
+      }, */
     ];
     modalRef.result.then((result) => {
       //this.closeResult = `Closed with: ${result}`;

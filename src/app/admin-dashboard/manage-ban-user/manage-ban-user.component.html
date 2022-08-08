@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <!-- <div class="col-2">
+                        <!-- <div class="col-lg-2">
                             <div ngbDropdown class="d-inline-block w-100">
                                 <input class="btn btn-outline-fooma btn-block" id="dropdownBasic1" ngbDropdownToggle
                                     [value]="listHashtag[hastagSelected]" (click)="loadHashtag()" readonly />
@@ -60,17 +60,17 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> -->
-                        <div class="col-12">
+                        </div>
+                        <div class="col-lg-10">
                             <div class="input-group input-group-alternative input-group-merge"
                                 style="border-radius: 0.3rem; border: 1px solid #e5e5e5; background-color: #f7f6f9;">
                                 <div class="input-group-prepend">
                                     <span class="text-light input-group-text"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" placeholder="Search" type="text" [ngModel]="searchValue"
+                                <input class="form-control" placeholder="Tìm kiếm" type="text" [ngModel]="searchValue"
                                     (ngModelChange)='onSearchChange($event)' />
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <!-- Light table -->
@@ -96,13 +96,14 @@
                         <tbody>
                             <tr *ngFor="let user of listUser" [ngClass]="{'selected': user.isSelected === true}">
                                 <td (click)="openDetail(userModal, user)">
-                                    <img src="{{user.imageUrl}}" class="avatar rounded-circle mr-3">
+                                    <img [src]="user.imageUrl" class="avatar rounded-circle mr-3">
                                     <a href="javascript:void()" class="font-weight-bold text-dark">{{user.name}}</a>
                                 </td>
                                 <td (click)="openDetail(userModal, user)">
                                     <b>{{user.email}}</b>
                                 </td>
                                 <td (click)="openDetail(userModal, user)">
+                                    <span *ngIf="!user.expiredDate">Vĩnh viễn</span>
                                     <span class="text-muted">{{user.expiredDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td  (click)="openDetail(userModal, user)" style="width:1px; white-space:nowrap;">

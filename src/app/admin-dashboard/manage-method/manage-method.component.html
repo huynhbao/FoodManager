@@ -44,19 +44,18 @@
                     <table class="table align-items-center table-flush table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th>ID</th>
                                 <th>Tên</th>
                                 <th class="text-center">Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let method of methods">
-                                <td>
-                                    <h5>{{method.id}}</h5>
-                                </td>
                                 <td class="table-user">
                                     <div class="row align-items-center">
-                                        <div class="col-auto">
+                                        <div class="col-lg-auto ml-3">
+                                            <img [src]="method.imageUrl ? method.imageUrl : 'assets/img/thumb/default_thumbnail.png'" class="rounded-circle img-thumbnail img-fluid mr-3" style="height: 60px;width: 60px;object-fit: cover;object-position: center;">
+                                        </div>
+                                        <div class="col-lg-auto">
                                             <h5>{{method.cookingMethodName | titlecase}}</h5>
                                         </div>
                                     </div>
