@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 import { Category, RecipeCategory, RecipeMethod, RecipeOrigin } from '../models/category.model';
+import { Notify } from '../models/notify.model';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -24,6 +25,18 @@ export class AdminManageService {
     return this.http.get<any>(
       `${this.baseUrl}/category/by-name?search=${search}&page=${page}&size=5`
     );
+  }
+
+  createCategory(category: Category): Observable<Category> {
+    return this.http.post<Category>(`${this.baseUrl}/category`, category);
+  }
+
+  updateCategory(category: Category): Observable<Category> {
+    return this.http.put<Category>(`${this.baseUrl}/category/${category.id}`, category);
+  }
+
+  deleteCategory(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/category/${id}`);
   }
 
   getUsers(search: string = "", status: number, page: number, role: number): Observable<any> {
@@ -126,5 +139,16 @@ export class AdminManageService {
 
   deleteRecipeCategory(id: string): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/reciperelate/recipe-category${id}`);
+  }
+
+  //Notify
+  getNotify(): Observable<Notify> {
+    return this.http.get<Notify>(
+      `${this.baseUrl}/setting`
+    );
+  }
+
+  updateNotify(notify: Notify): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/setting`, notify);
   }
 }

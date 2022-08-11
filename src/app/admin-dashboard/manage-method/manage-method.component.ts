@@ -4,9 +4,11 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { RecipeMethod } from 'src/app/models/category.model';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { ModalConfirmComponent } from 'src/app/shared/components/modal-confirm/modal-confirm.component';
 import { ModalCreateComponent } from 'src/app/shared/components/modal-create/modal-create.component';
 import { ModalUpdateComponent } from 'src/app/shared/components/modal-update/modal-update.component';
+import { Utils } from 'src/app/shared/tools/utils';
 
 @Component({
   selector: 'app-manage-method',
@@ -25,7 +27,7 @@ export class ManageMethodComponent implements OnInit {
   modalRef!: NgbModalRef;
   isLoading: boolean = false;
 
-  constructor(private adminService: AdminManageService, private modalService: NgbModal, private toastr: ToastrService) { }
+  constructor(private adminService: AdminManageService, private sharedService: SharedService, private modalService: NgbModal, private toastr: ToastrService) { }
 
   onPageChange(pageNum: number): void {
     this.loadMethods();
@@ -55,7 +57,8 @@ export class ManageMethodComponent implements OnInit {
     this.modalRef.componentInstance.fromParent = [
       {
         id: recipeMethod?.id,
-        thumbnail: false
+        imgUrl: recipeMethod?.imageUrl || "",
+        thumbnail: true
       },
       {
         key: 'cookingMethodName',
@@ -66,17 +69,45 @@ export class ManageMethodComponent implements OnInit {
           defaultValue: recipeMethod?.cookingMethodName || '',
           valid: Validators.required,
         },
-      }
+      },
+      {
+        key: 'imageUrl',
+        name: 'Ảnh thumbnail',
+        type: 'file',
+        validator: {
+          disabled: false,
+          defaultValue: recipeMethod?.imageUrl || '',
+          valid: "",
+        },
+      },
     ];
     this.modalRef.componentInstance.submitFunc = method == "create" ? this.submitCreate.bind(this) : this.submitUpdate.bind(this);
   }
 
-  private submitCreate(form: any) {
+  private async submitCreate(form: any, img:string[]) {
     this.isLoading = true;
     const method: RecipeMethod = {
       id: "",
-      cookingMethodName: form.cookingMethodName
+      cookingMethodName: form.cookingMethodName,
+      imageUrl: form.imageUrl,
     };
+
+    await new Promise(resolve => {
+      this.sharedService.uploadImage(img[0]).subscribe({
+        next: (res:any) => {
+          const imgUrl:string = res.secure_url;
+          if (imgUrl) {
+            method.imageUrl = imgUrl;
+            resolve("");
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+        }
+      })
+    });
     
     this.adminService.createMethod(method).subscribe({
       next: (res:any) => {
@@ -97,12 +128,41 @@ export class ManageMethodComponent implements OnInit {
     });
   }
 
-  private async submitUpdate(form: any) {
+  private async submitUpdate(form: any, imgUrl: string) {
     this.isLoading = true;
+    let isNewImg: boolean = false;
+    if (form.imageUrl != imgUrl) {
+      await Utils.getBase64ImageFromUrl(imgUrl).then(base64 => {
+        if (base64 != form.imageUrl) {
+          isNewImg = true;
+        }
+      })
+    }
+
     const method: RecipeMethod = {
       id: form.id,
-      cookingMethodName: form.cookingMethodName
+      cookingMethodName: form.cookingMethodName,
+      imageUrl: imgUrl
     };
+
+    if (isNewImg) {
+      await new Promise(resolve => {
+        this.sharedService.uploadImage(form.imageUrl).subscribe({
+          next: (res:any) => {
+            const imgUrl:string = res.secure_url;
+            if (imgUrl) {
+              method.imageUrl = imgUrl;
+              resolve("");
+            }
+          },
+          error: (error) => {
+            console.log(error);
+          },
+          complete: () => {
+          }
+        })
+      });
+    }
 
     this.adminService.updateMethod(method).subscribe({
       next: (res:any) => {
@@ -111,6 +171,8 @@ export class ManageMethodComponent implements OnInit {
           this.modalService.dismissAll();
           this.loadMethods();
           this.toastr.success(`Đã cập nhật phương pháp`);
+        } else if (res.code == 204) {
+          this.toastr.info(`Không có gì thay đổi`);
         }
       },
       error: (error) => {

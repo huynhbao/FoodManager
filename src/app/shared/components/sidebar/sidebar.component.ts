@@ -26,7 +26,8 @@ export const ROUTES_ADMIN: RouteInfo[] = [
   ]},
   { path: '', title: 'Báo cáo',  icon:'ni-bullet-list-67 text-danger', class: '', child: [
     { path: 'report', title: 'Quản lý',  icon:'', class: '' },
-  ]}
+  ]},
+  { path: 'notify', title: 'Thông báo',  icon:'ni ni-bell-55 text-primary', class: ''},
 ];
 
 export const ROUTES_MANAGER: RouteInfo[] = [

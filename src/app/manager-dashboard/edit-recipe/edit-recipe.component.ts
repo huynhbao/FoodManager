@@ -315,7 +315,8 @@ export class EditRecipeComponent implements OnInit {
         if (res.code == 200) {
           this.isDone = true;
           this.toastr.success(`Đã cập nhật công thức`);
-          this.router.navigate(["../../", this.recipe.id], { relativeTo: this.route });
+          sessionStorage.setItem("recipeId", this.recipe.id);
+          this.router.navigate(["../../"], { relativeTo: this.route });
         }
       },
       error: (error) => {
@@ -652,7 +653,7 @@ export class EditRecipeComponent implements OnInit {
     }));
   }
 
-  removeIngredient(index) {
+  removeIngredient(index:number) {
     if (this.formIngredient.length == 1) return;
     this.formIngredient.removeAt(index);
   }

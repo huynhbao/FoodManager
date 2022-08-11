@@ -1,0 +1,115 @@
+<div class="header bg-gradient-danger pb-6 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <!-- <a (click)="triggerModal('create')" class="btn btn-info mb-4">Tạo phương pháp</a> -->
+        </div>
+    </div>
+</div>
+<app-spinner [enabled]="isLoading"></app-spinner>
+<!-- Page content -->
+<div class="container-fluid mt--6">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="card">
+                    <div class="card-header bg-transparent">
+                        <h3 class="mb-0">
+                            <i class="fas fa-bell"></i> Thông báo
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-control-label" for="dayYellowForIngredient">Số ngày sắp hết hạn của nguyên liệu</label>
+                            <input formControlName="dayYellowForIngredient" type="number" min="1" max="10" class="form-control" id="dayYellowForIngredient" placeholder="Nhập ngày">
+                            <div *ngIf="submitted && f['dayYellowForIngredient'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dayYellowForIngredient'].errors!['required']">Không được để trống</div>
+                            </div>
+                            <div *ngIf="submitted && f['dayYellowForIngredient'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dayYellowForIngredient'].errors['pattern']">Ngày không đúng định dạng</div>
+                            </div>
+                            <div *ngIf="submitted && f['dayYellowForIngredient'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dayYellowForIngredient'].errors['max']">Số ngày phải lớn hơn bằng 1 và nhỏ hơn bằng 10</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="dayNotiForIngredient">Số ngày thông báo trước ngày nguyên liệu hết hạn của người dùng</label>
+                            <input formControlName="dayNotiForIngredient" type="number" min="1" max="10" class="form-control" id="dayNotiForIngredient" placeholder="Nhập ngày">
+                            <div *ngIf="submitted && f['dayNotiForIngredient'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dayNotiForIngredient'].errors!['required']">Không được để trống</div>
+                            </div>
+                            <div *ngIf="submitted && f['dayNotiForIngredient'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dayNotiForIngredient'].errors['pattern']">Ngày không đúng định dạng</div>
+                            </div>
+                            <div *ngIf="submitted && f['dayNotiForIngredient'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dayNotiForIngredient'].errors['max']">Số ngày phải lớn hơn bằng 1 và nhỏ hơn bằng 10</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label" for="dayNotiForPlan">Số ngày thông báo trước ngày kế hoạch nấu ăn của người dùng</label>
+                            <input formControlName="dayNotiForPlan" type="number" min="1" max="10" class="form-control" id="dayNotiForPlan" placeholder="Nhập ngày">
+                            <div *ngIf="submitted && f['dayNotiForPlan'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dayNotiForPlan'].errors!['required']">Không được để trống</div>
+                            </div>
+                            <div *ngIf="submitted && f['dayNotiForPlan'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dayNotiForPlan'].errors['pattern']">Ngày không đúng định dạng</div>
+                            </div>
+                            <div *ngIf="submitted && f['dayNotiForPlan'].errors" class="invalid-feedback">
+                                <div *ngIf="f['dayNotiForPlan'].errors['max']">Số ngày phải lớn hơn bằng 1 và nhỏ hơn bằng 10</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-transparent">
+                        <h3 class="mb-0">
+                            <i class="fas fa-bell"></i> Thời gian thông báo trong ngày
+                        </h3>
+                    </div>
+                    <div class="card-body" formArrayName="timeAppSettings">
+                        <div *ngFor="let timeAppSetting of formTimeAppSettings.controls; let i = index" [formGroupName]="i">
+                            <div class="form-group">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-10">
+                                        <div ngbDropdown class="d-inline-block w-100">
+                                            <input class="btn btn-outline-fooma btn-block"
+                                                formControlName="timeForNoti" type="hidden" #timeForNoti readonly />
+                                            <label class="btn btn-outline-fooma btn-block" id="dropdownBasic1" ngbDropdownToggle>
+                                                {{timeForNoti.value}} giờ
+                                            </label>
+                                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="w-100">
+                                                <div *ngFor="let time of initListTime(i, timeForNoti.value); let j = index" (click)="setTime(i, time.time)">
+                                                    <!-- <div *ngFor="let timeAppSettingCheck of formTimeAppSettings.controls; let k = index">
+                                                        {{time.time == stringToNumber(timeAppSettingCheck.value.timeForNoti) ? setCheckTimeExisted(true) : setCheckTimeExisted(false)}}
+                                                    </div> -->
+                                                    <button type="button" class="dropdown-item">
+                                                        {{time.display}}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-auto d-flex align-items-center">
+                                        <a href="javascript:void(0)" (click)="removeTime(i)">
+                                            <h2 class="text-danger"><i class="fas fa-minus-circle"></i></h2>
+                                        </a>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-sm btn-primary" type="button" (click)="addTime()">
+                                Thêm thời gian
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" [disabled]="isLoading" class="btn btn-block btn-fooma mb-4">Cập nhật</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

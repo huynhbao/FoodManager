@@ -8,6 +8,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { ModalConfirmComponent } from 'src/app/shared/components/modal-confirm/modal-confirm.component';
 import { ModalCreateComponent } from 'src/app/shared/components/modal-create/modal-create.component';
 import { ModalUpdateComponent } from 'src/app/shared/components/modal-update/modal-update.component';
+import { Utils } from 'src/app/shared/tools/utils';
 
 @Component({
   selector: 'app-manage-origin',
@@ -26,7 +27,7 @@ export class ManageOriginComponent implements OnInit {
   modalRef!: NgbModalRef;
   isLoading: boolean = false;
 
-  constructor(private adminService: AdminManageService, private modalService: NgbModal, private toastr: ToastrService) { }
+  constructor(private adminService: AdminManageService, private sharedService: SharedService, private modalService: NgbModal, private toastr: ToastrService) { }
 
   public onPageChange(pageNum: number): void {
     this.loadOrigins();
@@ -76,7 +77,8 @@ export class ManageOriginComponent implements OnInit {
     this.modalRef.componentInstance.fromParent = [
       {
         id: origin?.id,
-        thumbnail: false
+        imgUrl: origin?.imageUrl || "",
+        thumbnail: true
       },
       {
         key: 'originName',
@@ -87,17 +89,45 @@ export class ManageOriginComponent implements OnInit {
           defaultValue: origin?.originName || '',
           valid: Validators.required,
         },
-      }
+      },
+      {
+        key: 'imageUrl',
+        name: 'Ảnh thumbnail',
+        type: 'file',
+        validator: {
+          disabled: false,
+          defaultValue: origin?.imageUrl || '',
+          valid: "",
+        },
+      },
     ];
     this.modalRef.componentInstance.submitFunc = method == "create" ? this.submitCreate.bind(this) : this.submitUpdate.bind(this);
   }
 
-  private submitCreate(form: any) {
+  private async submitCreate(form: any, img:string[]) {
     this.isLoading = true;
     const origin: RecipeOrigin = {
       id: "",
-      originName: form.originName
+      originName: form.originName,
+      imageUrl: form.imageUrl,
     };
+
+    await new Promise(resolve => {
+      this.sharedService.uploadImage(img[0]).subscribe({
+        next: (res:any) => {
+          const imgUrl:string = res.secure_url;
+          if (imgUrl) {
+            origin.imageUrl = imgUrl;
+            resolve("");
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+        }
+      })
+    });
     
     this.adminService.createOrigin(origin).subscribe({
       next: (res:any) => {
@@ -118,13 +148,42 @@ export class ManageOriginComponent implements OnInit {
     });
   }
 
-  private async submitUpdate(form: any) {
+  private async submitUpdate(form: any, imgUrl: string) {
     this.isLoading = true;
+    let isNewImg: boolean = false;
+    if (form.imageUrl != imgUrl) {
+      await Utils.getBase64ImageFromUrl(imgUrl).then(base64 => {
+        if (base64 != form.imageUrl) {
+          isNewImg = true;
+        }
+      })
+    }
+    
     const origin: RecipeOrigin = {
       id: form.id,
-      originName: form.originName
+      originName: form.originName,
+      imageUrl: imgUrl
     };
-    console.log(origin);
+
+    if (isNewImg) {
+      await new Promise(resolve => {
+        this.sharedService.uploadImage(form.imageUrl).subscribe({
+          next: (res:any) => {
+            const imgUrl:string = res.secure_url;
+            if (imgUrl) {
+              origin.imageUrl = imgUrl;
+              resolve("");
+            }
+          },
+          error: (error) => {
+            console.log(error);
+          },
+          complete: () => {
+          }
+        })
+      });
+    }
+
     this.adminService.updateOrigin(origin).subscribe({
       next: (res:any) => {
         console.log(res);
@@ -132,6 +191,8 @@ export class ManageOriginComponent implements OnInit {
           this.modalService.dismissAll();
           this.loadOrigins();
           this.toastr.success(`Đã cập nhật mục xuất xứ`);
+        } else if (res.code == 204) {
+          this.toastr.info(`Không có gì thay đổi`);
         }
       },
       error: (error) => {

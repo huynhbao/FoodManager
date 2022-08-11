@@ -18,6 +18,7 @@ export class ModalRecipeComponent implements OnInit {
   @Input() id!: string;
   @Input() reportId!: string;
   @Input() showAction!: boolean;
+  @Input() urlParam!: boolean;
   @Input() showActionSystem!: boolean;
   @Input() submitFunc!: Function;
   modalRef!: NgbModalRef;
@@ -145,6 +146,7 @@ export class ModalRecipeComponent implements OnInit {
   editRecipe(id) {
     this.activeModal.close();
     this.router.navigate(["../../manager/recipe-system/edit", id], { relativeTo: this.route });
+    sessionStorage.setItem("recipeId", "");
   }
 
   ngOnInit(): void {

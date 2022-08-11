@@ -111,9 +111,9 @@ const routes: Routes = [
     {
       path: 'edit/:id', component: EditRecipeComponent
     },
-    {
+    /* {
       path: ':id', component: ManageRecipeAdministratorComponent,
-    },
+    }, */
   ]},
   
 ];

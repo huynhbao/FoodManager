@@ -246,7 +246,8 @@ export class CreateRecipeComponent implements OnInit {
         if (res.id) {
           this.isDone = true;
           this.toastr.success(`Đã thêm công thức thành công`);
-          this.router.navigate(["../", res.id], { relativeTo: this.route });
+          sessionStorage.setItem("recipeId", res.id);
+          this.router.navigate(["../"], { relativeTo: this.route });
         }
       },
       error: (error) => {
@@ -258,7 +259,6 @@ export class CreateRecipeComponent implements OnInit {
         this.isLoading = false;
       }
     });
-    
     
   }
 

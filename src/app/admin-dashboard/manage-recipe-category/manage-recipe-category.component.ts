@@ -4,9 +4,11 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { RecipeCategory } from 'src/app/models/category.model';
 import { AdminManageService } from 'src/app/services/admin-manage.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { ModalConfirmComponent } from 'src/app/shared/components/modal-confirm/modal-confirm.component';
 import { ModalCreateComponent } from 'src/app/shared/components/modal-create/modal-create.component';
 import { ModalUpdateComponent } from 'src/app/shared/components/modal-update/modal-update.component';
+import { Utils } from 'src/app/shared/tools/utils';
 
 @Component({
   selector: 'app-manage-recipe-category',
@@ -25,7 +27,7 @@ export class ManageRecipeCategoryComponent implements OnInit {
   modalRef!: NgbModalRef;
   isLoading: boolean = false;
 
-  constructor(private adminService: AdminManageService, private modalService: NgbModal, private toastr: ToastrService) { }
+  constructor(private adminService: AdminManageService, private sharedService: SharedService, private modalService: NgbModal, private toastr: ToastrService) { }
 
   onPageChange(pageNum: number): void {
     this.loadRecipeCategories();
@@ -55,7 +57,8 @@ export class ManageRecipeCategoryComponent implements OnInit {
     this.modalRef.componentInstance.fromParent = [
       {
         id: recipeCategory?.id,
-        thumbnail: false
+        imgUrl: recipeCategory?.imageUrl || "",
+        thumbnail: true
       },
       {
         key: 'recipeCategoryName',
@@ -66,18 +69,46 @@ export class ManageRecipeCategoryComponent implements OnInit {
           defaultValue: recipeCategory?.recipeCategoryName || '',
           valid: Validators.required,
         },
-      }
+      },
+      {
+        key: 'imageUrl',
+        name: 'Ảnh thumbnail',
+        type: 'file',
+        validator: {
+          disabled: false,
+          defaultValue: recipeCategory?.imageUrl || 'assets/img/thumb/default_thumbnail.png',
+          valid: "",
+        },
+      },
     ];
     this.modalRef.componentInstance.submitFunc = method == "create" ? this.submitCreate.bind(this) : this.submitUpdate.bind(this);
   }
 
-  private submitCreate(form: any) {
+  private async submitCreate(form: any, img:string[]) {
     this.isLoading = true;
     const recipeCategory: RecipeCategory = {
       id: "",
-      recipeCategoryName: form.recipeCategoryName
+      recipeCategoryName: form.recipeCategoryName,
+      imageUrl: form.imageUrl,
     };
-    
+
+    await new Promise(resolve => {
+      this.sharedService.uploadImage(img[0]).subscribe({
+        next: (res:any) => {
+          const imgUrl:string = res.secure_url;
+          if (imgUrl) {
+            recipeCategory.imageUrl = imgUrl;
+            resolve("");
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+        complete: () => {
+        }
+      })
+    });
+
     this.adminService.createRecipeCategory(recipeCategory).subscribe({
       next: (res:any) => {
         console.log(res);
@@ -97,12 +128,42 @@ export class ManageRecipeCategoryComponent implements OnInit {
     });
   }
 
-  private async submitUpdate(form: any) {
+  private async submitUpdate(form: any, imgUrl: string) {
     this.isLoading = true;
+    
+    let isNewImg: boolean = false;
+    if (form.imageUrl != imgUrl) {
+      await Utils.getBase64ImageFromUrl(imgUrl).then(base64 => {
+        if (base64 != form.imageUrl) {
+          isNewImg = true;
+        }
+      })
+    }
+
     const recipeCategory: RecipeCategory = {
       id: form.id,
-      recipeCategoryName: form.recipeCategoryName
+      recipeCategoryName: form.recipeCategoryName,
+      imageUrl: imgUrl
     };
+
+    if (isNewImg) {
+      await new Promise(resolve => {
+        this.sharedService.uploadImage(form.imageUrl).subscribe({
+          next: (res:any) => {
+            const imgUrl:string = res.secure_url;
+            if (imgUrl) {
+              recipeCategory.imageUrl = imgUrl;
+              resolve("");
+            }
+          },
+          error: (error) => {
+            console.log(error);
+          },
+          complete: () => {
+          }
+        })
+      });
+    }
 
     this.adminService.updateRecipeCategory(recipeCategory).subscribe({
       next: (res:any) => {
@@ -111,6 +172,8 @@ export class ManageRecipeCategoryComponent implements OnInit {
           this.modalService.dismissAll();
           this.loadRecipeCategories();
           this.toastr.success(`Đã cập nhật danh mục công thức`);
+        } else if (res.code == 204) {
+          this.toastr.info(`Không có gì thay đổi`);
         }
       },
       error: (error) => {

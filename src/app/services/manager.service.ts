@@ -15,6 +15,7 @@ export class ManagerService {
   baseUrl = environment.apiUrl
   constructor(private http: HttpClient) { }
 
+  
   createPost(post: CreatePost): Observable<any> {
     return this.http.post<CreatePost>(
       `${this.baseUrl}/post/create`, post

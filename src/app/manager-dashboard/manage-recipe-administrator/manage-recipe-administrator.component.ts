@@ -177,15 +177,11 @@ export class ManageRecipeAdministratorComponent implements OnInit {
     this.modalRef = this.modalService.open(ModalRecipeComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = recipeId;
     this.modalRef.componentInstance.showActionSystem = true;
-    const id = this.route.snapshot.params['id'];
+    //const id = sessionStorage.getItem("recipeId");
     this.modalRef.result.then((result) => {
-      if (id) {
-        this.router.navigate(["../"], { relativeTo: this.route });
-      }
+      sessionStorage.setItem("recipeId", "");
     }, (reason) => {
-      if (id) {
-        this.router.navigate(["../"], { relativeTo: this.route });
-      }
+      sessionStorage.setItem("recipeId", "");
     });
   }
 
@@ -316,7 +312,7 @@ export class ManageRecipeAdministratorComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadRecipes();
-    const id = this.route.snapshot.params['id'];
+    const id = sessionStorage.getItem("recipeId");
     if (id) {
       this.showRecipe(id);
     }

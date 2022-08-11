@@ -1,0 +1,8 @@
+.dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
+    background-attachment: local, local, scroll, scroll;
+    min-width: 100% !important;
+    position: absolute;
+    transform: translate(0px, -182px);
+}

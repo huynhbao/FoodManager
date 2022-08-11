@@ -47,6 +47,8 @@ export class ModalCreateManagerComponent implements OnInit {
         if (res.code == 200) {
           this.toastr.success(`Đã tạo tài khoản quản lý thành công`);
           this.activeModal.close();
+        } else if (res.code == 410) {
+          this.toastr.error(`Email đã được sử dụng`);
         }
       },
       error: (error) => {

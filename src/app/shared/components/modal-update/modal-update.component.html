@@ -62,7 +62,7 @@
                                     <div *ngIf="f[item.key].errors!['required']">{{item.name}} không được để trống</div>
                                 </div>
                                 <div class="gallery-item d-flex justify-content-center mt-4">
-                                    <img [src]="form.get(item.key)?.value" alt="gallery thumbnail" class="gallery-img preview"/>
+                                    <img [src]="form.get(item.key)?.value || 'assets/img/thumb/default_thumbnail.png'" alt="gallery thumbnail" class="gallery-img preview"/>
                                 </div>
                             </div>
                         </div>
