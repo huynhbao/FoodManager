@@ -90,14 +90,17 @@ export class ReportRecipeComponent implements OnInit {
   showRecipe(recipeId: string, reportId: string) {
     this.modalRef = this.modalService.open(ModalRecipeComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = recipeId;
-    this.modalRef.componentInstance.reportId = reportId;
-    sessionStorage.setItem("recipeId", recipeId);
-    this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
-    this.modalRef.result.then((result) => {
-      sessionStorage.setItem("recipeId", "");
-    }, (reason) => {
-      sessionStorage.setItem("recipeId", "");
-    });
+
+    if (this.statusSelected === 2) {
+      this.modalRef.componentInstance.reportId = reportId;
+      sessionStorage.setItem("recipeId", recipeId);
+      this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
+      this.modalRef.result.then((result) => {
+        sessionStorage.setItem("recipeId", "");
+      }, (reason) => {
+        sessionStorage.setItem("recipeId", "");
+      });
+    }
   }
 
   showPopup(content, index: number) {

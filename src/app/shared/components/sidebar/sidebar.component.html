@@ -44,7 +44,8 @@
                     <div *ngIf="menuItem.child" class="collapse" [ngbCollapse]="menuItem.isCollapsed">
                         <ul class="nav nav-sm flex-column">
                             <li *ngFor="let child of menuItem.child" class="{{child.class}} nav-item">
-                                <a [routerLink]="[child.path]" routerLinkActive="text-dark" class="nav-link pl-4" style="font-size: 1.0rem;">
+                                <a [routerLink]="[child.path]" routerLinkActive="text-dark" class="nav-link pl-4"
+                                    style="font-size: 1.0rem;">
                                     <i class="ni {{child.icon}}"></i>
                                     {{child.title}}
                                 </a>
@@ -53,6 +54,18 @@
                     </div>
                 </li>
             </ul>
+            <!-- Navigation -->
+            
+            
+           <!--  <div class="d-flex align-items-start flex-column" style="height: 400px;">
+                <div class="mt-auto p-2">
+                    <div class="navbar-fixed-bottom mb-md-1 text-center">
+                        <img src="./assets/img/thumb/thumb_sidebar.png" width="100">
+                        <h4>FOOMA WEB ADMIN</h4>
+                    </div>
+                </div>
+              </div> -->
+
         </div>
     </div>
 </nav>

@@ -31,7 +31,7 @@ export const ROUTES_ADMIN: RouteInfo[] = [
 ];
 
 export const ROUTES_MANAGER: RouteInfo[] = [
-  // { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
+  { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
   { path: '', title: 'Bài viết',  icon:'ni-bullet-list-67 text-success', class: '', child: [
     { path: 'manage', title: 'Quản lý',  icon:'', class: '' }
   ]},

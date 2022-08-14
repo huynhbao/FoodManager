@@ -103,9 +103,9 @@
                         <tbody>
                             <tr *ngFor="let post of listPost" [ngClass]="{'selected': post.isSelected === true}">
                                 <td (click)="showPost(post.id)">
-                                    <span *ngFor="let image of post.postImages">
-                                        <img *ngIf="image.isThumbnail" src="{{image.imageUrl}}" style="height: 60px;" class="img-thumbnail img-fluid mr-3">
-                                    </span>
+                                    <!-- <span *ngFor="let image of post.postImages"> -->
+                                        <img [src]="post.postImages[0].imageUrl" style="height: 60px;" class="img-thumbnail img-fluid mr-3">
+                                    <!-- </span> -->
                                     <a href="javascript:void(0)" class="font-weight-bold text-dark">{{post.title}}</a>
                                 </td>
                                 <td (click)="showPost(post.id)">

@@ -90,8 +90,11 @@ export class ReportPostComponent implements OnInit {
   showPost(postId: string, reportId: string) {
     this.modalRef = this.modalService.open(ModalPostComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = postId;
-    this.modalRef.componentInstance.reportId = reportId;
-    this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
+
+    if (this.statusSelected === 2) {
+      this.modalRef.componentInstance.reportId = reportId;
+      this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this)
+    }
   }
 
   showPopup(content, index: number) {

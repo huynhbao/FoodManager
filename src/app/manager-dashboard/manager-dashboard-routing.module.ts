@@ -19,8 +19,8 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'manage', pathMatch: 'full' },
-  //{ path: 'dashboard', component: DashboardComponent },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'manage',
     children: [
       {
