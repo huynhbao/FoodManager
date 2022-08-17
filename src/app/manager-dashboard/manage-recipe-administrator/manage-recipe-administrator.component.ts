@@ -188,7 +188,7 @@ export class ManageRecipeAdministratorComponent implements OnInit {
   private loadRecipes() {
     this.isLoading = true;
     
-    this.managerService.getRecipes(this.search, this.statusSelected, this.listHashtag[this.hastagSelected], this.currentPage, 1).subscribe({
+    this.managerService.getRecipes(this.search, this.statusSelected, this.currentPage, 1).subscribe({
       next: (res:any) => {
         this.collectionSize = res.totalItem;
         let recipes: Recipe[] = res.items;

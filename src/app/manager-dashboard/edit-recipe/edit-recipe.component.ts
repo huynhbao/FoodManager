@@ -568,6 +568,9 @@ export class EditRecipeComponent implements OnInit {
       createDate: new Date(),
       imageUrl: form.imageUrl,
       status: 1,
+      normal: form.normal.value,
+      cool: form.cool.value,
+      freeze: form.freeze.value,
       categoryName: form.category.value,
       unit: form.unit,
     };

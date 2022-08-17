@@ -70,9 +70,15 @@ export class ManagerService {
     );
   }
 
-  getRecipes(search: string = "", status: number, hashtag: string, page: number, role: number = 0): Observable<any> {
+  getRecipes(search: string = "", status: number, page: number, role: number = 0): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrl}/recipe?search=${search}&status=${status}&page=${page}&size=5&role=${role}`
+    );
+  }
+
+  getRecipesSort(search: string = "", status: number, page: number, role: number = 0, entityName: string, sortOption: string): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}/recipe?search=${search}&status=${status}&page=${page}&size=5&role=${role}&entityName=${entityName}&sortOption=${sortOption}`
     );
   }
 

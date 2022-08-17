@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,19 +17,24 @@ export class ModalCreateComponent implements OnInit {
   submitted: boolean = false;
   previews: string[] = [];
   selectedFiles?: FileList;
-
+  currentDate;
   constructor(private sharedService: SharedService, private formBuilder: FormBuilder, private modalService: NgbModal, public activeModal: NgbActiveModal) {
     this.form = this.formBuilder.group({});
   }
 
   ngOnInit(): void {
+    this.currentDate = new Date().toISOString().slice(0, 10);
     for (let i = 0; i < this.fromParent.length; i++) {
       let value = this.fromParent[i];
       if (i == 0) {
 
       } else {
         for (let _ in value) {
-          this.form.addControl(value.key, new FormControl(value.validator.defaultValue, value.validator.valid))
+          if (value.type === "date") {
+            this.form.addControl(value.key, new FormControl(formatDate(new Date(value.validator.defaultValue), 'yyyy-MM-dd', 'en'), value.validator.valid))
+          } else {
+            this.form.addControl(value.key, new FormControl(value.validator.defaultValue, value.validator.valid))
+          }
         }
       }
     }

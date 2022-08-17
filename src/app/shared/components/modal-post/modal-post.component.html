@@ -10,42 +10,44 @@
 <div class="modal-body" style=" background-color: #ff00000d; ">
     <div class="row" *ngIf="post">
         <div class="col-xl-2 order-xl-2">
-            <div class="row card pb-3" style="position: fixed; width: 190px;">
-                <div class="container-fluid" style="position: relative">
-                    <h3 class="my-3 ml-2">Hành động</h3>
-                    <div *ngIf="!isLoading && post && showAction" class="my-2">
-                        <div class="my-2" *ngIf="post?.status === 2">
-                            <button [disabled]="isLoading" (click)="setPostByStatus(1)" class="btn btn-success btn-block">
-                                <i class="fas fa-check"></i> Duyệt bài
-                            </button>
+            <div style="position: absolute;">
+                <div class="row card pb-3" style="position: fixed; width: 190px;">
+                    <div class="container-fluid" style="position: relative">
+                        <h3 class="my-3 ml-2">Hành động</h3>
+                        <div *ngIf="!isLoading && post && showAction" class="my-2">
+                            <div class="my-2" *ngIf="post?.status === 2">
+                                <button [disabled]="isLoading" (click)="setPostByStatus(1)" class="btn btn-success btn-block">
+                                    <i class="fas fa-check"></i> Duyệt bài
+                                </button>
+                            </div>
+                            <div class="my-2" *ngIf="post?.status === 1 || post?.status === 3">
+                                <button [disabled]="isLoading" (click)="showPopup(confirmModal)" class="btn btn-danger btn-block">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </button>
+                            </div>
+                            <div class="my-2" *ngIf="post?.status === 2">
+                                <button [disabled]="isLoading" (click)="showPopupDenied()" class="btn btn-danger btn-block">
+                                    <i class="fas fa-ban"></i> Từ chối
+                                </button>
+                            </div>
+                            <div class="my-2" *ngIf="post?.status === 0 || post?.status === 3">
+                                <button [disabled]="isLoading" (click)="setPostByStatus(1)" class="btn btn-success btn-block">
+                                    <i class="fas fa-check-double"></i> Kích hoạt
+                                </button>
+                            </div>
+                            <div class="my-2" *ngIf="post?.status !== 0 && post.user.role === 'MANAGER' && post.user.id == getUser().currentProfile.id">
+                                <button [disabled]="isLoading" (click)="editPost(post.id)" class="btn btn-fooma btn-block">
+                                    <i class="fas fa-edit"></i> Chỉnh sửa
+                                </button>
+                            </div>
                         </div>
-                        <div class="my-2" *ngIf="post?.status === 1 || post?.status === 3">
-                            <button [disabled]="isLoading" (click)="showPopup(confirmModal)" class="btn btn-danger btn-block">
-                                <i class="fas fa-trash"></i> Xóa
-                            </button>
-                        </div>
-                        <div class="my-2" *ngIf="post?.status === 2">
-                            <button [disabled]="isLoading" (click)="showPopupDenied()" class="btn btn-danger btn-block">
-                                <i class="fas fa-ban"></i> Từ chối
-                            </button>
-                        </div>
-                        <div class="my-2" *ngIf="post?.status === 0 || post?.status === 3">
-                            <button [disabled]="isLoading" (click)="setPostByStatus(1)" class="btn btn-success btn-block">
-                                <i class="fas fa-check-double"></i> Kích hoạt
-                            </button>
-                        </div>
-                        <div class="my-2" *ngIf="post?.status !== 0 && post.user.role === 'MANAGER' && post.user.id == getUser().currentProfile.id">
-                            <button [disabled]="isLoading" (click)="editPost(post.id)" class="btn btn-fooma btn-block">
-                                <i class="fas fa-edit"></i> Chỉnh sửa
-                            </button>
-                        </div>
-                    </div>
-                    <div *ngIf="!isLoading && post && reportId" class="my-2">
-                        <div class="my-2">
-                            <button class="btn btn-primary btn-block" [disabled]="isLoading" (click)="acceptReport()"><i class="fas fa-check"></i> Bỏ qua</button>
-                        </div>
-                        <div class="my-2">
-                            <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Xóa bài viết</button>
+                        <div *ngIf="!isLoading && post && reportId" class="my-2">
+                            <div class="my-2">
+                                <button class="btn btn-primary btn-block" [disabled]="isLoading" (click)="acceptReport()"><i class="fas fa-check"></i> Bỏ qua</button>
+                            </div>
+                            <div class="my-2">
+                                <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Gỡ bài viết</button>
+                            </div>
                         </div>
                     </div>
                 </div>

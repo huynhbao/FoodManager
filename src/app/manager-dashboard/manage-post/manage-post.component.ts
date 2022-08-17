@@ -159,6 +159,11 @@ export class ManagePostComponent implements OnInit {
     this.modalRef = this.modalService.open(ModalPostComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = postId;
     this.modalRef.componentInstance.showAction = true;
+    this.modalRef.result.then((result) => {
+      sessionStorage.setItem("postId", "");
+    }, (reason) => {
+      sessionStorage.setItem("postId", "");
+    });
   }
 
   setPostByStatus(id: string, status: number, reason?: string) {
@@ -271,13 +276,11 @@ export class ManagePostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let hashtagParam = this.route.snapshot.params['hashtag'];
-    if (hashtagParam) {
-      this.loadHashtag("#" + hashtagParam);
-    } else {
-      this.loadPosts();
+    this.loadPosts();
+    const id = sessionStorage.getItem("postId");
+    if (id) {
+      this.showPost(id);
     }
-    
   }
 
 }

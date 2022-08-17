@@ -45,6 +45,12 @@ export class AdminManageService {
     );
   }
 
+  getUsersTop(role: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}/user/users-top?size=5&stringRole=${role}`
+    );
+  }
+
   getBannedUsers(status: number, page: number): Observable<any> {
     return this.http.get<any>(
       `${this.baseUrl}/user/ban-list?status=${status}&page=${page}&size=5`

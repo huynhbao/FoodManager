@@ -135,6 +135,36 @@ export class ManageIngredientComponent implements OnInit {
             },
           },
           {
+            key: 'normal',
+            name: 'Số ngày hết hạn dự kiến',
+            type: 'number',
+            validator: {
+              disabled: false,
+              defaultValue: ingredient?.normal || 1,
+              valid: Validators.required,
+            },
+          },
+          {
+            key: 'cool',
+            name: 'Số ngày hết hạn dự kiến cho ngăn mát',
+            type: 'number',
+            validator: {
+              disabled: false,
+              defaultValue: ingredient?.cool || 1,
+              valid: Validators.required,
+            },
+          },
+          {
+            key: 'freeze',
+            name: 'Số ngày hết hạn dự kiến cho ngăn đông',
+            type: 'number',
+            validator: {
+              disabled: false,
+              defaultValue: ingredient?.freeze || 1,
+              valid: Validators.required,
+            },
+          },
+          {
             key: 'imageUrl',
             name: 'Ảnh thumbnail',
             type: 'file',
@@ -161,9 +191,15 @@ export class ManageIngredientComponent implements OnInit {
       createDate: new Date(),
       imageUrl: form.imageUrl,
       status: 1,
+      normal: form.normal,
+      cool: form.cool,
+      freeze: form.freeze,
       categoryName: form.category.value,
       unit: form.unit,
     };
+
+    console.log(ingredient);
+
     this.sharedService.uploadImage(img[0]).subscribe({
       next: (res:any) => {
         const imgUrl:string = res.secure_url;
@@ -216,6 +252,9 @@ export class ManageIngredientComponent implements OnInit {
       createDate: new Date(),
       imageUrl: imgUrl, //form.imageUrl,
       status: 1,
+      normal: form.normal,
+      cool: form.cool,
+      freeze: form.freeze,
       categoryName: form.category.value,
       unit: form.unit,
     };

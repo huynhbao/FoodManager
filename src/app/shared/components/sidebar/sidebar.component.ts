@@ -13,6 +13,7 @@ declare interface RouteInfo {
   isCollapsed?: boolean;
 }
 export const ROUTES_ADMIN: RouteInfo[] = [
+  { path: 'dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
   { path: '', title: 'Quản lý người dùng',  icon:'ni-bullet-list-67 text-success', class: '', child: [
     { path: 'user', title: 'Người dùng',  icon:'', class: '' },
   ]},

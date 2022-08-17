@@ -24,7 +24,8 @@ export class CreatePostComponent implements OnInit {
   submitted: boolean = false;
   isLoading: boolean = false;
   isDone: boolean = false;
-  constructor(private managerService: ManagerService, private sharedService: SharedService, private formBuilder: FormBuilder, private route: ActivatedRoute, private toastr: ToastrService) {
+
+  constructor(private managerService: ManagerService, private sharedService: SharedService, private formBuilder: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute, private router: Router) {
     this.createForm = this.formBuilder.group({
       title: ['', Validators.required],
       content: ['', Validators.required],
@@ -86,6 +87,8 @@ export class CreatePostComponent implements OnInit {
         if (res.code == 200) {
           this.isDone = true;
           this.toastr.success(`Đã tạo bài viết thành công`);
+          sessionStorage.setItem("postId", res.id);
+          this.router.navigate(["../"], { relativeTo: this.route });
         }
       },
       error: (error) => {

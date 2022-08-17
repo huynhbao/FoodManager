@@ -53,7 +53,7 @@ export class ModalInputComponent implements OnInit {
     } else {
       reason = this.reasonsOption[this.selectedReason].display;
     }
-    this.submitFunc(this.id, this.reasonModel, this.status);
+    this.submitFunc(this.id, reason, this.status);
   }
 
   ngOnInit(): void {

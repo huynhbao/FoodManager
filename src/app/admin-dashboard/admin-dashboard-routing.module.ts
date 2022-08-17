@@ -13,7 +13,8 @@ import { ManageRecipeCategoryComponent } from './manage-recipe-category/manage-r
 import { ManageUserComponent } from './manage-user/manage-user.component';
 
 export const AdminDashboardRoutes: Routes = [
-  { path: '', redirectTo: 'user',  pathMatch:'full' },
+  { path: '', redirectTo: 'dashboard',  pathMatch:'full' },
+  { path: 'dashboard', component: DashboardComponent },
   { path: 'category', component: ManageCategoryComponent},
   { path: 'origin', component: ManageOriginComponent},
   { path: 'method', component: ManageMethodComponent},

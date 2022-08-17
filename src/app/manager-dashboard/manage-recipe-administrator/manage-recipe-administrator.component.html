@@ -150,7 +150,7 @@
                         <tbody>
                             <tr *ngFor="let recipe of recipes" [ngClass]="{'selected': recipe.isSelected === true}">
                                 <td (click)="showRecipe(recipe.id)">
-                                    <img src="{{recipe.thumbnail}}" style="height: 60px;"
+                                    <img [src]="recipe.thumbnail" style="height: 60px;"
                                         class="img-thumbnail img-fluid mr-3">
                                     <a href="javascript:void(0)" class="font-weight-bold text-dark">{{recipe.recipeName}}</a>
                                 </td>

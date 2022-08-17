@@ -7,5 +7,8 @@ export interface Ingredient {
     status: number;
     categoryName: string;
     unit: string;
+    freeze: Date;
+    cool: Date;
+    normal: Date;
     isSelected?: boolean;
 }

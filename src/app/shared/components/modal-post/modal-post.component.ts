@@ -80,7 +80,7 @@ export class ModalPostComponent implements OnInit {
           }
           this.activeModal.close();
           if (status === 0) {
-            this.toastr.success(`Đã xóa bài viết`);
+            this.toastr.success(`Đã gỡ bài viết`);
           } else if (status === 1) {
             this.toastr.success(`Đã duyệt bài viết`);
           } else if (status === 3) {
@@ -110,7 +110,7 @@ export class ModalPostComponent implements OnInit {
               if (res.code == 200) {
                 this.confirmModalRef.close();
                 this.activeModal.close();
-                this.toastr.success(`Đã xóa bài viết`);
+                this.toastr.success(`Đã gỡ bài viết`);
                 this.submitFunc();
               }
             },

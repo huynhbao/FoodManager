@@ -127,7 +127,8 @@ export class EditPostComponent implements OnInit {
         if (res.code == 200) {
           this.isDone = true;
           this.toastr.success(`Đã cập nhật bài viết thành công`);
-          //this.router.navigate(['../'], { relativeTo: this.route });
+          sessionStorage.setItem("postId", this.post.id);
+          this.router.navigate(["../../"], { relativeTo: this.route });
         }
       },
       error: (error) => {
