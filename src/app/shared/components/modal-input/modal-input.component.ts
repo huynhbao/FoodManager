@@ -48,7 +48,7 @@ export class ModalInputComponent implements OnInit {
 
   onSubmit() {
     let reason = "";
-    if (this.selectedReason === 0) {
+    if (this.reasonsOption[this.selectedReason].id === 0) {
       reason = this.reasonModel;
     } else {
       reason = this.reasonsOption[this.selectedReason].display;

@@ -177,6 +177,7 @@ export class ManageRecipeAdministratorComponent implements OnInit {
     this.modalRef = this.modalService.open(ModalRecipeComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = recipeId;
     this.modalRef.componentInstance.showActionSystem = true;
+    this.modalRef.componentInstance.submitFunc = this.loadRecipes.bind(this);;
     //const id = sessionStorage.getItem("recipeId");
     this.modalRef.result.then((result) => {
       sessionStorage.setItem("recipeId", "");

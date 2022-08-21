@@ -131,7 +131,7 @@ export class ModalRecipeComponent implements OnInit {
   }
 
   confirmDelete() {
-    if (this.showAction) {
+    if (this.showAction || this.showActionSystem) {
       this.setRecipeByStatus(0);
     } else {
       this.setReportRecipeStatus(2);
