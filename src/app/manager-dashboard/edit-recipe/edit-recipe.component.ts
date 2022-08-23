@@ -69,33 +69,56 @@ export class EditRecipeComponent implements OnInit {
 
   get formMethod() { return this.f["methods"] as FormArray; }
 
-  loadItemDB() {
-    this.sharedService.getRecipeCategories(50).subscribe({
-      next: (categories: any) => {
-        this.categoriesDB = categories.items;
-      },
-      error: (error) => {
-        console.log(error);
-      },
+  async loadItemDB() {
+    this.isLoading = true;
+    await new Promise(resolve => {
+      this.sharedService.getRecipeCategories(50).subscribe({
+        next: (categories: any) => {
+          this.categoriesDB = categories.items;
+        },
+        error: (error) => {
+          console.log(error);
+          resolve("");
+        },
+        complete: () => {
+          resolve("");
+        }
+      });
+      
+    });
+    
+    await new Promise(resolve => {
+      this.sharedService.getRecipeMethod(50).subscribe({
+        next: (methods: any) => {
+          this.methodsDB = methods.items;
+        },
+        error: (error) => {
+          console.log(error);
+          resolve("");
+        },
+        complete: () => {
+          resolve("");
+        }
+      });
     });
 
-    this.sharedService.getRecipeMethod(50).subscribe({
-      next: (methods: any) => {
-        this.methodsDB = methods.items;
-      },
-      error: (error) => {
-        console.log(error);
-      },
+    await new Promise(resolve => {
+      this.sharedService.getRecipeOrigin(50).subscribe({
+        next: (origins: any) => {
+          this.originsDB = origins.items;
+        },
+        error: (error) => {
+          console.log(error);
+          resolve("");
+        },
+        complete: () => {
+          resolve("");
+        }
+      });
     });
 
-    this.sharedService.getRecipeOrigin(50).subscribe({
-      next: (origins: any) => {
-        this.originsDB = origins.items;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
+    this.isLoading = false;
+    
   }
 
   mapToForm(recipe: Recipe) {
@@ -420,20 +443,20 @@ export class EditRecipeComponent implements OnInit {
   }
 
   requestAutocompleteItemsMethod$ = (text: string): Observable<TagModel[]> => {
-    if (this.selectedTag) {
+    /* if (this.selectedTag) {
       return of(
         this.methodsDB.filter((method) => method.id === this.selectedTag.id)
       );
-    }
+    } */
     return of(this.methodsDB);
   };
 
   requestAutocompleteItemsOrigin$ = (text: string): Observable<TagModel[]> => {
-    if (this.selectedTag) {
+    /* if (this.selectedTag) {
       return of(
         this.originsDB.filter((origin) => origin.id === this.selectedTag.id)
       );
-    }
+    } */
     return of(this.originsDB);
   };
 

@@ -359,20 +359,20 @@ export class CreateRecipeComponent implements OnInit {
   }
 
   requestAutocompleteItemsMethod$ = (text: string): Observable<TagModel[]> => {
-    if (this.selectedTag) {
+    /* if (this.selectedTag) {
       return of(
         this.methodsDB.filter((method) => method.id === this.selectedTag.id)
       );
-    }
+    } */
     return of(this.methodsDB);
   };
 
   requestAutocompleteItemsOrigin$ = (text: string): Observable<TagModel[]> => {
-    if (this.selectedTag) {
+    /* if (this.selectedTag) {
       return of(
         this.originsDB.filter((origin) => origin.id === this.selectedTag.id)
       );
-    }
+    } */
     return of(this.originsDB);
   };
 

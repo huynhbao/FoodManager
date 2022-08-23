@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { ReportRecipe } from 'src/app/models/report.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ManagerService } from 'src/app/services/manager.service';
@@ -26,7 +27,7 @@ export class ReportRecipeComponent implements OnInit {
   selectedIndex: number = 0;
   confirmModalRef!: NgbModalRef;
 
-  constructor(private sharedService: SharedService, private managerService: ManagerService, private modalService: NgbModal, private authenticationService: AuthenticationService) { }
+  constructor(private sharedService: SharedService, private managerService: ManagerService, private modalService: NgbModal, private authenticationService: AuthenticationService, private toastr: ToastrService) { }
 
   getRole() {
     return this.authenticationService.currentUserValue.currentUser.role;
@@ -58,6 +59,7 @@ export class ReportRecipeComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Có lỗi xảy ra. Vui lòng thử lại`);
       },
       complete: () => {
         this.isLoading = false;
@@ -76,10 +78,12 @@ export class ReportRecipeComponent implements OnInit {
           } else {
             this.loadReports();
           }
+          this.toastr.success(`Thành công`);
         }
       },
       error: (error) => {
         console.log(error);
+        this.toastr.error(`Có lỗi xảy ra. Vui lòng thử lại`);
       },
       complete: () => {
         this.isLoading = false;
