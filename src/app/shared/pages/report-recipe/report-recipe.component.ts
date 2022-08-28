@@ -51,8 +51,8 @@ export class ReportRecipeComponent implements OnInit {
     });
   }
 
-  setRecipeByStatus(id: string, status: number) {
-    this.managerService.setRecipeByStatus(id, status).subscribe({
+  setRecipeByStatus(id: string, status: number, reason: string) {
+    this.managerService.setRecipeByStatus(id, status, reason).subscribe({
       next: (res:any) => {
         this.loadReports();
         this.confirmModalRef.close();
@@ -67,13 +67,13 @@ export class ReportRecipeComponent implements OnInit {
     });
   }
 
-  setReportStatus(id: string, recipeId: string, status: number) {
+  setReportStatus(id: string, recipeId: string, status: number, reason: string) {
     this.sharedService.acceptReportRecipe(id).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           if (status === 2) {
-            this.setRecipeByStatus(recipeId, 0);
+            this.setRecipeByStatus(recipeId, 0, reason);
             this.confirmModalRef.close();
           } else {
             this.loadReports();
@@ -91,14 +91,16 @@ export class ReportRecipeComponent implements OnInit {
     });
   }
 
-  showRecipe(recipeId: string, reportId: string) {
+  showRecipe(recipeId: string, reportId: string, reason: string) {
     this.modalRef = this.modalService.open(ModalRecipeComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = recipeId;
 
     if (this.statusSelected === 2) {
       this.modalRef.componentInstance.reportId = reportId;
+      this.modalRef.componentInstance.reportReason = reason;
       sessionStorage.setItem("recipeId", recipeId);
       this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
+      
       this.modalRef.result.then((result) => {
         sessionStorage.setItem("recipeId", "");
       }, (reason) => {
@@ -113,7 +115,8 @@ export class ReportRecipeComponent implements OnInit {
   }
 
   confirmDelete() {
-    this.setReportStatus(this.reportRecipes[this.selectedIndex].id, this.reportRecipes[this.selectedIndex].recipeId, 2);
+    const reason: string = this.reportRecipes[this.selectedIndex].title + " - " + this.reportRecipes[this.selectedIndex].content;
+    this.setReportStatus(this.reportRecipes[this.selectedIndex].id, this.reportRecipes[this.selectedIndex].recipeId, 2, reason);
   }
 
   submitFunc() {

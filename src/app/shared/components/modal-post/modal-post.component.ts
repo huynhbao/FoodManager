@@ -19,6 +19,7 @@ export class ModalPostComponent implements OnInit {
 
   @Input() id!: string;
   @Input() reportId!: string;
+  @Input() reportReason!: string;
   @Input() showAction!: boolean;
   @Input() submitFunc!: Function;
   post!: Post;
@@ -46,6 +47,11 @@ export class ModalPostComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.toastr.success(`Đã bỏ qua báo cáo`);
+          if (this.submitFunc()) {
+            this.submitFunc();
+          } else {
+            this.activeModal.close();
+          }
         }
       },
       error: (error) => {
@@ -104,7 +110,7 @@ export class ModalPostComponent implements OnInit {
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
-          this.managerService.setPostByStatus(this.post.id, status).subscribe({
+          this.managerService.setPostByStatus(this.post.id, status, this.reportReason).subscribe({
             next: (res:any) => {
               console.log(res);
               if (res.code == 200) {
@@ -136,7 +142,7 @@ export class ModalPostComponent implements OnInit {
     if (this.showAction) {
       this.setPostByStatus(0);
     } else {
-      this.setReportPostStatus(2);
+      this.setReportPostStatus(0);
     }
   }
 

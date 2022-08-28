@@ -81,6 +81,12 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <span class="py-4" *ngIf="post?.reason">
+                        Bài viết đã bị xóa. Lý do: <span class="card-title mb-1 text-danger font-weight-bold">{{post?.reason}}</span>
+                    </span>
+                    <span class="py-4" *ngIf="reportId">
+                        Bài viết này bị báo cáo với lý do: <span class="card-title mb-1 text-danger font-weight-bold">{{reportReason}}</span>
+                    </span>
                     <h4 class="card-title mb-1">{{post?.title}}</h4>
                     <p class="card-text">{{post?.content}}</p>
                     <ngb-carousel *ngIf="post?.postImages">

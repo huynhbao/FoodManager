@@ -17,6 +17,7 @@ export class ModalRecipeComponent implements OnInit {
 
   @Input() id!: string;
   @Input() reportId!: string;
+  @Input() reportReason!: string;
   @Input() showAction!: boolean;
   @Input() urlParam!: boolean;
   @Input() showActionSystem!: boolean;
@@ -44,6 +45,11 @@ export class ModalRecipeComponent implements OnInit {
         console.log(res);
         if (res.code == 200) {
           this.toastr.success(`Đã bỏ qua báo cáo`);
+          if (this.submitFunc()) {
+            this.submitFunc();
+          } else {
+            this.activeModal.close();
+          }
         }
       },
       error: (error) => {
@@ -102,7 +108,7 @@ export class ModalRecipeComponent implements OnInit {
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
-          this.managerService.setRecipeByStatus(this.recipe.id, status).subscribe({
+          this.managerService.setRecipeByStatus(this.recipe.id, status, this.reportReason).subscribe({
             next: (res:any) => {
               console.log(res);
               this.confirmModalRef.close();
@@ -134,7 +140,7 @@ export class ModalRecipeComponent implements OnInit {
     if (this.showAction || this.showActionSystem) {
       this.setRecipeByStatus(0);
     } else {
-      this.setReportRecipeStatus(2);
+      this.setReportRecipeStatus(0);
     }
     
   }

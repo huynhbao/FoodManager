@@ -13,7 +13,7 @@
                         <a class="nav-link" data-toggle="tab" [routerLink]="['../post']">Bài viết</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../recipe']">Công thức (Hệ thống)</a>
+                        <a class="nav-link active" data-toggle="tab" [routerLink]="['../recipe']">Công thức</a>
                     </li>
                     <!-- <li class="nav-item" *ngIf="getRole() != 'MANAGER'">
                         <a class="nav-link" data-toggle="tab" [routerLink]="['../user']">Người dùng</a>
@@ -77,23 +77,23 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let recipe of reportRecipes; let i = index" [ngClass]="{'selected': recipe.isSelected === true}">
-                                <td (click)="showRecipe(recipe.recipeId, recipe.id)">
+                                <td (click)="showRecipe(recipe.recipeId, recipe.id, recipe.title + ' - ' + recipe.content)">
                                     <b>{{recipe.userName}}</b>
                                 </td>
-                                <td (click)="showRecipe(recipe.recipeId, recipe.id)">
+                                <td (click)="showRecipe(recipe.recipeId, recipe.id, recipe.title + ' - ' + recipe.content)">
                                     <a href="javascript:void(0)" class="font-weight-bold text-dark" style="cursor: pointer;">{{recipe.recipeName}}</a>
                                 </td>
-                                <td (click)="showRecipe(recipe.recipeId, recipe.id)">
+                                <td (click)="showRecipe(recipe.recipeId, recipe.id, recipe.title + ' - ' + recipe.content)">
                                     <span class="text-muted">{{recipe.title}}</span>
                                 </td>
-                                <td (click)="showRecipe(recipe.recipeId, recipe.id)">
+                                <td (click)="showRecipe(recipe.recipeId, recipe.id, recipe.title + ' - ' + recipe.content)">
                                     <span class="text-muted">{{recipe.content}}</span>
                                 </td>
-                                <td (click)="showRecipe(recipe.recipeId, recipe.id)" style="width:1px; white-space:nowrap;">
+                                <td (click)="showRecipe(recipe.recipeId, recipe.id, recipe.title + ' - ' + recipe.content)" style="width:1px; white-space:nowrap;">
                                     <span class="text-muted">{{recipe.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td class="table-actions row text-center justify-content-center">
-                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(recipe.id, recipe.recipeId, 1)" class="btn btn-primary btn-sm table-action table-action-delete my-1">
+                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(recipe.id, recipe.recipeId, 1, recipe.title + ' - ' + recipe.content)" class="btn btn-primary btn-sm table-action table-action-delete my-1">
                                         <i class="fas fa-check"></i> Bỏ qua
                                     </button>
                                     <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="showPopup(confirmModal, i)" class="btn btn-danger btn-sm table-action table-action-delete my-1">

@@ -13,7 +13,7 @@
                         <a class="nav-link active" data-toggle="tab" [routerLink]="['../post']">Bài viết</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe']">Công thức (Hệ thống)</a>
+                        <a class="nav-link" data-toggle="tab" [routerLink]="['../recipe']">Công thức</a>
                     </li>
                     <!-- <li class="nav-item" *ngIf="getRole() != 'MANAGER_TEMP'">
                         <a class="nav-link" data-toggle="tab" [routerLink]="['../user']">Người dùng</a>
@@ -77,23 +77,23 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let post of reportPosts; let i = index" [ngClass]="{'selected': post.isSelected === true}">
-                                <td (click)="showPost(post.postId, post.id)">
+                                <td (click)="showPost(post.postId, post.id, post.title + ' - ' + post.content)">
                                     <b>{{post.userName}}</b>
                                 </td>
-                                <td (click)="showPost(post.postId, post.id)">
+                                <td (click)="showPost(post.postId, post.id, post.title + ' - ' + post.content)">
                                     <a href="javascript:void(0)" class="font-weight-bold text-dark" style="cursor: pointer;">{{post.postTitle}}</a>
                                 </td>
-                                <td (click)="showPost(post.postId, post.id)">
+                                <td (click)="showPost(post.postId, post.id, post.title + ' - ' + post.content)">
                                     <span class="text-muted">{{post.title}}</span>
                                 </td>
-                                <td (click)="showPost(post.postId, post.id)">
+                                <td (click)="showPost(post.postId, post.id, post.title + ' - ' + post.content)">
                                     <span class="text-muted">{{post.content}}</span>
                                 </td>
-                                <td (click)="showPost(post.postId, post.id)" style="width:1px; white-space:nowrap;">
+                                <td (click)="showPost(post.postId, post.id, post.title + ' - ' + post.content)" style="width:1px; white-space:nowrap;">
                                     <span class="text-muted">{{post.createDate | date: 'HH:mm dd/MM/yyyy'}}</span>
                                 </td>
                                 <td class="table-actions row text-center justify-content-center">
-                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(post.id, post.postId, 1)" class="btn btn-primary btn-sm table-action table-action-delete my-1">
+                                    <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="setReportStatus(post.id, post.postId, 1, post.title + ' - ' + post.content)" class="btn btn-primary btn-sm table-action table-action-delete my-1">
                                         <i class="fas fa-check"></i> Bỏ qua
                                     </button>
                                     <button *ngIf="statusSelected === 2" [disabled]="isLoading" (click)="showPopup(confirmModal, i)" class="btn btn-danger btn-sm table-action table-action-delete my-1">

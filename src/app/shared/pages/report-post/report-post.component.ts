@@ -51,8 +51,8 @@ export class ReportPostComponent implements OnInit {
     });
   }
 
-  setPostByStatus(id: string, status: number) {
-    this.managerService.setPostByStatus(id, status).subscribe({
+  setPostByStatus(id: string, status: number, reason: string) {
+    this.managerService.setPostByStatus(id, status, reason).subscribe({
       next: (res:any) => {
         this.confirmModalRef.close();
         this.loadReports();
@@ -67,13 +67,13 @@ export class ReportPostComponent implements OnInit {
     });
   }
 
-  setReportStatus(id: string, postId: string, status: number) {
+  setReportStatus(id: string, postId: string, status: number, reason: string) {
     this.sharedService.acceptReportPost(id).subscribe({
       next: (res:any) => {
         console.log(res);
         if (res.code == 200) {
           if (status === 2) {
-            this.setPostByStatus(postId, 0);
+            this.setPostByStatus(postId, 0, reason);
             this.confirmModalRef.close();
           } else {
             this.loadReports();
@@ -91,12 +91,13 @@ export class ReportPostComponent implements OnInit {
     });
   }
 
-  showPost(postId: string, reportId: string) {
+  showPost(postId: string, reportId: string, reason: string) {
     this.modalRef = this.modalService.open(ModalPostComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = postId;
 
     if (this.statusSelected === 2) {
       this.modalRef.componentInstance.reportId = reportId;
+      this.modalRef.componentInstance.reportReason = reason;
       this.modalRef.componentInstance.submitFunc = this.submitFunc.bind(this)
     }
   }
@@ -107,10 +108,12 @@ export class ReportPostComponent implements OnInit {
   }
 
   confirmDelete() {
-    this.setReportStatus(this.reportPosts[this.selectedIndex].id, this.reportPosts[this.selectedIndex].postId, 2);
+    const reason: string = this.reportPosts[this.selectedIndex].title + " - " + this.reportPosts[this.selectedIndex].content;
+    this.setReportStatus(this.reportPosts[this.selectedIndex].id, this.reportPosts[this.selectedIndex].postId, 2, reason);
   }
 
   submitFunc() {
+    this.modalRef.close();
     this.loadReports();
   }
 
