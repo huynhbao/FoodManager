@@ -86,14 +86,10 @@
                     <ngb-carousel *ngIf="post?.postImages">
                         <ng-template ngbSlide *ngFor="let image of post?.postImages">
                             <div class="picsum-img-wrapper d-flex justify-content-center">
-                              <img [src]="image.imageUrl" alt="Random slide" style="height: 600px; border-radius: 8px;">
+                              <img [src]="image.imageUrl" alt="Random slide" style="height: 600px; border-radius: 8px; width: 600px; object-fit: contain; background-color: #e3e3e3;">
                             </div>
                         </ng-template>
                     </ngb-carousel>
-                    <br>
-                    <a href="javascript:void(0)" [routerLink]="['../../post/hashtag/', hashtag]" *ngFor="let hashtag of splitDescription(post.hashtag)" class="text-muted rounded mr-2 px-2 bg-pending my-1" style="width: fit-content;">
-                        #{{hashtag}}
-                    </a>
                 </div>
                 <div class="card-footer">
                     <div class="row">

@@ -213,7 +213,7 @@
                                     <button *ngIf="statusSelected == 0 || statusSelected == 3" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-check-double"></i>
                                     </button>
-                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="showPopup(recipe.id, 0)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
+                                    <button *ngIf="statusSelected == 1 || statusSelected == 3" [disabled]="isLoading" (click)="showPopupConfirm(recipe)" class="btn btn-link table-action table-action-delete text-danger" data-toggle="tooltip" data-original-title="Delete Post">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                     <button *ngIf="statusSelected == 2" [disabled]="isLoading" (click)="setRecipeByStatus(recipe.id, 1)" class="btn btn-link table-action table-action-delete text-green" data-toggle="tooltip" data-original-title="Delete Post">
