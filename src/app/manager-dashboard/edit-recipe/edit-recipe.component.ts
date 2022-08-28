@@ -566,6 +566,36 @@ export class EditRecipeComponent implements OnInit {
               },
             },
             {
+              key: 'normal',
+              name: 'Số ngày hết hạn dự kiến',
+              type: 'number',
+              validator: {
+                disabled: false,
+                defaultValue: ingredient?.normal || 0,
+                valid: Validators.required,
+              },
+            },
+            {
+              key: 'cool',
+              name: 'Số ngày hết hạn dự kiến cho ngăn mát',
+              type: 'number',
+              validator: {
+                disabled: false,
+                defaultValue: ingredient?.cool || 0,
+                valid: Validators.required,
+              },
+            },
+            {
+              key: 'freeze',
+              name: 'Số ngày hết hạn dự kiến cho ngăn đông',
+              type: 'number',
+              validator: {
+                disabled: false,
+                defaultValue: ingredient?.freeze || 0,
+                valid: Validators.required,
+              },
+            },
+            {
               key: 'imageUrl',
               name: 'Ảnh thumbnail',
               type: 'file',

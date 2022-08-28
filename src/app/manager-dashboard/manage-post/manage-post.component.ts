@@ -35,6 +35,7 @@ export class ManagePostComponent implements OnInit {
   isLoadingHashtag: boolean = false;
   statusSelected: number = 1;
   modalRef!: NgbModalRef;
+  search: string = "";
   //masterSelected: boolean;
   //https://ks89.github.io/angular-modal-gallery-2018-v7.github.io/
   //https://www.npmjs.com/package/ngx-toastr
@@ -63,7 +64,7 @@ export class ManagePostComponent implements OnInit {
     hashtag = hashtag.replace("#", "");
 
     
-    this.managerService.getPosts(this.statusSelected, hashtag, this.currentPage).subscribe({
+    this.managerService.getPosts(this.search, this.statusSelected, this.currentPage).subscribe({
       next: (res:any) => {
         this.collectionSize = res.totalItem;
         let listPost: Post[] = res.items;
@@ -91,6 +92,12 @@ export class ManagePostComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  onSearchChange(searchValue) {
+    this.search = searchValue;
+    this.currentPage = 1;
+    this.loadPosts();
   }
 
   public onPageChange(pageNum: number): void {

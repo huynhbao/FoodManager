@@ -94,7 +94,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadPosts() {
-    this.managerService.getPosts(1, "", 0).subscribe({
+    this.managerService.getPosts("", 1, 0).subscribe({
       next: (res:any) => {
         this.collectionSize.post = res.totalItem;
       },

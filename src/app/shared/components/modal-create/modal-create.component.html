@@ -54,7 +54,7 @@
                             </div>
                             <div *ngIf="item.type === 'number'" class="form-group">
                                 <label class="form-control-label" for="input-address">{{item.name | titlecase}}</label>
-                                <input id="input-address" class="form-control form-control-alternative" placeholder="Nhập {{item.name}}" [formControlName]="item.key" step="1" min="1" type="number">
+                                <input id="input-address" class="form-control form-control-alternative" placeholder="Nhập {{item.name}}" [formControlName]="item.key" step="1" min="0" type="number">
                                 <div *ngIf="submitted && f[item.key].errors" class="invalid-feedback">
                                     <div *ngIf="f[item.key].errors!['required']">{{item.name}} không được để trống</div>
                                 </div>

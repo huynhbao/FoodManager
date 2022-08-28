@@ -140,7 +140,7 @@ export class ManageIngredientComponent implements OnInit {
             type: 'number',
             validator: {
               disabled: false,
-              defaultValue: ingredient?.normal || 1,
+              defaultValue: ingredient?.normal || 0,
               valid: Validators.required,
             },
           },
@@ -150,7 +150,7 @@ export class ManageIngredientComponent implements OnInit {
             type: 'number',
             validator: {
               disabled: false,
-              defaultValue: ingredient?.cool || 1,
+              defaultValue: ingredient?.cool || 0,
               valid: Validators.required,
             },
           },
@@ -160,7 +160,7 @@ export class ManageIngredientComponent implements OnInit {
             type: 'number',
             validator: {
               disabled: false,
-              defaultValue: ingredient?.freeze || 1,
+              defaultValue: ingredient?.freeze || 0,
               valid: Validators.required,
             },
           },

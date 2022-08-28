@@ -28,9 +28,9 @@ export class ManagerService {
     );
   }
 
-  getPosts(status: number, hashtag: string, page: number): Observable<any> {
+  getPosts(search: string, status: number, page: number): Observable<any> {
     return this.http.get<any>(
-      `${this.baseUrl}/post/by-status/as-manager?status=${status}&hashtag=${hashtag}&page=${page}&size=5`
+      `${this.baseUrl}/post/by-status/as-manager?search=${search}&status=${status}&page=${page}&size=5`
     );
   }
 

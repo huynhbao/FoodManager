@@ -26,27 +26,33 @@
                         <div class="col-lg-4">
                             <h3 class="mb-0">Tổng số công thức: {{collectionSize}}</h3>
                         </div>
-                        <div class="col-lg-8 text-right">
-                            <a (click)="filterByStatus(1)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
-                                <span class="badge badge-dot"><i class="bg-success"></i></span>
-                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
-                                <span class="btn-inner--text">Đã duyệt</span>
-                            </a>
-                            <a (click)="filterByStatus(2)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 2}" href="javascript:void(0)">
-                                <span class="badge badge-dot"><i class="bg-pending"></i></span>
-                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
-                                <span class="btn-inner--text">Chờ duyệt</span>
-                            </a>
-                            <a (click)="filterByStatus(3)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 3}" href="javascript:void(0)">
-                                <span class="badge badge-dot"><i class="bg-red"></i></span>
-                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
-                                <span class="btn-inner--text">Từ chối</span>
-                            </a>
-                            <a (click)="filterByStatus(0)" class="btn btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 0}" href="javascript:void(0)">
-                                <span class="badge badge-dot"><i class="bg-gray"></i></span>
-                                <!-- <span class="btn-inner--icon"><i class="fas fa-user-edit"></i></span> -->
-                                <span class="btn-inner--text">Đã xóa</span>
-                            </a>
+                        <div class="col-lg-8">
+                            <div class="row justify-content-end">
+                                <div class="col-lg-auto col-md-12 my-1">
+                                    <a (click)="filterByStatus(1)" class="btn btn-block btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 1}" href="javascript:void(0)">
+                                        <span class="badge badge-dot"><i class="bg-success"></i></span>
+                                        <span class="btn-inner--text">Đã duyệt</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-auto col-md-12 my-1">
+                                    <a (click)="filterByStatus(2)" class="btn btn-block btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 2}" href="javascript:void(0)">
+                                        <span class="badge badge-dot"><i class="bg-pending"></i></span>
+                                        <span class="btn-inner--text">Chờ duyệt</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-auto col-md-12 my-1">
+                                    <a (click)="filterByStatus(3)" class="btn btn-block btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 3}" href="javascript:void(0)">
+                                        <span class="badge badge-dot"><i class="bg-red"></i></span>
+                                        <span class="btn-inner--text">Từ chối</span>
+                                    </a>
+                                </div>
+                                <!-- <div class="col-lg-auto col-md-12 my-1">
+                                    <a (click)="filterByStatus(0)" class="btn btn-block btn-disable btn-round" [ngClass]="{'active-status': statusSelected == 0}" href="javascript:void(0)">
+                                        <span class="badge badge-dot"><i class="bg-gray"></i></span>
+                                        <span class="btn-inner--text">Đã xóa</span>
+                                    </a>
+                                </div> -->
+                            </div>
                         </div>
                     </div>
                     <div class="row mt-3">
