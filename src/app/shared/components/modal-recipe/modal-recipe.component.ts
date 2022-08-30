@@ -62,14 +62,15 @@ export class ModalRecipeComponent implements OnInit {
     });
   }
 
-  showPopupDenied() {
-    this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
+  showPopupDenied(status: number) {
+    this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'md'});
     this.modalRef.componentInstance.id = this.recipe.id;
+    this.modalRef.componentInstance.status = status;
     this.modalRef.componentInstance.submitFunc = this.showPopupDeniedCb.bind(this);
   }
 
-  showPopupDeniedCb(id: string, reason: string) {
-    this.setRecipeByStatus(3, reason);
+  showPopupDeniedCb(id: string, reason: string, status: number) {
+    this.setRecipeByStatus(status, reason);
     this.modalRef.close();
   }
 

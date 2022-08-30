@@ -5,6 +5,7 @@ import { ReportRecipe } from 'src/app/models/report.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ModalInputComponent } from '../../components/modal-input/modal-input.component';
 import { ModalRecipeComponent } from '../../components/modal-recipe/modal-recipe.component';
 
 @Component({
@@ -111,15 +112,21 @@ export class ReportRecipeComponent implements OnInit {
 
   showPopup(content, index: number) {
     this.selectedIndex = index;
-    this.confirmModalRef = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+    ///this.confirmModalRef = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+
+    this.confirmModalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'md'});
+    this.confirmModalRef.componentInstance.id = this.reportRecipes[this.selectedIndex].recipeId;
+    this.confirmModalRef.componentInstance.status = 0;
+    this.confirmModalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
   }
 
   confirmDelete() {
-    const reason: string = this.reportRecipes[this.selectedIndex].title + " - " + this.reportRecipes[this.selectedIndex].content;
+    const reason: string = this.reportRecipes[this.selectedIndex].title;
     this.setReportStatus(this.reportRecipes[this.selectedIndex].id, this.reportRecipes[this.selectedIndex].recipeId, 2, reason);
   }
 
-  submitFunc() {
+  submitFunc(id: string, reason: string, status: number) {
+    this.setReportStatus(this.reportRecipes[this.selectedIndex].id, this.reportRecipes[this.selectedIndex].recipeId, 2, reason);
     this.loadReports();
   }
 

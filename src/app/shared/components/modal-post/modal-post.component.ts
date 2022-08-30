@@ -64,14 +64,15 @@ export class ModalPostComponent implements OnInit {
     });
   }
 
-  showPopupDenied() {
+  showPopupDenied(status: number) {
     this.modalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'md'});
     this.modalRef.componentInstance.id = this.post.id;
+    this.modalRef.componentInstance.status = status;
     this.modalRef.componentInstance.submitFunc = this.showPopupDeniedCb.bind(this);
   }
 
-  showPopupDeniedCb(id: string, reason: string) {
-    this.setPostByStatus(3, reason);
+  showPopupDeniedCb(id: string, reason: string, status: number) {
+    this.setPostByStatus(status, reason);
     this.modalRef.close();
   }
 

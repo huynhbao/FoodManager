@@ -26,7 +26,7 @@
                                 </button>
                             </div>
                             <div class="my-2" *ngIf="post?.status === 2">
-                                <button [disabled]="isLoading" (click)="showPopupDenied()" class="btn btn-danger btn-block">
+                                <button [disabled]="isLoading" (click)="showPopupDenied(3)" class="btn btn-danger btn-block">
                                     <i class="fas fa-ban"></i> Từ chối
                                 </button>
                             </div>
@@ -46,7 +46,7 @@
                                 <button class="btn btn-primary btn-block" [disabled]="isLoading" (click)="acceptReport()"><i class="fas fa-check"></i> Bỏ qua</button>
                             </div>
                             <div class="my-2">
-                                <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopup(confirmModal)"><i class="fas fa-trash"></i> Gỡ bài viết</button>
+                                <button class="btn btn-danger btn-block" [disabled]="isLoading" (click)="showPopupDenied(0)"><i class="fas fa-trash"></i> Gỡ bài viết</button>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <span class="py-4" *ngIf="post?.reason">
+                    <span class="py-4" *ngIf="post?.reason && post?.status !== 2">
                         Bài viết đã bị xóa. Lý do: <span class="card-title mb-1 text-danger font-weight-bold">{{post?.reason}}</span>
                     </span>
                     <span class="py-4" *ngIf="reportId">

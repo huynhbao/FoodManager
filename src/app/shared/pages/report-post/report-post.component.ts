@@ -5,6 +5,7 @@ import { ReportPost } from 'src/app/models/report.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ManagerService } from 'src/app/services/manager.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { ModalInputComponent } from '../../components/modal-input/modal-input.component';
 import { ModalPostComponent } from '../../components/modal-post/modal-post.component';
 
 @Component({
@@ -104,16 +105,21 @@ export class ReportPostComponent implements OnInit {
 
   showPopup(content, index: number) {
     this.selectedIndex = index;
-    this.confirmModalRef = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+    //this.confirmModalRef = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+
+    this.confirmModalRef = this.modalService.open(ModalInputComponent, {ariaLabelledBy: 'modal-basic-title', size: 'md'});
+    this.confirmModalRef.componentInstance.id = this.reportPosts[this.selectedIndex].postId;
+    this.confirmModalRef.componentInstance.status = 0;
+    this.confirmModalRef.componentInstance.submitFunc = this.submitFunc.bind(this);
   }
 
   confirmDelete() {
-    const reason: string = this.reportPosts[this.selectedIndex].title + " - " + this.reportPosts[this.selectedIndex].content;
+    const reason: string = this.reportPosts[this.selectedIndex].title;
     this.setReportStatus(this.reportPosts[this.selectedIndex].id, this.reportPosts[this.selectedIndex].postId, 2, reason);
   }
 
-  submitFunc() {
-    this.modalRef.close();
+  submitFunc(id: string, reason: string, status: number) {
+    this.setReportStatus(this.reportPosts[this.selectedIndex].id, this.reportPosts[this.selectedIndex].postId, 2, reason);
     this.loadReports();
   }
 

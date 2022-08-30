@@ -166,11 +166,16 @@ export class ManagePostComponent implements OnInit {
     this.modalRef = this.modalService.open(ModalPostComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', windowClass: 'appcustom-modal'});
     this.modalRef.componentInstance.id = postId;
     this.modalRef.componentInstance.showAction = true;
+    this.modalRef.componentInstance.submitFunc = this.showPostCb.bind(this);
     this.modalRef.result.then((result) => {
       sessionStorage.setItem("postId", "");
     }, (reason) => {
       sessionStorage.setItem("postId", "");
     });
+  }
+
+  showPostCb() {
+    this.loadPosts();
   }
 
   setPostByStatus(id: string, status: number, reason?: string) {
